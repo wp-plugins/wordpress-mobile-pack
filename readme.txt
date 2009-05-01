@@ -2,7 +2,7 @@
 Tags: mobile, wireless, pda, iphone, dotMobi, theme, blackberry, admob, mobil adsense
 Requires at least: 2.5
 Tested up to: 2.7.1
-Stable tag: 1.0.8222
+Stable tag: 1.0
 
 WordPress Mobile Pack is a complete toolkit to help mobilize your WordPress site. It has a mobile switcher, themes, widgets, and mobile admin panel.
 
