@@ -1,7 +1,7 @@
 <?php
 
 /*
-$Id: wordpress_mobile_pack.php 8197 2009-04-29 06:49:22Z jpearce $
+$Id: wordpress-mobile-pack.php 8197 2009-04-29 06:49:22Z jpearce $
 
 Copyright (c) 2009 mTLD Top Level Domain Limited
 
@@ -48,23 +48,23 @@ foreach($wpmp_plugins as $wpmp_plugin) {
   }
 }
 
-register_activation_hook('wordpress_mobile_pack/wordpress_mobile_pack.php', 'wordpress_mobile_pack_activate');
-register_deactivation_hook('wordpress_mobile_pack/wordpress_mobile_pack.php', 'wordpress_mobile_pack_deactivate');
-add_action('admin_notices', 'wordpress_mobile_pack_admin_notices');
+register_activation_hook('wordpress-mobile-pack/wordpress-mobile-pack.php', 'wordpress-mobile-pack_activate');
+register_deactivation_hook('wordpress-mobile-pack/wordpress-mobile-pack.php', 'wordpress-mobile-pack_deactivate');
+add_action('admin_notices', 'wordpress-mobile-pack_admin_notices');
 
-function wordpress_mobile_pack_admin_notices() {
+function wordpress-mobile-pack_admin_notices() {
   if($warning=get_option('wpmp_warning')) {
     print "<div class='error'><p>$warning</p><p><small>(" . __('Deactivate and re-activate the WordPress Mobile Pack once resolved.') . ")</small></p></div>";
   }
 }
 
-function wordpress_mobile_pack_activate() {
+function wordpress-mobile-pack_activate() {
   update_option('wpmp_warning', '');
-  wordpress_mobile_pack_soft_copy(dirname(__FILE__) . "/themes", get_theme_root());
-  wordpress_mobile_pack_hook('activate');
+  wordpress-mobile-pack_soft_copy(dirname(__FILE__) . "/themes", get_theme_root());
+  wordpress-mobile-pack_hook('activate');
 }
 
-function wordpress_mobile_pack_soft_copy($source_dir, $destination_dir) {
+function wordpress-mobile-pack_soft_copy($source_dir, $destination_dir) {
   if(file_exists($destination_dir) && !is_writable($destination_dir)) {
     update_option('wpmp_warning', __('<strong>Could not install files</strong> to ') . $destination_dir . ('. Please ensure that the web server has write-access to that directory.'));
     return;
@@ -80,18 +80,18 @@ function wordpress_mobile_pack_soft_copy($source_dir, $destination_dir) {
       continue;
     }
     if (is_dir($source_child = "$source_dir/$source_file")) {
-      wordpress_mobile_pack_soft_copy($source_child, $destination_child);
+      wordpress-mobile-pack_soft_copy($source_child, $destination_child);
       continue;
     }
     copy($source_child, $destination_child);
   }
 }
 
-function wordpress_mobile_pack_deactivate() {
-  wordpress_mobile_pack_hook('deactivate');
+function wordpress-mobile-pack_deactivate() {
+  wordpress-mobile-pack_hook('deactivate');
 }
 
-function wordpress_mobile_pack_hook($action) {
+function wordpress-mobile-pack_hook($action) {
   global $wpmp_plugins;
   foreach($wpmp_plugins as $wpmp_plugin) {
     if (function_exists($function = $wpmp_plugin . "_" . $action)) {

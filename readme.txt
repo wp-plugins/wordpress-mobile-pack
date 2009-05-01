@@ -30,7 +30,7 @@ Features highlights:
 On WordPress v2.7 and later, the installation is as follows:
 
 Go to the 'Plugins' / 'Add new' menu
-1.	Upload wordpress_mobile_pack.zip then press 'Install now'.
+1.	Upload wordpress-mobile-pack.zip then press 'Install now'.
 1.	Activate the switcher plugin. Change its settings as required.
 1.	Select which desktop widgets are to appear on the mobile theme.
 1.	Enjoy.
@@ -39,13 +39,13 @@ Go to the 'Plugins' / 'Add new' menu
 On WordPress v2.5 and v2.6, the installation is very slightly different:
 
 1.	Locate your WordPress install on the file system
-1.	Extract the contents of wordpress_mobile_pack.zip into wp-content/plugins
+1.	Extract the contents of wordpress-mobile-pack.zip into wp-content/plugins
 1.	Activate the switcher plugin. Change its settings as required.
 1.	Select which desktop widgets are to appear on the mobile theme.
 1.	Enjoy.
 
 
-The Mobile Pack also uses a cache directory to improve performance, make sure the Web server has write permissions. The cache directory is, from the root of your WordPress install, in *wp-content/plugins/wordpress_mobile_pack/plugins/wpmp_transcoder/c*.
+The Mobile Pack also uses a cache directory to improve performance, make sure the Web server has write permissions. The cache directory is, from the root of your WordPress install, in *wp-content/plugins/wordpress-mobile-pack/plugins/wpmp_transcoder/c*.
 
 Also the themes need write permissions and they are in *wp-content/themes*.
 
@@ -61,7 +61,7 @@ Yes, all images, once rescaled, are cached locally.
 = Where is the cache directory? =
 
 From your root directory of WordPress, go to:
-*wp-content/plugins/wordpress_mobile_pack/plugins/wpmp_transcoder/c*
+*wp-content/plugins/wordpress-mobile-pack/plugins/wpmp_transcoder/c*
 
 
 = I get a parse error in wpmp_switcher.php =

@@ -450,7 +450,7 @@ function wpmp_transcoder_convert_image($url, $width, $height) {
   if (wpmp_transcoder_fetch_image($url, $_w, $_h, $type, $location)===false) {
     return;
   }
-  $base = get_option('home') . "/wp-content/plugins/wordpress_mobile_pack/plugins/wpmp_transcoder/";
+  $base = get_option('home') . "/wp-content/plugins/wordpress-mobile-pack/plugins/wpmp_transcoder/";
   if ($width==$_w && $height=$_h) {
     return "$base$location";
   }
