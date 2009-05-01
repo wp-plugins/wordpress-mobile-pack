@@ -1,7 +1,7 @@
 <?php
 
 /*
-$Id: wordpress-mobile-pack.php 8197 2009-04-29 06:49:22Z jpearce $
+$Id: wordpress_mobile_pack.php 8197 2009-04-29 06:49:22Z jpearce $
 
 Copyright (c) 2009 mTLD Top Level Domain Limited
 
@@ -48,8 +48,8 @@ foreach($wpmp_plugins as $wpmp_plugin) {
   }
 }
 
-register_activation_hook('wordpress-mobile-pack/wordpress_mobile_pack.php', 'wordpress_mobile_pack_activate');
-register_deactivation_hook('wordpress-mobile-pack/wordpress_mobile_pack.php', 'wordpress_mobile_pack_deactivate');
+register_activation_hook('wordpress-mobile-pack/wordpress-mobile-pack.php', 'wordpress_mobile_pack_activate');
+register_deactivation_hook('wordpress-mobile-pack/wordpress-mobile-pack.php', 'wordpress_mobile_pack_deactivate');
 add_action('admin_notices', 'wordpress_mobile_pack_admin_notices');
 
 function wordpress_mobile_pack_admin_notices() {
