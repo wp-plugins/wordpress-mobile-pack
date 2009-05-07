@@ -1,5 +1,5 @@
 === WordPress Mobile Pack ===
-Tags: mobile, wireless, pda, iphone, dotMobi, theme, blackberry, admob, mobil adsense
+Tags: mobile, wireless, pda, iphone, dotMobi, theme, blackberry, admob, mobile adsense
 Requires at least: 2.5
 Tested up to: 2.7.1
 Stable tag: 1.0.8223
