@@ -66,7 +66,11 @@ From your root directory of WordPress, go to:
 
 = I get a parse error in wpmp_switcher.php =
 
-The plug-in uses references in foreach loops (this makes your loops much faster!), but the feature was added only in PHP 5. You can either upgrade (strongly recommended) or you might want to look into the code, we used it a few times, but if you just remove the & it should work.
+The plug-in uses a few functions that were introduced in PHP 5, such as stripos and also references in foreach loops (this makes your loops much faster!). The plug-in could probably be made PHP 4 compatible, but since PHP 5 has been out for years, at this stage we do not feel that back-porting would be a good idea. If you are really interested in a PHP 4 version, you may look at the code and provide your own patch and we will see if we can make it publicly available.
+
+= I run PHP 4 with 1and1, can I use the Mobile Pack? =
+
+We found this article on internet and we have at least one report of a happy user who could quickly change PHP version and now runs the Mobile Pack without a glitch, see [How To: Run PHP5 at 1and1.com](http://blog.kevindonahue.com/archives/2008/10/31/how_to_run_php5_at_1an1com/ "How To: Run PHP5 at 1and1.com")
 
 = I need more help! =
 
