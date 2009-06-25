@@ -40,8 +40,13 @@ specific language governing permissions and limitations under the License.
       "Comments" => "/wp-admin/edit-comments.php",
       "_Comment" => "/wp-admin/comment.php",
       "Settings" => "/wp-admin/options-general.php",
-      "Log out" => wp_logout_url()
     );
+    if (function_exists('wp_logout_url')) {
+      $menu["Log out"] = wp_logout_url();
+    } else {
+      $menu["Log out"] = "/wp-login.php?action=logout";
+    }
+
     $page = $_SERVER['REQUEST_URI'];
     $function = "";
     foreach($menu as $link) {
