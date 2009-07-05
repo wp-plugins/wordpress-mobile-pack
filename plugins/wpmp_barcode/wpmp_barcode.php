@@ -64,7 +64,7 @@ function wpmp_barcode_activate() {
 function wpmp_barcode_deactivate() {}
 
 function wpmp_barcode_widget($args) {
-  extract($args);
+	extract($args);
 	if (($link = get_option('wpmp_barcode_link'))!='') {
     print $before_widget;
     if (($title = get_option('wpmp_barcode_title'))=='') {
@@ -77,10 +77,17 @@ function wpmp_barcode_widget($args) {
     } else {
       $size = floor($size);
     }
+	 if ( is_page() ) {
+		 $deep_link = get_page_link();
+	 } else if ( is_single() ) {
+		 $deep_link = the_permalink();
+	 } else {
+		 $deep_link = $link.$_SERVER['REQUEST_URI'];
+	 }
     $url = "http://chart.apis.google.com/chart?chs=" .
            $size . "x" . $size .
            "&amp;cht=qr&amp;choe=UTF-8&amp;chl=" .
-           urlencode($link);
+           urlencode($deep_link);
     print "<img width='$size' height='$size' src='$url' />";
     if(get_option('wpmp_barcode_help')=='true') {
       print "<p>";
