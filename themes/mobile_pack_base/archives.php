@@ -3,6 +3,8 @@
 /*
 $Id$
 
+$URL$
+
 Copyright (c) 2009 mTLD Top Level Domain Limited
 
 Online support: http://mobiforge.com/forum/dotmobi/wordpress
@@ -44,4 +46,3 @@ get_header();
   <?php get_sidebar(); ?>
 </div>
 <?php get_footer(); ?>
-

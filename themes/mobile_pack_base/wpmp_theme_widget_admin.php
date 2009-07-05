@@ -3,7 +3,9 @@
 /*
 $Id$
 
-Copyright (c) 2009 mTLD Top Level Domain Limited 
+$URL$
+
+Copyright (c) 2009 mTLD Top Level Domain Limited
 
 Online support: http://mobiforge.com/forum/dotmobi/wordpress
 
