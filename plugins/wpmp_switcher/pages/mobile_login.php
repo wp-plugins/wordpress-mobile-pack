@@ -1,7 +1,7 @@
 <?php
 
 /*
-$Id: mobile_login.php 8197 2009-04-29 06:49:22Z jpearce $
+$Id$
 
 Copyright (c) 2009 mTLD Top Level Domain Limited
 

@@ -1,7 +1,7 @@
 <?php
 
 /*
-$Id: wordpress_mobile_pack.php 8197 2009-04-29 06:49:22Z jpearce $
+$Id$
 $URL$
 
 Copyright (c) 2009 mTLD Top Level Domain Limited
