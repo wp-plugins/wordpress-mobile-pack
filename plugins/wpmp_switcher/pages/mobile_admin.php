@@ -75,9 +75,11 @@ specific language governing permissions and limitations under the License.
 
   function wpmp_msma_overview($menu) {
     $base = get_option('home');
+    $post_count = wp_count_posts('post');
+    $page_count = wp_count_posts('page');
     print "<p>" . __("You have") . " " .
-              ($c = 0+(wp_count_posts('post')->publish)) . " post" . ($c==1?"":"s") . " " . __("and") . " " .
-              ($c = 0+(wp_count_posts('page')->publish)) . " page" . ($c==1?"":"s") . ", " .
+              ($c = 0+($post_count->publish)) . " post" . ($c==1?"":"s") . " " . __("and") . " " .
+              ($c = 0+($page_count->publish)) . " page" . ($c==1?"":"s") . ", " .
               __("contained within") . " " .
               ($c = 0+(wp_count_terms('category'))) . " categor" . ($c==1?"y":"ies") . " " . __("and") . " " .
               ($c = 0+(wp_count_terms('post_tag'))) . " tag" . ($c==1?"":"s") . ".</p>";
@@ -85,8 +87,9 @@ specific language governing permissions and limitations under the License.
 
   	global $wpdb;
 		$comments = $wpdb->get_results("SELECT count(*) as cnt FROM $wpdb->comments WHERE comment_approved='0'" );
+    $comment_count = $comments[0];
     print "<p>" . __("You have") . " " .
-            ($c = 0+($comments[0]->cnt)) . " comment" . ($c==1?"":"s") . " " . __("to moderate") . ".</p>";
+            ($c = 0+($comment_count->cnt)) . " comment" . ($c==1?"":"s") . " " . __("to moderate") . ".</p>";
 
 
     print "<h3>" . __("Select an admin page:") . "</h3>";
@@ -159,8 +162,10 @@ specific language governing permissions and limitations under the License.
 
     print '<p><label for="post_content">' . __('Content') . ':</label><br />';
     $safe_content = @$post->post_content;
-    $safe_content = str_ireplace("<textarea", "<div", $safe_content);
-    $safe_content = str_ireplace("</textarea", "</div", $safe_content);
+    $safe_content = str_replace("<textarea", "<div", $safe_content);
+    $safe_content = str_replace("<TEXTAREA", "<div", $safe_content);
+    $safe_content = str_replace("</textarea", "</div", $safe_content);
+    $safe_content = str_replace("</TEXTAREA", "</div", $safe_content);
     print '<textarea name="post_content" id="post_content" rows="6">' . $safe_content . '</textarea></p>';
     print '<input name="submit" type="submit" id="submit" value="' . __('Apply') . '" />';
     print '<p>' . __('You can use HTML tags to format your post. Use &lt;!--more--&gt; to indicate the end of the teaser.') . '</p>';

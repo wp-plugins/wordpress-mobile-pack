@@ -174,7 +174,7 @@ function wpmp_theme_widget_calendar($args) {
   $original = ob_get_contents();
   ob_end_clean();
   preg_match_all("/(^.*)\<caption\>(.*)\<\/caption\>.*\<thead\>(.*)\<\/thead\>.*\<tfoot\>(.*)\<\/tfoot\>.*\<tbody\>(.*)\<\/tbody\>(.*$)/Usi", $original, $parts);
-  print str_ireplace("<h2>&nbsp;</h2>", "<h2>Calendar</h2>", $parts[1][0]) .
+  print str_replace("<h2>&nbsp;</h2>", "<h2>Calendar</h2>", $parts[1][0]) .
         "<tr><td colspan='7'>" . $parts[2][0] . "</td></tr>" .
         $parts[3][0] .$parts[5][0] . $parts[4][0] .
         $parts[6][0];
