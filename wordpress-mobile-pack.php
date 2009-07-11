@@ -84,10 +84,16 @@ function wordpress_mobile_pack_readiness_audit() {
     $why_not[] = __('<strong>PHP version not supported.</strong> PHP versions 6 and greater are not yet supported by this plugin, and you have version ') . PHP_VERSION;
   }
 
+  $cache_dir = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'plugins' . DIRECTORY_SEPARATOR . 'wpmp_transcoder' . DIRECTORY_SEPARATOR . 'c';
+  if(!file_exists($cache_dir) || !is_writable($cache_dir) || !is_executable($cache_dir)) {
+    $ready = false;
+    $why_not[] = __('<strong>Not be able to cache images</strong> to ') . $cache_dir . __('. Please ensure that the web server has write- and execute-access to that directory.');
+  }
+
   $theme_dir = get_theme_root();
   if(!file_exists($theme_dir) || !is_writable($theme_dir) || !is_executable($theme_dir)) {
     $ready = false;
-    $why_not[] = __('<strong>Could not install theme files</strong> to ') . $theme_dir . __('. Please ensure that the web server has write- and execute-access to that directory.');
+    $why_not[] = __('<strong>Not able to install theme files</strong> to ') . $theme_dir . __('. Please ensure that the web server has write- and execute-access to that directory.');
   } // a similar check is in wordpress_mobile_pack_soft_copy, checking lower directories as it recurses down
 
 
