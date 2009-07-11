@@ -29,7 +29,7 @@ specific language governing permissions and limitations under the License.
 Plugin Name: Mobile Switcher
 Plugin URI: http://mobiforge.com/wordpress-mobile-pack
 Description: Detects a mobile user accessing your site and switches theme accordingly. This plugin is tested with WordPress 2.5, 2.6 and 2.7.
-Version: v1.0.8223
+Version: 1.1
 Author: James Pearce, dotMobi
 Author URI: http://www.mobiforge.com/users/james-pearce
 */

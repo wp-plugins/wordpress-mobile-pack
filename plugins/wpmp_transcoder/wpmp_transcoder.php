@@ -29,7 +29,7 @@ specific language governing permissions and limitations under the License.
 Plugin Name: Mobile Transcoder
 Plugin URI: http://mobiforge.com/wordpress-mobile-pack
 Description: Rewrites blog pages and posts for the mobile theme, to ensure compatibility with mobile devices
-Version: v1.0.8223
+Version: 1.1
 Author: James Pearce, dotMobi
 Author URI: http://www.mobiforge.com/users/james-pearce
 */

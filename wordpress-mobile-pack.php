@@ -29,7 +29,7 @@ specific language governing permissions and limitations under the License.
 Plugin Name: WordPress Mobile Pack
 Plugin URI: http://mobiforge.com/wordpress-mobile-pack
 Description: The dotMobi WordPress Mobile Pack is a complete toolkit to help mobilize your WordPress site and blog. It includes a <a href='themes.php?page=wpmp_switcher_admin'>mobile switcher</a>, <a href='themes.php?page=wpmp_theme_widget_admin'>filtered widgets</a>, and content adaptation for mobile device characteristics. Activating this plugin will also install a selection of mobile <a href='themes.php'>themes</a>. Also check out <a href='http://mobiforge.com/wordpress-mobile-pack' target='_blank'>the documentation</a> and <a href='http://mobiforge.com/forum/dotmobi/wordpress' target='_blank'>the forums</a>.
-Version: v1.0.8223
+Version: 1.1
 Author: James Pearce, dotMobi
 Author URI: http://www.mobiforge.com/users/james-pearce
 */
