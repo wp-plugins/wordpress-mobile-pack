@@ -100,7 +100,7 @@ function wpmp_theme_options_write() {
 			$value = stripslashes_deep($value);
       update_option($option, $value);
       if ($option=='wpmp_theme_widget') {
-        return;
+        return $message;
       }
     } elseif ($checkbox) {
       update_option($option, 'false');
