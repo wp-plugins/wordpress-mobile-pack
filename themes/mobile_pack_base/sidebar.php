@@ -28,7 +28,13 @@ specific language governing permissions and limitations under the License.
 ?>
 
 <div id="sidebar">
-  <ul>
-    <?php dynamic_sidebar(); ?>
-  </ul>
+  <?php
+    ob_start();
+    dynamic_sidebar();
+    $list = ob_get_contents();
+    ob_end_clean();
+    if ($list) {
+      print "<ul>$list</ul>";
+    }
+  ?>
 </div>

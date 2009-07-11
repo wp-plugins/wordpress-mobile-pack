@@ -52,8 +52,8 @@ specific language governing permissions and limitations under the License.
             $mobile_widgets = array();
             $non_mobile_widgets = array();
             foreach($widgets as $widget) {
-              if(strpos($wp_registered_widgets[$widget]['name'], 'mobile')!==false &&
-                 strpos($wp_registered_widgets[$widget]['name'], 'barcode')===false) {
+              if(strpos(strtolower($wp_registered_widgets[$widget]['name']), 'mobile')!==false &&
+                 strpos(strtolower($wp_registered_widgets[$widget]['name']), 'barcode')===false) {
                 $mobile_widgets[] = $widget;
               } else {
                 $non_mobile_widgets[] = $widget;
