@@ -34,6 +34,7 @@ specific language governing permissions and limitations under the License.
 <p>
   <label for="wpmp_barcode_link"><?php _e('Link:'); ?></label>
   <?php print wpmp_barcode_option('wpmp_barcode_link', '', 'widefat'); ?>
+  <br />If you leave this blank, the URL in the barcode will be dynamic, and will be the mobile equivalent of the actual page the user is on.
 </p>
 <p>
   <label for="wpmp_barcode_size"><?php _e('Size:'); ?></label>

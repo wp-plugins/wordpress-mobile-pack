@@ -64,51 +64,45 @@ function wpmp_barcode_activate() {
 function wpmp_barcode_deactivate() {}
 
 function wpmp_barcode_widget($args) {
-	extract($args);
-	if (($link = get_option('wpmp_barcode_link'))!='') {
-    print $before_widget;
-    if (($title = get_option('wpmp_barcode_title'))=='') {
-      $title = "Our mobile site";
+  extract($args);
+  print $before_widget;
+  if (($title = get_option('wpmp_barcode_title'))=='') {
+    $title = "Our mobile site";
+  }
+  print $before_title . $title . $after_title;
+  $size = get_option('wpmp_barcode_size');
+  if(!is_numeric($size) && $size < 64) {
+    $size = 190;
+  } else {
+    $size = floor($size);
+  }
+  if (trim($link = get_option('wpmp_barcode_link'))=='') {
+    $link = "http://" . wpmp_switcher_domains('mobile', true) . wpmp_switcher_current_path_plus_cgi();
+  }
+  $url = "http://chart.apis.google.com/chart?chs=" .
+         $size . "x" . $size .
+         "&amp;cht=qr&amp;choe=UTF-8&amp;chl=" .
+         urlencode($link);
+  print "<img width='$size' height='$size' src='$url' />";
+  if(get_option('wpmp_barcode_help')=='true') {
+    print "<p>";
+    print __('This is a 2D-barcode containing the address of our');
+    print " <a href='$link' target='_blank'>" . __('mobile site') . "</a>. ";
+    print __('If your mobile has a barcode reader, simply snap this bar code with the camera and launch the site. ');
+    print "</p>";
+  }
+  if(get_option('wpmp_barcode_reader_list')=='true') {
+    print "<p>";
+    print __('Many companies provide barcode readers that you can install on your mobile, and all of the following are compatible with this format:');
+    print "</p>";
+    include_once('barcode_reader_list.php');
+    print "<ul>";
+    foreach(wpmp_barcode_barcode_reader_list() as $name=>$url) {
+      print "<li><a href='$url' target='_blank'>$name</a></li>";
     }
-    print $before_title . $title . $after_title;
-    $size = get_option('wpmp_barcode_size');
-    if(!is_numeric($size) && $size < 64) {
-      $size = 190;
-    } else {
-      $size = floor($size);
-    }
-	 if ( is_page() ) {
-		 $deep_link = get_page_link();
-	 } else if ( is_single() ) {
-		 $deep_link = the_permalink();
-	 } else {
-		 $deep_link = $link.$_SERVER['REQUEST_URI'];
-	 }
-    $url = "http://chart.apis.google.com/chart?chs=" .
-           $size . "x" . $size .
-           "&amp;cht=qr&amp;choe=UTF-8&amp;chl=" .
-           urlencode($deep_link);
-    print "<img width='$size' height='$size' src='$url' />";
-    if(get_option('wpmp_barcode_help')=='true') {
-      print "<p>";
-      print __('This is a 2D-barcode containing the address of our');
-      print " <a href='$link' target='_blank'>" . __('mobile site') . "</a>. ";
-      print __('If your mobile has a barcode reader, simply snap this bar code with the camera and launch the site. ');
-      print "</p>";
-    }
-    if(get_option('wpmp_barcode_reader_list')=='true') {
-      print "<p>";
-      print __('Many companies provide barcode readers that you can install on your mobile, and all of the following are compatible with this format:');
-      print "</p>";
-      include_once('barcode_reader_list.php');
-      print "<ul>";
-      foreach(wpmp_barcode_barcode_reader_list() as $name=>$url) {
-        print "<li><a href='$url' target='_blank'>$name</a></li>";
-      }
-      print "</ul>";
-    }
-  	print $after_widget;
-	}
+    print "</ul>";
+  }
+  print $after_widget;
 }
 
 function wpmp_barcode_widget_control() {
