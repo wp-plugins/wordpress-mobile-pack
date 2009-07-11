@@ -186,7 +186,7 @@ function wpmp_ads_insertion_admob($publisher_id, $format='') {
   $ip = urlencode($_SERVER['REMOTE_ADDR']);
   $url = "http://ads.admob.com/ad_source.php?s=$publisher_id&u=$ua&i=$ip";
   if($ip == "127.0.0.1") {
-    $url .= "&m";
+    $url .= "&m=test";
   }
   $response = wpmp_ads_http($url);
   $link = explode("><", $response);

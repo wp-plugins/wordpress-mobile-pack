@@ -33,6 +33,7 @@ specific language governing permissions and limitations under the License.
     </p>
   </h2>
   <form method="post" action="">
+    <input type='hidden' name='wpmp_theme_widget[]' value='-' />
     <?php global $wp_registered_sidebars, $wp_registered_widgets; ?>
     <?php $enabled = get_option('wpmp_theme_widget'); ?>
     <?php $sidebar_widgets = wp_get_sidebars_widgets(); ?>
