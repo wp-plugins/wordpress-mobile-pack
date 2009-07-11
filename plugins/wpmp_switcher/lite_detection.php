@@ -161,6 +161,7 @@ function lite_detection_ua_contains() {
     'up.link',
     'wap',
     'windows ce',
+    'intendo DS',
   ));
 }
 
