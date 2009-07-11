@@ -37,45 +37,47 @@ specific language governing permissions and limitations under the License.
     <?php $enabled = get_option('wpmp_theme_widget'); ?>
     <?php $sidebar_widgets = wp_get_sidebars_widgets(); ?>
     <?php foreach($sidebar_widgets as $sidebar=>$widgets) { ?>
-      <h3>
-        <?php print $wp_registered_sidebars[$sidebar]['name']; ?>
-      </h3>
-      <p>
-        <?php _e('Select which of the'); ?>
-        <a target='_blank' href='/wp-admin/widgets.php?sidebar=<?php print urlencode($sidebar); ?>'><?php _e('widgets enabled for this sidebar'); ?></a>
-        <?php _e('will show on the mobile theme:'); ?>
-      </p>
-      <table class="form-table">
-        <?php
-          $mobile_widgets = array();
-          $non_mobile_widgets = array();
-          foreach($widgets as $widget) {
-            if(strpos($wp_registered_widgets[$widget]['name'], 'mobile')!==false &&
-               strpos($wp_registered_widgets[$widget]['name'], 'barcode')===false) {
-              $mobile_widgets[] = $widget;
-            } else {
-              $non_mobile_widgets[] = $widget;
+      <?php if ($sidebar!='wp_inactive_widgets') { ?>
+        <h3>
+          <?php print $wp_registered_sidebars[$sidebar]['name']; ?>
+        </h3>
+        <p>
+          <?php _e('Select which of the'); ?>
+          <a target='_blank' href='/wp-admin/widgets.php?sidebar=<?php print urlencode($sidebar); ?>'><?php _e('widgets enabled for this sidebar'); ?></a>
+          <?php _e('will show on the mobile theme:'); ?>
+        </p>
+        <table class="form-table">
+          <?php
+            $mobile_widgets = array();
+            $non_mobile_widgets = array();
+            foreach($widgets as $widget) {
+              if(strpos($wp_registered_widgets[$widget]['name'], 'mobile')!==false &&
+                 strpos($wp_registered_widgets[$widget]['name'], 'barcode')===false) {
+                $mobile_widgets[] = $widget;
+              } else {
+                $non_mobile_widgets[] = $widget;
+              }
             }
-          }
-          $widgets = array_merge($mobile_widgets, $non_mobile_widgets);
-        ?>
-        <?php foreach($widgets as $widget) { ?>
-          <?php if ($name = $wp_registered_widgets[$widget]['name']) { ?>
-            <tr>
-              <th><?php print $name; ?></th>
-              <td>
-                <input type='checkbox'
-                       class='wpmp_theme_widget'
-                       name='wpmp_theme_widget[]'
-                       value='<?php print attribute_escape($widget); ?>'
-                       onchange='wpmpThemeWidget(this)'
-                       <?php if (is_array($enabled) && array_search($widget, $enabled)!==false) { print "checked='true'"; } ?>
-                />
-              </td>
-            </tr>
+            $widgets = array_merge($mobile_widgets, $non_mobile_widgets);
+          ?>
+          <?php foreach($widgets as $widget) { ?>
+            <?php if ($name = $wp_registered_widgets[$widget]['name']) { ?>
+              <tr>
+                <th><?php print $name; ?></th>
+                <td>
+                  <input type='checkbox'
+                         class='wpmp_theme_widget'
+                         name='wpmp_theme_widget[]'
+                         value='<?php print attribute_escape($widget); ?>'
+                         onchange='wpmpThemeWidget(this)'
+                         <?php if (is_array($enabled) && array_search($widget, $enabled)!==false) { print "checked='true'"; } ?>
+                  />
+                </td>
+              </tr>
+            <?php } ?>
           <?php } ?>
-        <?php } ?>
-      </table>
+        </table>
+      <?php } ?>
     <?php } ?>
     <p class="submit">
       <input type="submit" name="Submit" value="<?php _e('Save Changes'); ?>" />
