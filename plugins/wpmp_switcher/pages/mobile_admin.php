@@ -52,7 +52,7 @@ specific language governing permissions and limitations under the License.
     $page = $_SERVER['REQUEST_URI'];
     $function = "";
     foreach($menu as $link) {
-      if(stripos($page, $link)!==false) {
+      if(strpos(strtolower($page), strtolower($link))!==false) {
         $function = substr($link, 10);
         $function = explode(".", $function);
         $function = str_replace("-", "_", $function[0]);

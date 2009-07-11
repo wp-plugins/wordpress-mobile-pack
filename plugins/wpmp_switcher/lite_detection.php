@@ -35,13 +35,13 @@ function lite_detection() {
     return true;
   }
   $accept = strtolower($_SERVER['HTTP_ACCEPT']);
-  if (stripos($accept, 'wap') !== false) {
+  if (strpos($accept, 'wap') !== false) {
     return true;
   }
   if (preg_match("/(" . lite_detection_ua_contains() . ")/i", $user_agent)) {
     return true;
   }
-  if (isset($_SERVER['ALL_HTTP']) && stripos($_SERVER['ALL_HTTP'], 'operamini') !== false) {
+  if (isset($_SERVER['ALL_HTTP']) && strpos(strtolower($_SERVER['ALL_HTTP']), 'operamini') !== false) {
     return true;
   }
   return false;

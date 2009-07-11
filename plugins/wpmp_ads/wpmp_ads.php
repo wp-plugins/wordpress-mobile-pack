@@ -74,7 +74,7 @@ function wpmp_ads_widget($args) {
       $title = "Mobile ads";
     }
     $buffer .= $before_title . $title . $after_title;
-    if(stripos($provider, '_')!==false) {
+    if(strpos($provider, '_')!==false) {
       $provider = explode('_', $provider, 2);
       $format = $provider[1];
       $provider = $provider[0];

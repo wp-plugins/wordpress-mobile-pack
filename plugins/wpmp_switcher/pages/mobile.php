@@ -56,7 +56,7 @@ function wpmp_ms_mobile_top($title, $menu=array()) {
           }
           foreach($menu as $name=>$link) {
             $item = '<li class="';
-           if(stripos($page, $link)!==false) {
+           if(strpos(strtolower($page), strtolower($link))!==false) {
               $item .= 'current_';
               $title = substr($name, ($name[0]=='_')?1:0);
             }

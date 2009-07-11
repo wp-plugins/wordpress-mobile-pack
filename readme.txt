@@ -12,7 +12,7 @@ The dotMobi WordPress Mobile Pack is a complete toolkit to help mobilize your Wo
 
 It includes a mobile switcher to select themes based on the type of user that is visiting the site, a selection of mobile themes, extra widgets, device adaptation and a mobile administration panel to allow users to edit the site or write new posts when out and about.
 
-The pack has been tested on WordPress 2.5, 2.6, and 2.7. It has been tested on WordPress MU 2.6 in the 'plugins', rather than 'mu_plugins', mode. PHP 5.x is also required.
+The pack has been tested on WordPress 2.5, 2.6, and 2.7. It has been tested on WordPress MU 2.6 in the 'plugins', rather than 'mu_plugins', mode. PHP 5.x is also highly recommended.
 
 Features highlights:
 
@@ -64,17 +64,20 @@ From your root directory of WordPress, go to:
 *wp-content/plugins/wordpress-mobile-pack/plugins/wpmp_transcoder/c*
 
 
-= I get a parse error in wpmp_switcher.php =
+= What version of PHP do I need? =
 
-The plug-in uses a few functions that were introduced in PHP 5, such as stripos and also references in foreach loops (this makes your loops much faster!). The plug-in could probably be made PHP 4 compatible, but since PHP 5 has been out for years, at this stage we do not feel that back-porting would be a good idea. If you are really interested in a PHP 4 version, you may look at the code and provide your own patch and we will see if we can make it publicly available.
+Although most of the functionality of the pack does in fact work with PHP4, we only support and warrant running it with PHP5. If you must use PHP4, give it a test drive and make sure it works for your environment before going live. The plugin will be (deliberately) disabled if you try to use it with PHP6.
+
 
 = I run PHP 4 with 1and1, can I use the Mobile Pack? =
 
 We found this article on internet and we have at least one report of a happy user who could quickly change PHP version and now runs the Mobile Pack without a glitch, see [How To: Run PHP5 at 1and1.com](http://blog.kevindonahue.com/archives/2008/10/31/how_to_run_php5_at_1an1com/ "How To: Run PHP5 at 1and1.com")
 
+
 = I need more help! =
 
 You are welcome to comment about the pack, suggest new features and ask for help on our public forums, available on [mobiForge](http://mobiforge.com/forum/dotmobi/wordpress "mobiForge WordPress forum").
+
 
 == Screenshots ==
 

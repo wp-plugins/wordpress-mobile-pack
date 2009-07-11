@@ -64,7 +64,7 @@ function wpmp_theme_the_content($content) {
     wpmp_theme_transcode_content($content);
     return $content;
   }
-  if(stripos($content, 'class="more-link"')!==false) {
+  if(strpos(strtolower($content), 'class="more-link"')!==false) {
     return strip_tags($content);
   }
   $content = preg_replace("/\r/Usi", "\n", $content);

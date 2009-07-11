@@ -235,7 +235,7 @@ function wpmp_transcoder_weigh_paragraphs($content) {
     $paragraph = balanceTags($paragraph, true);
     if ($paragraph!='') {
       $weight = strlen($paragraph);
-      if (stripos($paragraph, "<img")) {
+      if (strpos(strtolower($paragraph), "<img")) {
         $weight += 300;
       }
       $total_weight += $weight;

@@ -68,7 +68,7 @@ function wpmp_switcher_init() {
       break;
     case WPMP_SWITCHER_MOBILE_PAGE:
       wpmp_switcher_set_cookie('mobile');
-      if (stripos($_SERVER['REQUEST_URI'], '/wp-login.php')!==false) {
+      if (strpos(strtolower($_SERVER['REQUEST_URI']), '/wp-login.php')!==false) {
         wpmp_switcher_mobile_login();
       }
       if (is_admin()) {
@@ -136,7 +136,7 @@ function wpmp_switcher_activate() {
     if ($default_theme=='') {
       $default_theme = $theme;
     }
-    if(stripos($name, 'mobile')!==false) {
+    if(strpos(strtolower($name), 'mobile')!==false) {
       $default_theme = $theme;
       break;
     }
@@ -172,7 +172,7 @@ function wpmp_switcher_admin() {
 }
 
 function wpmp_switcher_wp_footer($footer) {
-  if(stripos(get_option('wpmp_switcher_mode'), 'domain')===false || get_option('wpmp_switcher_footer_links')!='true') {
+  if(strpos(get_option('wpmp_switcher_mode'), 'domain')===false || get_option('wpmp_switcher_footer_links')!='true') {
     return;
   }
   switch (wpmp_switcher_outcome()) {
@@ -215,7 +215,7 @@ function wpmp_switcher_option_home_siteurl($value) {
         if(sizeof($parts=(explode('/', "$value", 4)))==4) {
           $path = '/' . array_pop($parts);
         }
-        if (stripos(get_option('wpmp_switcher_mode'), 'domain')!==false){
+        if (strpos(get_option('wpmp_switcher_mode'), 'domain')!==false){
           $domain = wpmp_switcher_domains('mobile', true);
         } else {
           $domain = $_SERVER['HTTP_HOST'];
@@ -358,7 +358,7 @@ function wpmp_switcher_link($type, $label) {
 
 function wpmp_switcher_current_path_plus_cgi($path='') {
   if($path) {
-    if(stripos($path, 'http://')===0 || stripos($path, 'https://')===0) {
+    if(strpos(strtolower($path), 'http://')===0 || strpos(strtolower($path), 'https://')===0) {
       $path = explode("/", $path, 4);
       $path = '/' . array_pop($path);
     }
@@ -366,10 +366,10 @@ function wpmp_switcher_current_path_plus_cgi($path='') {
     $path = $_SERVER['REQUEST_URI'];
   }
   $path = htmlentities($path);
-  if (stripos($path, WPMP_SWITCHER_CGI_VAR . "=true") !== false) {
+  if (strpos($path, WPMP_SWITCHER_CGI_VAR . "=true") !== false) {
     return $path;
   }
-  if (stripos($path, "?") === false) {
+  if (strpos($path, "?") === false) {
     return $path . "?" . WPMP_SWITCHER_CGI_VAR . "=true";
   }
   return $path . "&amp;" . WPMP_SWITCHER_CGI_VAR . "=true";
@@ -523,7 +523,7 @@ function wpmp_switcher_option_themes($option) {
   $mobile_themes = array();
   $non_mobile_themes = array();
   foreach(get_themes() as $name=>$theme) {
-    if(stripos($name, 'mobile')!==false) {
+    if(strpos(strtolower($name), 'mobile')!==false) {
       $mobile_themes[$name] = $name;
     } else {
       $non_mobile_themes[$name] = $name;
