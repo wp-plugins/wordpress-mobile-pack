@@ -485,13 +485,16 @@ function wpmp_transcoder_convert_image($url, $width, $height) {
 
 function wpmp_transcoder_purge_cache() {
   $count = 0;
-  foreach(scandir($dir = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'c') as $file) {
+
+  $dir_handle = opendir($dir = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'c');
+  while($file = readdir($dir_handle)) {
     if($file[0]!=".") {
       if(@unlink($dir . DIRECTORY_SEPARATOR . $file)) {
         $count++;
       }
     }
   }
+  closedir($dir_handle);
   return $count;
 }
 ?>

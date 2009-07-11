@@ -299,7 +299,7 @@ function wpmp_switcher_outcome_process($switcher_mode, $desktop_domain, $mobile_
 function wpmp_switcher_domains($type='desktop', $first_only=false) {
   $domains = strtolower(get_option('wpmp_switcher_' . $type . '_domains'));
   $domains = explode(",", $domains);
-  foreach($domains as &$domain) {
+  foreach($domains as $domain) {
     $domain = trim($domain);
     if($first_only) {
       return $domain;

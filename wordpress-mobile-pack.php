@@ -44,9 +44,11 @@ $wpmp_plugins = array(
   "wpmp_transcoder",
 );
 
-foreach($wpmp_plugins as $wpmp_plugin) {
-  if (file_exists($wpmp_plugin_file = dirname(__FILE__) . "/plugins/$wpmp_plugin/$wpmp_plugin.php")) {
-    include_once($wpmp_plugin_file);
+if(!$warning=get_option('wpmp_warning')) {
+  foreach($wpmp_plugins as $wpmp_plugin) {
+    if (file_exists($wpmp_plugin_file = dirname(__FILE__) . "/plugins/$wpmp_plugin/$wpmp_plugin.php")) {
+      include_once($wpmp_plugin_file);
+    }
   }
 }
 
@@ -56,26 +58,59 @@ add_action('admin_notices', 'wordpress_mobile_pack_admin_notices');
 
 function wordpress_mobile_pack_admin_notices() {
   if($warning=get_option('wpmp_warning')) {
-    print "<div class='error'><p>$warning</p><p><small>(" . __('Deactivate and re-activate the WordPress Mobile Pack once resolved.') . ")</small></p></div>";
+    print "<div class='error'><p><strong style='color:#770000'>Critical WordPress Mobile Pack Issue</strong></p><p>$warning</p><p><small>(" . __('Deactivate and re-activate the WordPress Mobile Pack once resolved.') . ")</small></p></div>";
   }
 }
 
 function wordpress_mobile_pack_activate() {
   update_option('wpmp_warning', '');
-  wordpress_mobile_pack_soft_copy(dirname(__FILE__) . "/themes", get_theme_root());
-  wordpress_mobile_pack_hook('activate');
+  if (wordpress_mobile_pack_readiness_audit()) {
+    wordpress_mobile_pack_soft_copy(dirname(__FILE__) . "/themes", get_theme_root());
+    wordpress_mobile_pack_hook('activate');
+  }
 }
 
+function wordpress_mobile_pack_readiness_audit() {
+  $ready = true;
+  $why_not = array();
+
+//  if (version_compare(PHP_VERSION, '5.0.0', '<')) {
+//    $ready = false;
+//    $why_not[] = __('<strong>PHP version not compatible.</strong> PHP version 5 is required for this plugin, and you have version ') . PHP_VERSION;
+//  }
+
+  if (version_compare(PHP_VERSION, '6.0.0', '>=')) {
+    $ready = false;
+    $why_not[] = __('<strong>PHP version not supported.</strong> PHP versions 6 and greater are not yet supported by this plugin, and you have version ') . PHP_VERSION;
+  }
+
+  $theme_dir = get_theme_root();
+  if(!file_exists($theme_dir) || !is_writable($theme_dir) || !is_executable($theme_dir)) {
+    $ready = false;
+    $why_not[] = __('<strong>Could not install theme files</strong> to ') . $theme_dir . __('. Please ensure that the web server has write- and execute-access to that directory.');
+  } // a similar check is in wordpress_mobile_pack_soft_copy, checking lower directories as it recurses down
+
+
+  if (!$ready) {
+    update_option('wpmp_warning', join("<hr />", $why_not));
+  }
+  return $ready;
+}
+
+
 function wordpress_mobile_pack_soft_copy($source_dir, $destination_dir) {
-  if(file_exists($destination_dir) && !is_writable($destination_dir)) {
-    update_option('wpmp_warning', __('<strong>Could not install files</strong> to ') . $destination_dir . ('. Please ensure that the web server has write-access to that directory.'));
-    return;
+  if(file_exists($destination_dir)) {
+    if (!is_writable($destination_dir) || !is_executable($destination_dir)) {
+      update_option('wpmp_warning', __('<strong>Could not install theme files</strong> to ') . $destination_dir . ('. Please ensure that the web server has write- and execute-access to that directory.'));
+      return;
+    }
+  } elseif (!is_dir($destination_dir)) {
+    mkdir($destination_dir);
   }
-  if(!file_exists($destination_dir) || !is_dir($destination_dir)) {
-    mkdir($destination_dir, 0777, true);
-  }
-  foreach(scandir($source_dir) as $source_file) {
-    if ($source[0] == ".") {
+
+  $dir_handle = opendir($source_dir);
+  while($source_file = readdir($dir_handle)) {
+    if ($source_file[0] == ".") {
       continue;
     }
     if (file_exists($destination_child = "$destination_dir/$source_file")) {
@@ -87,6 +122,7 @@ function wordpress_mobile_pack_soft_copy($source_dir, $destination_dir) {
     }
     copy($source_child, $destination_child);
   }
+  closedir($dir_handle);
 }
 
 function wordpress_mobile_pack_deactivate() {

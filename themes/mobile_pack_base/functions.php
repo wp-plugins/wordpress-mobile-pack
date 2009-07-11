@@ -34,7 +34,7 @@ add_action('the_content', 'wpmp_theme_the_content');
 
 function wpmp_theme_init_in_use() {
   global $wp_registered_widgets;
-  foreach ($wp_registered_widgets as &$widget) {
+  foreach ($wp_registered_widgets as $widget) {
     if(function_exists($function = 'wpmp_theme_widget_' . strtolower(str_replace(' ', '_', $widget['name'])))) {
       $widget['callback'] = $function;
     }
@@ -78,7 +78,7 @@ function wpmp_theme_the_content($content) {
   $length = get_option('wpmp_theme_teaser_length');
   if(strlen($content)>$length) {
     $content = substr($content, 0, $length);
-    $content = substr($content, 0, strripos($content, ' ')) . "...";
+    $content = substr($content, 0, strrpos($content, ' ')) . "...";
   }
   $content = balanceTags($content, true);
   global $id;
