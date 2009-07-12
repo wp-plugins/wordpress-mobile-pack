@@ -445,7 +445,7 @@ function wpmp_transcoder_fetch_image($url, &$width, &$height, &$type, &$location
       $type='jpg';
       break;
   }
-  @file_put_contents("$full_location.meta", "<?php $"."width=$width;$"."height=$height;$"."type='$type'; ?>");
+  @file_put_contents("$full_location.meta", "<?php $"."width='$width';$"."height='$height';$"."type='$type'; ?>");
 }
 
 function wpmp_transcoder_convert_image($url, $width, $height) {
@@ -453,7 +453,7 @@ function wpmp_transcoder_convert_image($url, $width, $height) {
     return;
   }
   $base = get_option('home') . "/wp-content/plugins/wordpress-mobile-pack/plugins/wpmp_transcoder/";
-  if ($width==$_w && $height=$_h) {
+  if ($width==$_w && $height==$_h) {
     return "$base$location";
   }
   if(!file_exists($full_file = dirname(__FILE__) . DIRECTORY_SEPARATOR . ($file = "$location.$width.$height.$type"))) {

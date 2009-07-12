@@ -162,6 +162,7 @@ function lite_detection_ua_contains() {
     'wap',
     'windows ce',
     'intendo DS',
+    'ovarra',
   ));
 }
 
