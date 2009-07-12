@@ -41,6 +41,7 @@ specific language governing permissions and limitations under the License.
       "Edit post" => "/wp-admin/post.php?action=edit",
       "Comments" => "/wp-admin/edit-comments.php",
       "_Comment" => "/wp-admin/comment.php",
+      "Switcher" => "/wp-admin/themes.php",
       "Settings" => "/wp-admin/options-general.php",
     );
     if (function_exists('wp_logout_url')) {
@@ -106,7 +107,8 @@ specific language governing permissions and limitations under the License.
     }
     print "</ul></p>";
     print "<p>" . __("...or") . " <a href='$base/'>" . __("return to the site") . "</a></p>";
-    print "<p>" . __("NB: Only a subset of the full WordPress administration is currently available through this mobile interface.") . "</p>";
+    print "<p>" . __("A subset of the full WordPress administration is available through this mobile interface.") . "</p>";
+
   }
 
   function wpmp_msma_junior($menu) {
@@ -233,6 +235,35 @@ specific language governing permissions and limitations under the License.
     wpmp_msma_edit_comment($comment[0], true);
   }
 
+  function wpmp_msma_themes() {
+   	if (isset($_POST['wpmp_switcher_mode'])) {
+      if (!wpmp_msma_check_referer()) { return; }
+      update_option('wpmp_switcher_mode', $_POST['wpmp_switcher_mode']);
+      print "<p>" . __("Your changes have been applied.") . "</p>";
+      print "<p><a href='/wp-admin/'>" . __("Continue.") . "</a></p>";
+      return;
+    }
+    print '<form name="post" action="' . $_SERVER['REQUEST_URI'] . '" method="post" id="post">';
+    print '<p><label for="title">Change the mobile switcher mode:</label><br />';
+    $current = get_option('wpmp_switcher_mode');
+    foreach(array(
+      'none'=>__('Disabled'),
+      'browser'=>__('Browser detection'),
+      'domain'=>__('Domain mapping'),
+      'browserdomain'=>__('BOTH: browser detection and domain mapping'),
+    ) as $value=>$title) {
+      print "<input style='width:32px;' type='radio' name='wpmp_switcher_mode' value='$value'";
+      if ($value == $current) {
+        print " checked";
+      }
+      print "/> $title<br />";
+    }
+    print '</select></p>';
+    print '<input name="submit" type="submit" id="submit" value="' . __('Apply') . '" />';
+    print '</form>';
+    print "<p>" . __("NB: Changing the switcher mode may return you to the desktop version of the admin pages. Be cautious if you are using a mobile device.") . "</p>";
+  }
+
   function wpmp_msma_edit_comment(&$comment, $full = false) {
     $base = get_option('home');
     $id = $comment->comment_ID;
@@ -312,6 +343,7 @@ specific language governing permissions and limitations under the License.
       print "$next</p>";
     }
     print "<p>" . __("NB: Some complex options cannot be edited in this mobile interface.") . "</p>";
+
   }
   function wpmp_msma_option_edit_form($id) {
     global $wpdb;

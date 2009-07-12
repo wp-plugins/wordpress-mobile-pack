@@ -71,6 +71,11 @@ specific language governing permissions and limitations under the License.
         <th><?php _e('Mobile domains'); ?></th>
         <td>
           <?php print wpmp_switcher_option('wpmp_switcher_mobile_domains'); ?>
+          <?php
+            if (wpmp_switcher_domains('desktop', true) == wpmp_switcher_domains('mobile', true)) {
+              print "<br /><strong style='color:#770000'>Warning</strong>: your primary desktop and mobile domains are the same. The switcher will default to 'browser detection' mode unless one is changed.";
+            }
+          ?>
           <br />
           <?php _e('Comma-separated domain fragments. eg:'); ?> <b>mysite.mobi, m.mysite.com</b>
           <br/>
@@ -84,7 +89,7 @@ specific language governing permissions and limitations under the License.
           <br />
           <?php _e('Places a link in the theme footer to allow users to override the detection.'); ?>
           <?php _e('You can also enable the widget that contains this link.'); ?>
-          <?php _e('Both the footer link and the widget will only appear when the \'domain\' or \'BOTH\' switcher modes are used.'); ?>
+          <?php _e('Both the footer link and the widget will only appear when a switcher mode is enabled.'); ?>
         </td>
       </tr>
     </table>

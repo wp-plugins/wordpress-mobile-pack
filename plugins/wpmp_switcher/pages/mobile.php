@@ -51,7 +51,7 @@ function wpmp_ms_mobile_top($title, $menu=array()) {
           $base = get_option('home');
           print '<div id="menu"><ul>';
           $page = $_SERVER['REQUEST_URI'];
-          if(substr($page, -10)=="/wp-admin/") {
+          if(substr($page, -9)=="/wp-admin") {
             $page="$base/wp-admin/index.php";
           }
           foreach($menu as $name=>$link) {
@@ -83,6 +83,7 @@ function wpmp_ms_mobile_top($title, $menu=array()) {
       </div>
         <div id="footer">
         <p>Powered by the <a href="http://mobiforge.mobi/wordpress-mobile-pack">WordPress Mobile Pack</a> | Theme designed by <a href="http://ribot.co.uk">ribot</a></p>
+        <?php wpmp_switcher_wp_footer(''); ?>
       </div>
     </div>
   </body>

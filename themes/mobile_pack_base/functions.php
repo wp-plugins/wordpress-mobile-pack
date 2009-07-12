@@ -34,9 +34,9 @@ add_action('the_content', 'wpmp_theme_the_content');
 
 function wpmp_theme_init_in_use() {
   global $wp_registered_widgets;
-  foreach ($wp_registered_widgets as $widget) {
+  foreach ($wp_registered_widgets as $index=>$widget) {
     if(function_exists($function = 'wpmp_theme_widget_' . strtolower(str_replace(' ', '_', $widget['name'])))) {
-      $widget['callback'] = $function;
+      $wp_registered_widgets[$index]['callback'] = $function;
     }
   }
 }

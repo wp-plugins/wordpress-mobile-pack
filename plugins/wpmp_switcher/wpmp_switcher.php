@@ -58,7 +58,7 @@ add_filter('option_siteurl', 'wpmp_switcher_option_home_siteurl');
 
 function wpmp_switcher_init() {
   wp_register_sidebar_widget('wpmp_switcher_widget_link', __('Mobile Switcher Link'), 'wpmp_switcher_widget_link',
-    array('classname' => 'wpmp_switcher_widget_link', 'description' => __( "A link that allows users to toggle between desktop and mobile sites (when the 'BOTH browser and domain' switcher mode is used)"))
+    array('classname' => 'wpmp_switcher_widget_link', 'description' => __( "A link that allows users to toggle between desktop and mobile sites (when a switcher mode is enabled)"))
   );
   switch($switcher_outcome = wpmp_switcher_outcome()) {
     case WPMP_SWITCHER_NO_SWITCH:
@@ -71,7 +71,7 @@ function wpmp_switcher_init() {
       if (strpos(strtolower($_SERVER['REQUEST_URI']), '/wp-login.php')!==false) {
         wpmp_switcher_mobile_login();
       }
-      if (is_admin()) {
+      if (is_admin() || strtolower(substr($_SERVER['REQUEST_URI'], -9))=='/wp-admin') {
         wpmp_switcher_mobile_admin();
       }
       break;
@@ -96,7 +96,7 @@ function wpmp_switcher_init() {
 }
 function wpmp_switcher_widget_link($args) {
   extract($args);
-  if(get_option('wpmp_switcher_mode')!='browserdomain') {
+  if(get_option('wpmp_switcher_mode')=='none') {
     return;
   }
   print $before_widget . $before_title . __('Switch site') . $after_title;
@@ -172,7 +172,7 @@ function wpmp_switcher_admin() {
 }
 
 function wpmp_switcher_wp_footer($footer) {
-  if(strpos(get_option('wpmp_switcher_mode'), 'domain')===false || get_option('wpmp_switcher_footer_links')!='true') {
+  if(get_option('wpmp_switcher_mode')=='none' || get_option('wpmp_switcher_footer_links')!='true') {
     return;
   }
   switch (wpmp_switcher_outcome()) {
@@ -230,6 +230,9 @@ function wpmp_switcher_outcome() {
   global $wpmp_switcher_outcome;
   if(!isset($wpmp_switcher_outcome)) {
     $switcher_mode = get_option('wpmp_switcher_mode');
+    if (wpmp_switcher_domains('desktop', true) == wpmp_switcher_domains('mobile', true)) {
+      $switcher_mode = "browser";
+    }
     $desktop_domain = wpmp_switcher_is_domain('desktop');
     $mobile_domain = wpmp_switcher_is_domain('mobile');
     if($desktop_domain==$mobile_domain) {
@@ -250,6 +253,11 @@ function wpmp_switcher_outcome() {
 function wpmp_switcher_outcome_process($switcher_mode, $desktop_domain, $mobile_domain, $desktop_browser, $mobile_browser, $desktop_cookie, $mobile_cookie, $cgi) {
   switch ($switcher_mode) {
     case 'browser':
+      if ($cgi=='desktop' || $desktop_cookie) {
+        return WPMP_SWITCHER_DESKTOP_PAGE;
+      } elseif ($cgi=='mobile' || $mobile_cookie) {
+        return WPMP_SWITCHER_MOBILE_PAGE;
+      }
       return $mobile_browser ? WPMP_SWITCHER_MOBILE_PAGE : WPMP_SWITCHER_DESKTOP_PAGE;
     case 'domain':
       return $mobile_domain ? WPMP_SWITCHER_MOBILE_PAGE : WPMP_SWITCHER_DESKTOP_PAGE;
@@ -297,15 +305,19 @@ function wpmp_switcher_outcome_process($switcher_mode, $desktop_domain, $mobile_
 }
 
 function wpmp_switcher_domains($type='desktop', $first_only=false) {
+  if(get_option('wpmp_switcher_mode')=='browser'){
+    $type = 'desktop';
+  }
   $domains = strtolower(get_option('wpmp_switcher_' . $type . '_domains'));
   $domains = explode(",", $domains);
+  $trimmed_domains = array();
   foreach($domains as $domain) {
-    $domain = trim($domain);
     if($first_only) {
-      return $domain;
+      return trim($domain);
     }
+    $trimmed_domains[] = trim($domain);
   }
-  return $domains;
+  return $trimmed_domains;
 }
 function wpmp_switcher_is_domain($type='desktop') {
   $this_domain = strtolower($_SERVER['HTTP_HOST']);
@@ -343,20 +355,23 @@ function wpmp_switcher_is_cookie($type='desktop') {
   return (isset($_COOKIE[WPMP_SWITCHER_COOKIE_VAR]) && $_COOKIE[WPMP_SWITCHER_COOKIE_VAR] == $type);
 }
 function wpmp_switcher_is_cgi_parameter_present() {
-  return (isset($_GET[WPMP_SWITCHER_CGI_VAR]));
+  if(isset($_GET[WPMP_SWITCHER_CGI_VAR])) {
+    return $_GET[WPMP_SWITCHER_CGI_VAR];
+  }
+  return false;
 }
 
 
 
 function wpmp_switcher_link($type, $label) {
   $cookie = WPMP_SWITCHER_COOKIE_VAR . "=$type;path=/;expires=Tue, 01-01-2030 00:00:00 GMT";
-  $target_url = "http://" . wpmp_switcher_domains($type, true) . wpmp_switcher_current_path_plus_cgi();
+  $target_url = "http://" . wpmp_switcher_domains($type, true) . wpmp_switcher_current_path_plus_cgi('', $type);
   if ($target_url) {
     return "<a onclick='document.cookie=\"$cookie\";' href='$target_url'>$label</a>";
   }
 }
 
-function wpmp_switcher_current_path_plus_cgi($path='') {
+function wpmp_switcher_current_path_plus_cgi($path='', $type='true') {
   if($path) {
     if(strpos(strtolower($path), 'http://')===0 || strpos(strtolower($path), 'https://')===0) {
       $path = explode("/", $path, 4);
@@ -366,13 +381,19 @@ function wpmp_switcher_current_path_plus_cgi($path='') {
     $path = $_SERVER['REQUEST_URI'];
   }
   $path = htmlentities($path);
-  if (strpos($path, WPMP_SWITCHER_CGI_VAR . "=true") !== false) {
-    return $path;
-  }
+  foreach(array("true", "desktop", "mobile") as $t) {
+    $path = str_replace(WPMP_SWITCHER_CGI_VAR . "=$t&amp;", "", $path);
+    $path = str_replace(WPMP_SWITCHER_CGI_VAR . "=$t&", "", $path);
+    $path = str_replace("&amp;" . WPMP_SWITCHER_CGI_VAR . "=$t", "", $path);
+    $path = str_replace("&" . WPMP_SWITCHER_CGI_VAR . "=$t", "", $path);
+    $path = str_replace(WPMP_SWITCHER_CGI_VAR . "=$t", "", $path);
+  } //surely there's a better way
   if (strpos($path, "?") === false) {
-    return $path . "?" . WPMP_SWITCHER_CGI_VAR . "=true";
+    return $path . "?" . WPMP_SWITCHER_CGI_VAR . "=$type";
+  } elseif (substr($path, -1) == "?") {
+    return $path . WPMP_SWITCHER_CGI_VAR . "=$type";
   }
-  return $path . "&amp;" . WPMP_SWITCHER_CGI_VAR . "=true";
+  return $path . "&amp;" . WPMP_SWITCHER_CGI_VAR . "=$type";
 }
 function wpmp_switcher_set_cookie($type) {
   setcookie(WPMP_SWITCHER_COOKIE_VAR, $type, time()+60*60*24*365, '/');
