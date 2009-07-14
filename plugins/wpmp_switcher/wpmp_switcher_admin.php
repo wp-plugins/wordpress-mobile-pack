@@ -62,7 +62,7 @@ specific language governing permissions and limitations under the License.
         <td>
           <?php print wpmp_switcher_option('wpmp_switcher_desktop_domains'); ?>
           <br />
-          <?php _e('Comma-separated domain names. eg:'); ?> <b>mysite.com, downloads.mysite.com</b>
+          <?php _e('Use comma-separated domain names. eg:'); ?> <b>mysite.com, downloads.mysite.com</b>
           <br />
           <?php _e('Desktop users who mistakenly access a mobile domain will be given the option to return to the first domain in this list.'); ?>
         </td>
@@ -71,15 +71,17 @@ specific language governing permissions and limitations under the License.
         <th><?php _e('Mobile domains'); ?></th>
         <td>
           <?php print wpmp_switcher_option('wpmp_switcher_mobile_domains'); ?>
+          <br />
+          <?php _e('Use comma-separated domain fragments. eg:'); ?> <b>mysite.mobi, m.mysite.com</b>
           <?php
-            if (wpmp_switcher_domains('desktop', true) == wpmp_switcher_domains('mobile', true)) {
+            if (strpos(get_option('wpmp_switcher_mode'), 'domain')!==false && wpmp_switcher_domains('desktop', true) == wpmp_switcher_domains('mobile', true)) {
               print "<br /><strong style='color:#770000'>Warning</strong>: your primary desktop and mobile domains are the same. The switcher will default to 'browser detection' mode unless one is changed.";
             }
           ?>
-          <br />
-          <?php _e('Comma-separated domain fragments. eg:'); ?> <b>mysite.mobi, m.mysite.com</b>
           <br/>
           <?php _e('Mobile users who mistakenly access a desktop domain will be given the option to return to the first domain in this list.'); ?>
+          <br/>
+          <?php _e('<b>NB</b>: The plugin does not <i>create</i> these domains. You must be sure their DNS entries already resolve and are served by this web server.'); ?>
         </td>
       </tr>
       <tr class='wpmp_links'>

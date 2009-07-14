@@ -29,7 +29,7 @@ specific language governing permissions and limitations under the License.
 Plugin Name: Mobile Switcher
 Plugin URI: http://mobiforge.com/wordpress-mobile-pack
 Description: Detects a mobile user accessing your site and switches theme accordingly. This plugin is tested with WordPress 2.5, 2.6 and 2.7.
-Version: 1.1
+Version: 1.1.1
 Author: James Pearce, dotMobi
 Author URI: http://www.mobiforge.com/users/james-pearce
 */
@@ -450,6 +450,24 @@ function wpmp_switcher_options_write() {
     update_option($option . "_stylesheet", $theme_data['Stylesheet']);
     update_option($option . "_template", $theme_data['Template']);
   }
+  if (strpos(get_option('wpmp_switcher_mode'), 'domain')!==false) {
+    foreach(array('wpmp_switcher_mobile_domains', 'wpmp_switcher_desktop_domains') as $option) {
+      $trimmed_domains=array();
+      foreach(split(",", get_option($option)) as $domain) {
+        $domain = trim(strtolower($domain));
+        $trimmed_domain = str_replace('http://', '', $domain);
+        $trimmed_domain = str_replace('https://', '', $trimmed_domain);
+        $trimmed_domain = split("/", "$trimmed_domain/");
+        $trimmed_domain = $trimmed_domain[0];
+        if ($trimmed_domain!=$domain) {
+          $message = __('You must provide clean domain names without any leading or trailing syntax. We fixed them for you.');
+        }
+        $trimmed_domains[] = trim($trimmed_domain);
+      }
+      update_option($option, join(', ', $trimmed_domains));
+    }
+  }
+
   if (get_option('wpmp_switcher_desktop_domains')=='' || get_option('wpmp_switcher_mobile_domains')=='') {
     switch(get_option('wpmp_switcher_mode')) {
       case 'domain':
