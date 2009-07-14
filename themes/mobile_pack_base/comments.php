@@ -62,26 +62,26 @@ specific language governing permissions and limitations under the License.
         <p>
           <label for="author">Name <?php if ($req) echo "(required)"; ?></label>
           <br />
-          <input type="text" name="author" id="author" value="<?php echo $comment_author; ?>" tabindex="1" />
+          <input type="text" name="author" id="author" value="<?php echo $comment_author; ?>" />
         </p>
         <p>
           <label for="email">Mail (<?php if ($req) echo "required, but "; ?>not published)</label>
           <br />
-          <input type="text" name="email" id="email" value="<?php print empty($comment_author_email)?"@":$comment_author_email; ?>" tabindex="2" />
+          <input type="text" name="email" id="email" value="<?php print empty($comment_author_email)?"":$comment_author_email; ?>" />
         </p>
         <p>
           <label for="url">Website</label>
           <br />
-          <input type="text" name="url" id="url" value="<?php print empty($comment_author_url)?"http://":$comment_author_url; ?>" tabindex="3" />
+          <input type="text" name="url" id="url" value="<?php print empty($comment_author_url)?"http://":$comment_author_url; ?>"/>
         </p>
       <?php } ?>
       <p>
         <label for="comment">Comment</label>
         <br />
-        <textarea name="comment" id="comment" rows="3" tabindex="4"></textarea>
+        <textarea name="comment" id="comment" rows="3"></textarea>
       </p>
       <p>
-        <input name="submit" type="submit" id="submit" tabindex="5" value="Submit comment" />
+        <input name="submit" type="submit" id="submit" value="Submit comment" />
         <input type="hidden" name="comment_post_ID" value="<?php echo $id; ?>" />
       </p>
       <?php do_action('comment_form', $post->ID); ?>

@@ -87,7 +87,7 @@ get_header();
     <div id="content">
       <?php $summary = get_option('wpmp_theme_post_summary'); ?>
       <?php global $more; ?>
-      <?php $more=(is_single() || $summary=='whole')?1:0; ?>
+      <?php $more=(is_single() || is_page())?1:0; ?>
       <?php $first = true; ?>
       <?php while (have_posts()) { ?>
         <?php the_post(); ?>
@@ -98,7 +98,7 @@ get_header();
           </div>
           <?php if(is_single() || is_page() || ($summary!='none' && !($summary=='firstteaser' && !$first))) { ?>
             <div class="entry">
-              <?php the_content('Read more...'); ?>
+              <?php the_content('Read more'); ?>
             </div>
           <?php } ?>
           <p class="metadata">Posted in <?php the_category(', ') ?> | <?php edit_post_link('Edit','',' |'); ?> <?php comments_popup_link('No comments', '1 comment', '% comments'); ?>

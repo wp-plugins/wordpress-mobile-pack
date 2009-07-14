@@ -63,7 +63,7 @@ specific language governing permissions and limitations under the License.
         <td>
           <?php print wpmp_theme_option('wpmp_theme_post_summary', 'wpmpThemeSummary()'); ?>
           <br />
-          <?php _e('This applies when your site is displaying such a list of posts.'); ?>
+          <?php _e('This applies when your site is displaying a list of posts.'); ?>
         </td>
       </tr>
       <tr class='wpmp_teaser'>
@@ -71,7 +71,7 @@ specific language governing permissions and limitations under the License.
         <td>
           <?php print wpmp_theme_option('wpmp_theme_teaser_length'); ?>
           <br />
-          <?php _e('When a post does not already have an explicit \'more\' break in it, the mobile theme will create a teaser, of no more than this length, automatically.'); ?>
+          <?php _e("The mobile theme will display teasers of this length (or use each post's 'more' break, if present - whichever is shorter)."); ?>
         </td>
       </tr>
       <tr>

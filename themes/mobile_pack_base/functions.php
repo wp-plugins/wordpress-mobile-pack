@@ -65,24 +65,31 @@ function wpmp_theme_the_content($content) {
     return $content;
   }
   if(strpos(strtolower($content), 'class="more-link"')!==false) {
-    return strip_tags($content);
+    #return $content;
   }
-  $content = preg_replace("/\r/Usi", "\n", $content);
-  $content = preg_replace("/\<\/?p[^>]*\>/Usi", "\n", $content);
-  $content = preg_replace("/\<\/?br[^>]*\>/Usi", "\n", $content);
-  $content = preg_replace("/\n+/Usi", "\n", $content);
+  $content = preg_replace("/\r/Usi", " ", $content);
+  $content = preg_replace("/\<\/?p[^>]*\>/Usi", " ", $content);
+  $content = preg_replace("/\<\/?br[^>]*\>/Usi", " ", $content);
+  $content = preg_replace("/\n+/Usi", " ", $content);
   $content = preg_replace("/[\x20\x09]+/Usi", " ", $content);
   $content = strip_tags($content);
   $content = trim($content);
-  $content = array_shift(explode("\n", $content, 2));
   $length = get_option('wpmp_theme_teaser_length');
+  $suffix = false;
   if(strlen($content)>$length) {
     $content = substr($content, 0, $length);
     $content = substr($content, 0, strrpos($content, ' ')) . "...";
+    $content = balanceTags($content, true);
+    global $id;
+    $suffix = true;
   }
-  $content = balanceTags($content, true);
-  global $id;
-  $content .= ' <a href="'. get_permalink() . "#more-$id\" class=\"more-link\">Read more</a>";
+  if (substr($content, -9)=='Read more') {
+    $content = substr($content, 0, -9);
+    $suffix = true;
+  }
+  if ($suffix) {
+    $content .= '<br /><a href="'. get_permalink() . "#more-$id\" class=\"more-link\">Read more</a>";
+  }
   return $content;
 }
 

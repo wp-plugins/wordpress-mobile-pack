@@ -42,6 +42,9 @@ function wpmp_theme_init() {
       update_option($name, $value);
     }
   }
+  if(get_option('wpmp_theme_post_summary')=='whole') { //deprecated
+    update_option('wpmp_theme_post_summary', 'teaser');
+  }
   global $wp_registered_sidebars;
   if(sizeof($wp_registered_sidebars)==0) {
     register_sidebar(array(
@@ -129,8 +132,7 @@ function wpmp_theme_option($option, $onchange='') {
         array(
           'none'=>__('Title only'),
           'firstteaser'=>__('Title and teaser for first post, title for the rest'),
-          'teaser'=>__('Title and teaser'),
-          'whole'=>__('Title and whole post'),
+          'teaser'=>__('Title and teaser for all posts'),
         ),
         $onchange
       );
