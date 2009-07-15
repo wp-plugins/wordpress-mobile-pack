@@ -27,11 +27,11 @@ specific language governing permissions and limitations under the License.
 
 /*
 Plugin Name: Mobile Barcode
-Plugin URI: http://mobiforge.com/wordpress-mobile-pack
+Plugin URI: http://wordpress.org/extend/plugins/wordpress-mobile-pack/
 Description: Provides a widget (intended to be used on a desktop theme) that displays a 2D-barcode for navigating to the mobile site. This plugin is tested with WordPress 2.5, 2.6 and 2.7.
 Version: 1.1.1
-Author: James Pearce, dotMobi
-Author URI: http://www.mobiforge.com/users/james-pearce
+Author: James Pearce, dotMobi, and team
+Author URI: http://www.assembla.com/spaces/wordpress-mobile-pack
 */
 
 
