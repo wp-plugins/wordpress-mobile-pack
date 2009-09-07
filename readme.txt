@@ -27,7 +27,7 @@ Features highlights:
 
 On WordPress v2.7 and later, the installation is as follows:
 
-Go to the 'Plugins' / 'Add new' menu
+1.  Go to the 'Plugins' / 'Add new' menu
 1.	Upload wordpress-mobile-pack.zip then press 'Install now'.
 1.	Activate the switcher plugin. Change its settings as required.
 1.	Select which desktop widgets are to appear on the mobile theme.
