@@ -1,0 +1,163 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv='Content-Type' content='text/html; charset=UTF-8' />
+    <title>dotMobi :: WordPress Mobile Pack :: Overview</title>
+    <link rel="stylesheet" href="style.css" type="text/css" media="screen" />
+  </head>
+  <body>
+    <div id='body'>
+      <h1>WordPress Mobile Pack :: Overview</h1>
+      <p>
+        <small>
+          v1.1; James Pearce, dotMobi, and team; 15 July 2009
+          <br />
+          Copyright 2009, MTLD Top Level Domain Ltd
+        </small>
+      </p>
+      <h2>Contents</h2>
+      <ul id='contents'>
+        <li><a href='#p1'>Introduction</a></li>
+        <li><a href='#p2'>Pack Components</a>
+          <ul>
+            <li><a href='#p2.1'>Mobile switcher</a></li>
+            <li><a href='#p2.2'>Base mobile theme</a></li>
+            <li><a href='#p2.3'>Extended mobile themes</a></li>
+            <li><a href='#p2.4'>Transcoding and device adaptation</a></li>
+            <li><a href='#p2.5'>DeviceAtlas integration</a></li>
+            <li><a href='#p2.6'>Mobile admin panel</a></li>
+            <li><a href='#p2.7'>Mobile ad widget</a></li>
+            <li><a href='#p2.8'>Barcode widget</a></li>
+          </ul>
+        </li>
+        <li><a href='#p3'>Further Reading</a></li>
+        <li><a href='#p4'>Credits</a></li>
+      </ul>
+
+      <h2 id='p1'>Introduction</h2>
+      <p>The dotMobi WordPress Mobile Pack is a complete toolkit to help mobilize your WordPress site and blog.</p>
+      <p>It includes a mobile switcher to select themes based on the type of user that is visiting the site, a selection of mobile themes, extra widgets, device adaptation and a mobile administration panel to allow users to edit the site or write new posts when out and about.</p>
+      <p>The pack has been tested on WordPress 2.5, 2.6, and 2.7. It has been tested on WordPress MU 2.6 in the 'plugins', rather than 'mu_plugins', mode.</p>
+      <p>Please provide feedback to dotMobi regarding this pack, and any functionality you would like to see developed in the future. See <a href='http://mobiforge.com'>mobiForge</a> for more details.</p>
+
+      <h2 id='p2'>Pack Components</h2>
+      <p>The pack is so-called because it contains a number of discrete pieces of functionality. In theory it is possible to individually enable or disable the components (through editing the registrations at the top of the main plugin file), but the vast majority of users are expected to install the pack en masse.</p>
+      <p>The pack contains the following functionality:</p>
+
+      <h3 id='p2.1'>Mobile switcher</h3>
+      <p>The mobile switcher identifies whether the visitor to the site is mobile or not, and switches between the primary WordPress theme (for desktop users) and a mobile theme (of the site owner's choice) accordingly.</p>
+      <p>It can use two approaches to identify the user as mobile. Firstly, it can try to identify if they have a mobile device based on the headers sent when a page is requested. Alternatively, it can identify whether the user has requested the site on a 'desktop domain' (such as yoursite.com) or a 'mobile domain' (such as yoursite.mobi) and deduce their intent from that.</p>
+      <p>The recommended approach is a third, combined, approach that uses both techniques, and also allows users to switch between sites if the choice is not appropriate by providing a link in the themes' footers or a widget.</p>
+      <p>In this combined mode, the switcher will provide interstitial warning pages if a mobile user accesses the desktop domain or vice-versa. It will also remember their choice of preferred site through the use of a cookie.</p>
+      <p>Settings for the switcher are found under the 'Mobile Switcher' admin page, and are self-explanatory.</p>
+      <p>More detail on these switching algorithms is available in a series of articles on <a href='http://mobiforge.com'>mobiForge</a>.</p>
+
+      <h3 id='p2.2'>Base mobile theme</h3>
+      <p>The pack contains an extensible theme that is ready for display on mobile devices. The theme is XHTML-MP compliant and scores highly on dotMobi's ready.mobi site tester.</p>
+      <p>The base theme supports all standard WordPress content, including indexes, posts, pages, archives, search results, comments and widgets. If configured, it also invokes the device adaptation process (detailed below) that ensures the posts themselves are formatted suitable for mobile devices.</p>
+      <p>There are a number of simple settings that can be used to adapt the way in which lists of posts appear on the mobile theme. These are found under the 'Mobile Theme' admin page, which appears when the switcher component is installed (or when the mobile theme is selected as the main WordPress theme). It is possible to set how many posts appear on the home page and in archives, and how verbosely they display.</p>
+      <p>Away from the posts themselves, the theme does not provide a 'hard-coded' sidebar and relies wholly on the WordPress widget framework. Widgets that are selected in the WordPress admin pages (and then selected to show for the mobile theme) will appear in a 'sidebar' below the main part of the mobile page.</p>
+      <p>Since each widget adds size to the overall page, it is recommended that no more than 5 desktop widgets are enabled for the mobile theme. The 'Mobile Widgets' admin page also appears when the switcher component is installed (or when the mobile theme is selected as the main WordPress theme).</p>
+      <p>Any standard WordPress widgets that are known not to be XHTML-compliant are slightly rewritten by the theme to make them so. However, the theme does not currently correct arbitrary widget content and the use of third-party widgets (that were designed for desktop use) may easily push the overall page out of XHTML-MP compliance and affect the user's experience.</p>
+      <p>Large widgets are not currently split or paged for small mobile devices. This may increase the load time, cost to the user, or even make the page unreadable on a limited capability device. Be aware of this when enabling large widgets on the mobile theme.</p>
+
+      <h3 id='p2.3'>Extended mobile themes</h3>
+      <p>Simply by extending the base theme, it is very easy and quick to customise the mobile theme to fit existing requirements or brand.</p>
+      <p>The easiest way to do this is to re-tint the theme's colour scheme. The colour specifications for the base theme are all defined at the top of its stylesheet. Site owners can override this palette with their own colours, named DARKEST, DARK, MID, LIGHT, LIGHTEST and so on.</p>
+      <p>To demonstrate, three extended themes are available within this pack: blue, green and red. Note how they use the 'Template:' directive at the top of the stylesheet (and the CSS @import statement) to indicate that they extend the base theme.</p>
+      <p>Of course it is also easy to extend the theme in other, more structural ways, and even adapt the template's PHP files. However, if such changes should be done carefully to preserve XHTML-MP compliance within the markup.</p>
+
+      <h3 id='p2.4'>Transcoding and device adaptation</h3>
+      <p>When the base theme, or a theme that extends it, it used, the pack provides some features to adapt the content of the posts and pages of the blog to make them more suitable for mobile use.</p>
+      <p>There are four major stages to this process, and each may be enabled or disabled independently on the 'Mobile Theme' admin page. These are:</p>
+
+      <ul>
+        <li>
+          <strong>Remove media</strong>
+          <br/>This will remove interactivity and media elements (such as script, Flash, movies, and embedded frames) from the posts and pages. Unless it is certain that users have high-capability handsets, these types of content will stretch the abilities of their mobile devices. The HTML tags removed are object, embed, marquee, script, frame and iframe. This process also removes any event attributes (such as onClick) from the page.
+        </li>
+        <li>
+          <strong>Partition large pages</strong>
+          <br />This will break large blog posts or pages into smaller pieces more suitable for mobile devices. The length of each piece depends on the known memory limitations of the visitor's device (if DeviceAtlas integration is enabled), or will default to approximately 5K in size. Contiguous sections such as lists will not be broken, and a pager will appear at the bottom of each post to allow the user to page through the post.
+        </li>
+        <li>
+          <strong>Shrink images</strong>
+          <br />This will shrink large images within posts or pages to fit on smaller screens. The width or height constraints of the device (if DeviceAtlas integration is enabled) are used to determine the new dimensions, or they will default to 124 pixels. This functionality relies on the server having the PHP graphics library LibGD installed (as it will be for PHP 4.3 or greater). Both the original and resized images are cached locally for performance, and site owners have an option to clear this cache on the admin page.
+        </li>
+        <li>
+          <strong>Simplify styling</strong>
+          <br />This will remove styling elements from the posts and pages to ensure mobile compatibility. The HTML attributes removed are: align, background, bgcolor, border, cellpadding, cellspacing, class, color, height, style and width. It removes the following tags: center, font, and span (although note that the inner content of those tags remains). Finally it removes any empty, non-singleton tags that do not have attributes, such as, for example, <code>&lt;div&gt;&lt;/div&gt;</code>.
+        </li>
+      </ul>
+
+      <h3 id='p2.5'>DeviceAtlas integration</h3>
+      <p>If enabled, the mobile pack can invoke dotMobi's DeviceAtlas API to provide information about the device currently accessing the site. This is used in a number of ways:</p>
+      <ul>
+        <li>The device adaptation (above) uses DeviceAtlas to provide information about screen-size and page-size in order to change the content of the pages and posts.</li>
+        <li>A DeviceAtlas widget can be placed on the site to display the name, screen size (and optionally, user-agent) of the device, if known. This is useful for testing the site on different handsets</li>
+        <li>Programmatically, theme designers can use DeviceAtlas data to adapt the way the theme displays. Using the <code>wpmp_deviceatlas_property($property_name)</code> function will return a single property directly from the API, and <code>wpmp_deviceatlas_device()</code> will provide a reference to all the device's characteristics data. For example, site owners could use the following in a theme to provide a full-screen image:
+          <pre>&lt;?php $d = wpmp_deviceatlas_device(); ?>
+  &lt;img src='...'
+     width='&lt;?php print $d-&gt;usableScreenWidth;  ?&gt;'
+    height='&lt;?php print $d-&gt;usableScreenHeight; ?&gt;'
+  /&gt;</pre>
+        </li>
+      </ul>
+      <p>The mobile pack does not ship with the DeviceAtlas API or data file. Site owners should sign up for a DeviceAtlas licence <a href='http://deviceatlas.com'>on the site</a>, and contact dotMobi to enable it for the WordPress plugin. Having done so, site owners can enter the licence key into the 'DeviceAtlas' admin panel, and easily trigger the update process for the local data.</p>
+
+      <h3 id='p2.6'>Mobile admin panel</h3>
+      <p>A user identified as mobile by the switcher will receive a mobilised version of the WordPress administration interface. The link to the dashboard is available in the standard 'Meta' widget, or it can be reached directly at <code>http://your.site/wp-admin</code></p>
+      <p>Only users with administrator status are allowed to access the mobile administration pages. Note this makes it more restrictive than the desktop dashboard, but this prevents less-authorised users from accessing it and making changes to important site settings.</p>
+      <p>The following pages are available in the mobile administration interface:</p>
+      <ul>
+        <li>
+          <strong>Overview</strong>
+          <br />Like the desktop dashboard, this details how many pages, posts, categories and tags site owners have on the site. It also highlights how many comments currently await moderation.
+        </li>
+        <li>
+          <strong>New post</strong>
+          <br />Administrators may write a new post to appear on the site. They can specify the title and the body of the post, and whether they want it to remain draft, pending review, or published. It is not currently possible to specify tags, categories or other advanced properties of the post in the mobile interface.
+        </li>
+        <li>
+          <strong>Edit post</strong>
+          <br />This page lists all of the current posts and allows administrators to edit them. As for the 'New post' page, they can edit title, status, and body. It is not possible to edit the categories or tags and so on, although existing values for such properties of the post will remain set after editing in the mobile interface. Depending on the theme, a link to this edit panel may also be available on the site itself when administrators are logged in.
+        </li>
+        <li>
+          <strong>Comments</strong>
+          <br />This page lists extracts of all of the comments awaiting moderation on the site. From this list, administrators can click on the commentator's name to see the whole comment, and, by clicking the appropriate links, set the comment to be published or marked as spam. Editing, de-approving or deleting a comment cannot be performed in this interface.
+        </li>
+        <li>
+          <strong>Switcher</strong>
+          <br />It is possible to change the mobile switching mode in case the site-owner needs to reset the configuration.
+        </li>
+        <li>
+          <strong>Settings</strong>
+          <br />This page lists all the settings for the site which are simple enough to edit with this mobile interface. Complex settings, such as which plugins are installed, are not available. However, text- and number-based settings can be easily edited. Note that no descriptions are available for each setting and the meanings of the values, so it is advisable to only edit them cautiously.
+        </li>
+      </ul>
+
+      <p>It is also possible to log-out of the admin panel. Since the login is stored persistently on the mobile device, this is advisable if the site is sensitive and administrators want to protect against the impact of handset theft.</p>
+      <p>The mobile administration panel uses the same URL structure as the desktop version, so in most cases, the administration links sent to administrators in emails (such as when a comment needs moderation) can be followed regardess of whether they are using a mobile device or a desktop.</p>
+
+      <h3 id='p2.7'>Mobile ad widget</h3>
+      <p>This provides the ability to place a new widget into the site containing either AdMob or Google mobile ads. Administrators will see the 'Mobile Ads' in the 'Widget' admin page, and it allows them to specify which provider to use, and the publisher ID.</p>
+      <p>The widget can also be configured to attempt to disable itself when shown on a desktop theme. This is recommended, since the quality of mobile ads presented in response to a desktop user context is lower, and relevant conversion rates may be negatively affected.</p>
+      <p>Google supports both single-ad and double-ad modes. Administrators can select which to use from the same publisher dropdown.</p>
+
+      <h3 id='p2.8'>Barcode widget</h3>
+      <p>Site owners can place a two-dimensional QR-code widget on the desktop site that users can use to quickly navigate to the mobile version of the site. If their phones have a camera and QR-code reader capabilities, they can simply snap the barcode off their desktop screen and navigate directly to the mobile equivalent.</p>
+      <p>If a URL is specified, the QR-code is fixed to that address. If it is left blank, it will correspond to the page it is being displayed upon.</p>
+      <p>Within the widget site owners can specify the link to provide, and the size of the square barcode to show. Site owners should ensure it fits well into the desktop theme.</p>
+      <p>Site owners can also indicate whether they want the widget to show some instructions to the users about the purpose of the barcode, as well as a list of well-known readers they can download for their devices if they are not already installed.</p>
+
+      <h2 id='p3'>Further Reading</h2>
+      <p>This pack also comes with an <a href='installation.html'>installation guide</a> and a <a href='readme.html'>readme</a> of known issues.</p>
+      <p>There is an <a href='index.html'>index</a> to the included documentation</p>
+
+      <h2 id='p4'>Credits</h2>
+      <p>The author would like to thank <a href='http://blog.trasatti.it/'>Andrea Trasatti</a> for moral support, relentless sanity checking and screenshot duty, <a href='http://wapreview.com/'>Dennis Bournique</a> for excellent feedback and patience in the face of constant iteration - and last but not least, <a href='http://ribot.co.uk'>Ribot</a> for beautiful mobile themes.</p>
+
+    </div>
+  </body>
+</html>
