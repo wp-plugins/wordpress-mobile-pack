@@ -28,13 +28,13 @@ specific language governing permissions and limitations under the License.
 /*
 Plugin Name: WordPress Mobile Pack
 Plugin URI: http://wordpress.org/extend/plugins/wordpress-mobile-pack/
-Description: The dotMobi WordPress Mobile Pack is a complete toolkit to help mobilize your WordPress site and blog. It includes a <a href='themes.php?page=wpmp_switcher_admin'>mobile switcher</a>, <a href='themes.php?page=wpmp_theme_widget_admin'>filtered widgets</a>, and content adaptation for mobile device characteristics. Activating this plugin will also install a selection of mobile <a href='themes.php'>themes</a>. Also check out <a href='http://mobiforge.com/wordpress-mobile-pack' target='_blank'>the documentation</a> and <a href='http://mobiforge.com/forum/dotmobi/wordpress' target='_blank'>the forums</a>.
-Version: 1.1.1
+Description: The dotMobi WordPress Mobile Pack is a complete toolkit to help mobilize your WordPress site and blog. It includes a <a href='themes.php?page=wpmp_switcher_admin'>mobile switcher</a>, <a href='themes.php?page=wpmp_theme_widget_admin'>filtered widgets</a>, and content adaptation for mobile device characteristics. Activating this plugin will also install a selection of mobile <a href='themes.php'>themes</a> by <a href='http://ribot.co.uk'>ribot</a>, a top UK mobile design team. Also check out <a href='http://mobiforge.com/wordpress-mobile-pack' target='_blank'>the documentation</a> and <a href='http://mobiforge.com/forum/dotmobi/wordpress' target='_blank'>the forums</a>. If you like the plugin, please rate us on the <a href='http://wordpress.org/extend/plugins/wordpress-mobile-pack/'>WordPress directory</a>.
+Version: 1.1.2
 Author: James Pearce, dotMobi, and team
 Author URI: http://www.assembla.com/spaces/wordpress-mobile-pack
 */
 
-define('WPMP_VERSION', '1.1.1');
+define('WPMP_VERSION', '1.1.2');
 
 // you could disable sub-plugins here
 global $wpmp_plugins;
@@ -110,7 +110,7 @@ function wordpress_mobile_pack_readiness_audit() {
   $cache_dir = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'plugins' . DIRECTORY_SEPARATOR . 'wpmp_transcoder' . DIRECTORY_SEPARATOR . 'c';
   if(!file_exists($cache_dir) || !is_writable($cache_dir) || !is_executable($cache_dir)) {
     $ready = false;
-    $why_not[] = __('<strong>Not be able to cache images</strong> to ') . $cache_dir . __('. Please ensure that the web server has write- and execute-access to that directory.');
+    $why_not[] = __('<strong>Not able to cache images</strong> to ') . $cache_dir . __('. Please ensure that the web server has write- and execute-access to that directory.');
   }
 
   $theme_dir = get_theme_root();
