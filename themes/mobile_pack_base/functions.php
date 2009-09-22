@@ -108,7 +108,7 @@ function wpmp_theme_transcode_content(&$content) {
   }
 }
 
-function wpmp_theme_widget_search($args) {
+function wpmp_theme_widget_search($args, $widget_args=1) {
   extract($args);
   print $before_widget . $before_title . __( 'Search Site' ) . $after_title;
   include (TEMPLATEPATH . "/searchform.php");
@@ -116,7 +116,7 @@ function wpmp_theme_widget_search($args) {
 }
 
 
-function wpmp_theme_widget_archives($args) {
+function wpmp_theme_widget_archives($args, $widget_args=1) {
 	extract($args);
 	$options = get_option('widget_archives');
 	$title = empty($options['title']) ? __('Archives') : $options['title'];
@@ -125,7 +125,12 @@ function wpmp_theme_widget_archives($args) {
 	wp_get_archives("type=monthly&show_post_count=1");
   $html = ob_get_contents();
   ob_end_clean();
-  print wpmp_theme_widget_trim_list($html, "<li><a href='/?archives=month'>...more months</a></li>");
+  $content = wpmp_theme_widget_trim_list($html, "<li><a href='/?archives=month'>...more months</a></li>");
+  if($content) {
+    print $content;
+  } else {
+    print "<li>No archives</li>";
+  }
 	print "</ul>$after_widget";
 }
 
@@ -148,7 +153,7 @@ function wpmp_theme_widget_categories($args, $widget_args=1) {
 	print "</ul>$after_widget";
 }
 
-function wpmp_theme_widget_tag_cloud($args) {
+function wpmp_theme_widget_tag_cloud($args, $widget_args=1) {
 	extract($args);
 	$options = get_option('widget_tag_cloud');
 	$title = empty($options['title']) ? __('Tags') : $options['title'];
@@ -168,18 +173,35 @@ function wpmp_theme_widget_tag_cloud($args) {
   }
 }
 
-function wpmp_theme_widget_recent_comments($args) {
+function wpmp_theme_widget_recent_comments($args, $widget_args=1) {
   ob_start();
-  wp_widget_recent_comments($args);
+  if (function_exists('wp_widget_recent_comments')) {
+    wp_widget_recent_comments($args);
+  } else {
+    $widget = new WP_Widget_Recent_Comments();
+    $widget->display_callback($args, $widget_args);
+  }
   $original = ob_get_contents();
   ob_end_clean();
-  print str_replace("&cpage", "&amp;cpage", $original);
+  $original = str_ireplace('<ul id="recentcomments"></ul>', '<ul id="recentcomments"><li>No comments</li></ul>', $original);
+  $original = str_ireplace("&cpage", "&amp;cpage", $original);
+  print $original;
 }
-function wpmp_theme_widget_calendar($args) {
-  ob_start();
-  wp_widget_calendar($args);
+function wpmp_theme_widget_calendar($args, $widget_args=1) {
+  ob_start();ob_start(); //funny ob stack inside old widgets
+  if (function_exists('wp_widget_calendar')) {
+    wp_widget_calendar($args);
+  } else {
+    $widget = new WP_Widget_Calendar();
+    $widget->display_callback($args, $widget_args);
+  }
   $original = ob_get_contents();
   ob_end_clean();
+  $original = ob_get_contents() . $original;
+  ob_end_clean();
+  if (stripos($original, '<div id="calendar_wrap"></div>')!==false) {
+    return;
+  }
   preg_match_all("/(^.*)\<caption\>(.*)\<\/caption\>.*\<thead\>(.*)\<\/thead\>.*\<tfoot\>(.*)\<\/tfoot\>.*\<tbody\>(.*)\<\/tbody\>(.*$)/Usi", $original, $parts);
   print str_replace("<h2>&nbsp;</h2>", "<h2>Calendar</h2>", $parts[1][0]) .
         "<tr><td colspan='7'>" . $parts[2][0] . "</td></tr>" .
@@ -189,18 +211,25 @@ function wpmp_theme_widget_calendar($args) {
 
 function wpmp_theme_widget_rss($args, $widget_args=1) {
   ob_start();
-  wp_widget_rss($args, $widget_args);
+  if (function_exists('wp_widget_rss')) {
+    wp_widget_rss($args, $widget_args);
+  } else {
+    $widget = new WP_Widget_RSS();
+    $widget->display_callback($args, $widget_args);
+  }
   $html = ob_get_contents();
   ob_end_clean();
   print preg_replace("/\<img.*\>/Usi", "", $html);
 }
 function wpmp_theme_widget_trim_list($html, $more='') {
+  $return = '';
   preg_match_all("/\<li.*\>(.*)\<\/li/Usi", $html, $parts);
   for($p = 0; sizeof($parts[1])>0 && $p < get_option('wpmp_theme_widget_list_count'); $p++) {
-    print "<li>" . array_shift($parts[1]) . "</li>";
+    $return .= "<li>" . array_shift($parts[1]) . "</li>";
   }
   if(sizeof($parts[1])>0) {
-    print $more;
+    $return .= $more;
   }
+  return $return;
 }
 ?>

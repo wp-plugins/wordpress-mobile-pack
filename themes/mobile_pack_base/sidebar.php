@@ -30,8 +30,11 @@ specific language governing permissions and limitations under the License.
 <div id="sidebar">
   <?php
     ob_start();
+    ob_start();
     dynamic_sidebar();
     $list = ob_get_contents();
+    ob_end_clean();
+    $list = ob_get_contents() . $list; //ob stack funny stuff in old widgets
     ob_end_clean();
     if ($list) {
       print "<ul>$list</ul>";

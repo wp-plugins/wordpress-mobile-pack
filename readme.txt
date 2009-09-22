@@ -51,16 +51,18 @@ The Pack comes with complete documentation in HTML format that you can read on y
 
 == Frequently Asked Questions ==
 
+= Where are my widgets? =
+
+You need to select which of your desktop widgets you want to have appear on the mobile theme. Go to the 'Mobile Widgets' admin page to do so.
+
 = Are shrinked images cached? =
 
 Yes, all images, once rescaled, are cached locally.
-
 
 = Where is the cache directory? =
 
 From your root directory of WordPress, go to:
 *wp-content/plugins/wordpress-mobile-pack/plugins/wpmp_transcoder/c*
-
 
 = What version of PHP do I need? =
 Although most of the functionality of the pack does in fact work with PHP4, we only theoretically support and warrant running it with PHP5. If you must use PHP4, give it a test drive and make sure it works for your environment before going live. The plugin will be (deliberately) disabled if you try to use it with PHP6.
@@ -75,6 +77,13 @@ We run the development of the plugin over at [Assembla](http://www.assembla.com/
 
 
 == Changelog ==
+
+= 1.1.3 =
+* Ensure subdirectoried blogs work correctly with switcher
+* Support object-oriented widgets in WP2.8
+* Fixed empty and pre WP2.8 widgets causing invalid XHTML
+* Switcher link now always appears in footer on admin pages
+* Nokia N97 checkbox rendering fixed
 
 = 1.1.2 =
 * Tested to support WP v2.8.4

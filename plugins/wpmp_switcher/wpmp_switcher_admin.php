@@ -57,17 +57,19 @@ specific language governing permissions and limitations under the License.
         <th><?php _e('Browser detection'); ?></th>
         <td><?php print wpmp_switcher_option('wpmp_switcher_detection'); ?></td>
       </tr>
-      <tr class='wpmp_domain'>
+      <tr class='wpmp_desktop_domain'>
         <th><?php _e('Desktop domains'); ?></th>
         <td>
           <?php print wpmp_switcher_option('wpmp_switcher_desktop_domains'); ?>
           <br />
           <?php _e('Use comma-separated domain names. eg:'); ?> <b>mysite.com, downloads.mysite.com</b>
           <br />
-          <?php _e('Desktop users who mistakenly access a mobile domain will be given the option to return to the first domain in this list.'); ?>
+          <?php _e("Desktop users who mistakenly access a mobile domain will be given the option to return to the first domain in this list."); ?>
+          <br />
+          <?php _e("This is also the domain used for switching when 'browser detection' is used, and in that case should be your site's primary domain."); ?>
         </td>
       </tr>
-      <tr class='wpmp_domain'>
+      <tr class='wpmp_mobile_domain'>
         <th><?php _e('Mobile domains'); ?></th>
         <td>
           <?php print wpmp_switcher_option('wpmp_switcher_mobile_domains'); ?>
@@ -92,6 +94,7 @@ specific language governing permissions and limitations under the License.
           <?php _e('Places a link in the theme footer to allow users to override the detection.'); ?>
           <?php _e('You can also enable the widget that contains this link.'); ?>
           <?php _e('Both the footer link and the widget will only appear when a switcher mode is enabled.'); ?>
+          <?php _e('Regardless of this setting, the switcher link will always appear on the mobile admin pages.'); ?>
         </td>
       </tr>
     </table>
@@ -110,9 +113,10 @@ specific language governing permissions and limitations under the License.
     var browser = value.indexOf("browser")>-1;
     var domain = value.indexOf("domain")>-1;
     jQuery(".wpmp_browser").children().fadeTo(speed, browser ? 1 : wpmp_pale);
-    jQuery(".wpmp_domain").children().fadeTo(speed, domain ? 1 : wpmp_pale);
+    jQuery(".wpmp_desktop_domain").children().fadeTo(speed, (domain||browser) ? 1 : wpmp_pale);
+    jQuery(".wpmp_mobile_domain").children().fadeTo(speed, domain ? 1 : wpmp_pale);
     jQuery(".wpmp_theme").children().fadeTo(speed, (domain||browser) ? 1 : wpmp_pale);
-    jQuery(".wpmp_links").children().fadeTo(speed, (domain) ? 1 : wpmp_pale);
+    jQuery(".wpmp_links").children().fadeTo(speed, (domain||browser) ? 1 : wpmp_pale);
     wpmpSwitcherDetection(speed);
   }
   wpmpSwitcherMode(-1);

@@ -83,7 +83,7 @@ function wpmp_ms_mobile_top($title, $menu=array()) {
       </div>
         <div id="footer">
         <p>Powered by the <a href="http://mobiforge.mobi/wordpress-mobile-pack">WordPress Mobile Pack</a> | Theme designed by <a href="http://ribot.co.uk">ribot</a></p>
-        <?php wpmp_switcher_wp_footer(''); ?>
+        <?php wpmp_switcher_wp_footer(true); ?>
       </div>
     </div>
   </body>

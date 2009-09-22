@@ -29,7 +29,7 @@ specific language governing permissions and limitations under the License.
 Plugin Name: Mobile Switcher
 Plugin URI: http://wordpress.org/extend/plugins/wordpress-mobile-pack/
 Description: Detects a mobile user accessing your site and switches theme accordingly. This plugin is tested with WordPress 2.5, 2.6 and 2.7.
-Version: 1.1.2
+Version: 1.1.3
 Author: James Pearce, dotMobi, and team
 Author URI: http://www.assembla.com/spaces/wordpress-mobile-pack
 */
@@ -111,19 +111,13 @@ function wpmp_switcher_widget_link($args) {
   print $after_widget;
 }
 function wpmp_switcher_activate() {
-  $default_desktop_domain=get_option('home');
+  $default_desktop_domain=wpmp_switcher_trim_domain(get_option('home'));
   $default_desktop_domains = array();
   $default_mobile_domains = array();
-  if(substr($default_desktop_domain, 0, 7) == 'http://') {
-    $default_desktop_domain = substr($default_desktop_domain, 7);
-    $default_desktop_domains[] = $default_desktop_domain;
-  }
-  if(substr($default_desktop_domain, 0, 8) == 'https://') {
-    $default_desktop_domain = substr($default_desktop_domain, 8);
-  }
-  $default_desktop_domain = array_shift(explode("/", $default_desktop_domain));
+
+  $default_desktop_domains[] = $default_desktop_domain;
   if(($tld=substr($default_desktop_domain, 0, -4))==".com" || $tld==".org" || $tld==".net") {
-    $default_mobile_domains[] = substr($default_desktop_domains, 0, -4) . ".mobi";
+    $default_mobile_domains[] = substr($default_desktop_domain, 0, -4) . ".mobi";
   }
   if(substr($default_desktop_domain, 0, 4)=="www.") {
     $default_desktop_domains[] = substr($default_desktop_domain, 4);
@@ -155,6 +149,28 @@ function wpmp_switcher_activate() {
       update_option($name, $value);
     }
   }
+  //fixing incorrect settings from WP1.1.2 & earlier
+  foreach(array('desktop', 'mobile') as $type) {
+    $domains = strtolower(get_option('wpmp_switcher_' . $type . '_domains'));
+    $domains = explode(",", $domains);
+    $trimmed_domains = array();
+    foreach($domains as $domain) {
+      $trimmed_domains[] = wpmp_switcher_trim_domain($domain);
+    }
+    update_option('wpmp_switcher_' . $type . '_domains', join(', ', $trimmed_domains));
+  }
+}
+
+function wpmp_switcher_trim_domain($domain) {
+  $trimmed_domain = trim(strtolower($domain));
+  if(substr($trimmed_domain, 0, 7) == 'http://') {
+    $trimmed_domain = substr($trimmed_domain, 7);
+  } elseif(substr($trimmed_domain, 0, 8) == 'https://') {
+    $trimmed_domain = substr($trimmed_domain, 8);
+  }
+  $trimmed_domain = explode("/", "$trimmed_domain/");
+  $trimmed_domain = $trimmed_domain[0];
+  return $trimmed_domain;
 }
 
 function wpmp_switcher_deactivate() {
@@ -171,8 +187,8 @@ function wpmp_switcher_admin() {
   include_once('wpmp_switcher_admin.php');
 }
 
-function wpmp_switcher_wp_footer($footer) {
-  if(get_option('wpmp_switcher_mode')=='none' || get_option('wpmp_switcher_footer_links')!='true') {
+function wpmp_switcher_wp_footer($force=false) {
+  if(!$force && (get_option('wpmp_switcher_mode')=='none' || get_option('wpmp_switcher_footer_links')!='true')) {
     return;
   }
   switch (wpmp_switcher_outcome()) {
@@ -313,9 +329,9 @@ function wpmp_switcher_domains($type='desktop', $first_only=false) {
   $trimmed_domains = array();
   foreach($domains as $domain) {
     if($first_only) {
-      return trim($domain);
+      return wpmp_switcher_trim_domain($domain);
     }
-    $trimmed_domains[] = trim($domain);
+    $trimmed_domains[] = wpmp_switcher_trim_domain($domain);
   }
   return $trimmed_domains;
 }
@@ -450,19 +466,16 @@ function wpmp_switcher_options_write() {
     update_option($option . "_stylesheet", $theme_data['Stylesheet']);
     update_option($option . "_template", $theme_data['Template']);
   }
-  if (strpos(get_option('wpmp_switcher_mode'), 'domain')!==false) {
+  if (strpos(get_option('wpmp_switcher_mode'), 'none')===false) {
     foreach(array('wpmp_switcher_mobile_domains', 'wpmp_switcher_desktop_domains') as $option) {
       $trimmed_domains=array();
       foreach(split(",", get_option($option)) as $domain) {
-        $domain = trim(strtolower($domain));
-        $trimmed_domain = str_replace('http://', '', $domain);
-        $trimmed_domain = str_replace('https://', '', $trimmed_domain);
-        $trimmed_domain = split("/", "$trimmed_domain/");
-        $trimmed_domain = $trimmed_domain[0];
+        $domain = trim($domain);
+        $trimmed_domain = wpmp_switcher_trim_domain($domain);
         if ($trimmed_domain!=$domain) {
           $message = __('You must provide clean domain names without any leading or trailing syntax. We fixed them for you.');
         }
-        $trimmed_domains[] = trim($trimmed_domain);
+        $trimmed_domains[] = $trimmed_domain;
       }
       update_option($option, join(', ', $trimmed_domains));
     }
