@@ -1,7 +1,7 @@
 === WordPress Mobile Pack ===
 Tags: mobile, mobile web, mobile internet, wireless, pda, iphone, android, webkit, wap, dotMobi, theme, blackberry, admob, mobile adsense, qr-code, device, switcher, cellular
 Requires at least: 2.5
-Tested up to: 2.8.4
+Tested up to: 2.8.5
 Stable tag: 1.1.3
 
 The WordPress Mobile Pack is a complete toolkit to help mobilize your WordPress site. It has a mobile switcher, themes, widgets, and mobile admin panel.
@@ -12,7 +12,7 @@ The dotMobi WordPress Mobile Pack is a complete toolkit to help mobilize your Wo
 
 It includes a mobile switcher to select themes based on the type of user that is visiting the site, a selection of mobile themes, extra widgets, device adaptation and a mobile administration panel to allow users to edit the site or write new posts when out and about.
 
-The pack has been tested on WordPress 2.5.1, 2.6.5, 2.7.1 and 2.8.1 to 2.8.4. It has been tested on WordPress MU 2.6 in the 'plugins', rather than 'mu_plugins', mode. PHP 5.x is also highly recommended, although the plugin will tolerate PHP4.x.
+The pack has been tested on WordPress 2.5.1, 2.6.5, 2.7.1 and 2.8.1 to 2.8.5. It has been tested on WordPress MU 2.6 in the 'plugins', rather than 'mu_plugins', mode. PHP 5.x is also highly recommended, although the plugin will tolerate PHP4.x.
 
 Features highlights:
 
