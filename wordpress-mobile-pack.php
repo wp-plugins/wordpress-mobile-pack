@@ -34,7 +34,7 @@ Author: James Pearce, dotMobi, and team
 Author URI: http://www.assembla.com/spaces/wordpress-mobile-pack
 */
 
-define('WPMP_VERSION', '1.1.3');
+define('WPMP_VERSION', '1.2.0');
 
 // you could disable sub-plugins here
 global $wpmp_plugins;
@@ -109,15 +109,31 @@ function wordpress_mobile_pack_readiness_audit() {
   }
 
   $cache_dir = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'plugins' . DIRECTORY_SEPARATOR . 'wpmp_transcoder' . DIRECTORY_SEPARATOR . 'c';
-  if(!file_exists($cache_dir) || !is_writable($cache_dir) || !is_executable($cache_dir)) {
+  $cache_does = '';
+  if (!file_exists($cache_dir)) {
+  	$cache_does = "does not exist";
+  } elseif (!is_writable($cache_dir)) {
+  	$cache_does = "is not writable";
+  } elseif (!is_executable($cache_dir) && DIRECTORY_SEPARATOR=='/') {
+  	$cache_does = "is not executable";
+  }
+  if($cache_does!='') {
     $ready = false;
-    $why_not[] = __('<strong>Not able to cache images</strong> to ') . $cache_dir . __('. Please ensure that the web server has write- and execute-access to that directory.');
+    $why_not[] = __('<strong>Not able to cache images</strong> to ') . $cache_dir . __('. That directory ') . $cache_does . __('. Please ensure that the web server has write- and execute-access to it.');
   }
 
-  $theme_dir = get_theme_root();
-  if(!file_exists($theme_dir) || !is_writable($theme_dir) || !is_executable($theme_dir)) {
+  $theme_dir = str_replace('/', DIRECTORY_SEPARATOR, get_theme_root());
+  $theme_does = '';
+  if (!file_exists($theme_dir)) {
+  	$theme_does = "does not exist";
+  } elseif (!is_writable($theme_dir)) {
+  	$theme_does = "is not writable";
+  } elseif (!is_executable($theme_dir) && DIRECTORY_SEPARATOR=='/') {
+  	$theme_does = "is not executable";
+  }
+  if($theme_does!='') {
     $ready = false;
-    $why_not[] = __('<strong>Not able to install theme files</strong> to ') . $theme_dir . __('. Please ensure that the web server has write- and execute-access to that directory.');
+    $why_not[] = __('<strong>Not able to install theme files</strong> to ') . $theme_dir . __('. That directory ') . $theme_does . __('. Please ensure that the web server has write- and execute-access to it.');
   } // a similar check is in wordpress_mobile_pack_directory_copy_themes, checking lower directories as it recurses down
 
 
@@ -130,12 +146,20 @@ function wordpress_mobile_pack_readiness_audit() {
 
 function wordpress_mobile_pack_directory_copy_themes($source_dir, $destination_dir, $benign=true) {
   if(file_exists($destination_dir)) {
-    if (!is_writable($destination_dir) || !is_executable($destination_dir)) {
-      update_option('wpmp_warning', __('<strong>Could not install theme files</strong> to ') . $destination_dir . __('. Please ensure that the web server has write- and execute-access to that directory.'));
+  	$dir_does = '';
+	  if (!is_writable($destination_dir)) {
+	  	$dir_does = "is not writable";
+	  } elseif (!is_executable($destination_dir) && DIRECTORY_SEPARATOR=='/') {
+	  	$dir_does = "is not executable";
+	  }
+	  if($dir_does!='') {
+      update_option('wpmp_warning', __('<strong>Could not install theme files</strong> to ') . $destination_dir . __('. That directory ') . $dir_does . __('. Please ensure that the web server has write- and execute-access to it.'));
       return;
     }
   } elseif (!is_dir($destination_dir)) {
-    mkdir($destination_dir);
+    if ($destination_dir[0] != ".") {
+	    mkdir($destination_dir);
+	  }
   }
 
   $dir_handle = opendir($source_dir);

@@ -35,6 +35,14 @@ specific language governing permissions and limitations under the License.
   <form method="post" action="">
     <table class="form-table">
       <tr>
+        <th><?php _e('Enable Nokia templates'); ?></th>
+        <td>
+          <?php print wpmp_theme_option('wpmp_theme_nokia_templates_beta'); ?>
+          <br />
+          <?php _e('<strong>Beta feature.</strong> Check this to provide additional optimisations for users of Nokia handsets. It also enables a rich theme for WebKit-based mobile browsers, such as the Apple iPhone and Palm Pre.'); ?>
+        </td>
+      </tr>
+      <tr>
         <th><?php _e('Check mobile status'); ?></th>
         <td>
           <a style='font-weight:bold;font-size:13px' target='_blank' href='http://ready.mobi/results.jsp?uri=<?php print urlencode(get_option('home')); ?>'>Launch ready.mobi</a>

@@ -37,6 +37,7 @@ function wpmp_theme_init() {
     'wpmp_theme_transcoder_partition_pages'=>'true',
     'wpmp_theme_transcoder_shrink_images'=>'true',
     'wpmp_theme_transcoder_simplify_styling'=>'true',
+    'wpmp_theme_nokia_templates_beta'=>'false'
   ) as $name=>$value) {
     if (get_option($name)=='') {
       update_option($name, $value);
@@ -59,8 +60,8 @@ function wpmp_theme_init() {
 
 add_action('admin_menu', 'wpmp_theme_admin_menu');
 function wpmp_theme_admin_menu() {
-	add_theme_page(__('Mobile Theme'), __('Mobile Theme'), 3, 'wpmp_theme_theme_admin', 'wpmp_theme_theme_admin');
-	add_theme_page(__('Mobile Widgets'), __('Mobile Widgets'), 3, 'wpmp_theme_widget_admin', 'wpmp_theme_widget_admin');
+  add_theme_page(__('Mobile Theme'), __('Mobile Theme'), 3, 'wpmp_theme_theme_admin', 'wpmp_theme_theme_admin');
+  add_theme_page(__('Mobile Widgets'), __('Mobile Widgets'), 3, 'wpmp_theme_widget_admin', 'wpmp_theme_widget_admin');
 }
 
 function wpmp_theme_theme_admin() {
@@ -94,13 +95,14 @@ function wpmp_theme_options_write() {
     'wpmp_theme_transcoder_partition_pages'=>true,
     'wpmp_theme_transcoder_shrink_images'=>true,
     'wpmp_theme_transcoder_simplify_styling'=>true,
+    'wpmp_theme_nokia_templates_beta'=>true,
   ) as $option=>$checkbox) {
     if(isset($_POST[$option])){
       $value = $_POST[$option];
       if(!is_array($value)) {
-  			$value = trim($value);
+        $value = trim($value);
       }
-			$value = stripslashes_deep($value);
+      $value = stripslashes_deep($value);
       update_option($option, $value);
       if ($option=='wpmp_theme_widget') {
         return $message;
@@ -151,6 +153,8 @@ function wpmp_theme_option($option, $onchange='') {
     case 'wpmp_theme_transcoder_shrink_images':
     case 'wpmp_theme_transcoder_simplify_styling':
     case 'wpmp_theme_transcoder_clear_cache_now':
+    case 'wpmp_theme_nokia_templates_beta':
+    
       return wpmp_theme_option_checkbox(
         $option,
         $onchange

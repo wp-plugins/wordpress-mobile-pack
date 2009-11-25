@@ -32,6 +32,19 @@ add_filter('dynamic_sidebar_params', 'wpmp_theme_dynamic_sidebar_params');
 add_action('pre_get_posts', 'wpmp_theme_pre_get_posts');
 add_action('the_content', 'wpmp_theme_the_content');
 
+function wpmp_theme_device_group() {
+  global $wpmp_theme_device_group;
+  if(!isset($wpmp_theme_device_group)) {
+    if (get_option('wpmp_theme_nokia_templates_beta')) {
+      include_once('group_detection.php');
+      $wpmp_theme_device_group = group_detection();
+    } else {
+      $wpmp_theme_device_group = '';
+    }
+  }
+  return $wpmp_theme_device_group;
+}
+
 function wpmp_theme_init_in_use() {
   global $wp_registered_widgets;
   foreach ($wp_registered_widgets as $index=>$widget) {
@@ -117,12 +130,12 @@ function wpmp_theme_widget_search($args, $widget_args=1) {
 
 
 function wpmp_theme_widget_archives($args, $widget_args=1) {
-	extract($args);
-	$options = get_option('widget_archives');
-	$title = empty($options['title']) ? __('Archives') : $options['title'];
+  extract($args);
+  $options = get_option('widget_archives');
+  $title = empty($options['title']) ? __('Archives') : $options['title'];
   print $before_widget . $before_title . $title . $after_title . "<ul>";
   ob_start();
-	wp_get_archives("type=monthly&show_post_count=1");
+  wp_get_archives("type=monthly&show_post_count=1");
   $html = ob_get_contents();
   ob_end_clean();
   $content = wpmp_theme_widget_trim_list($html, "<li><a href='/?archives=month'>...more months</a></li>");
@@ -131,32 +144,32 @@ function wpmp_theme_widget_archives($args, $widget_args=1) {
   } else {
     print "<li>No archives</li>";
   }
-	print "</ul>$after_widget";
+  print "</ul>$after_widget";
 }
 
 function wpmp_theme_widget_categories($args, $widget_args=1) {
-	extract($args, EXTR_SKIP);
-	if (is_numeric($widget_args)) {
-		$widget_args = array('number' => $widget_args);
+  extract($args, EXTR_SKIP);
+  if (is_numeric($widget_args)) {
+    $widget_args = array('number' => $widget_args);
   }
-	$widget_args = wp_parse_args($widget_args, array('number'=>-1));
-	extract($widget_args, EXTR_SKIP);
-	$options = get_option('widget_categories');
-	if (!isset($options[$number])) { return; }
-	$title = empty($options[$number]['title']) ? __('Categories') : $options[$number]['title'];
+  $widget_args = wp_parse_args($widget_args, array('number'=>-1));
+  extract($widget_args, EXTR_SKIP);
+  $options = get_option('widget_categories');
+  if (!isset($options[$number])) { return; }
+  $title = empty($options[$number]['title']) ? __('Categories') : $options[$number]['title'];
   print $before_widget . $before_title . $title . $after_title . "<ul>";
   ob_start();
   wp_list_categories("orderby=name&hierarchical=0&show_count=1&title_li=0");
   $html = ob_get_contents();
   ob_end_clean();
   print wpmp_theme_widget_trim_list($html, "<li><a href='/?archives=category'>...more categories</a></li>");
-	print "</ul>$after_widget";
+  print "</ul>$after_widget";
 }
 
 function wpmp_theme_widget_tag_cloud($args, $widget_args=1) {
-	extract($args);
-	$options = get_option('widget_tag_cloud');
-	$title = empty($options['title']) ? __('Tags') : $options['title'];
+  extract($args);
+  $options = get_option('widget_tag_cloud');
+  $title = empty($options['title']) ? __('Tags') : $options['title'];
   $tags = get_tags();
   if(sizeof($tags)>0) {
     print $before_widget . $before_title . $title . $after_title . "<ul>";

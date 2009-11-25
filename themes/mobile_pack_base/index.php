@@ -27,12 +27,57 @@ specific language governing permissions and limitations under the License.
 
 get_header();
 
+$wpmp_group = wpmp_theme_device_group();
+
+$wpmp_title = '';
+$wpmp_archives = false;
+$wpmp_not_found = false;
+if (isset($_GET['archives']) && ($archives = $_GET['archives'])!='') {
+  $wpmp_title = "Blog archives";
+  $wpmp_archives = true;
+} elseif (have_posts()) {
+  $post = $posts[0];
+  if (is_search()) {
+    $wpmp_title = "Search results";
+  } elseif (is_tag()) {
+    $wpmp_title = "Archive for the '" . single_tag_title('', false) . "' tag";
+  } elseif (is_category()) {
+    $wpmp_title = "Archive for the '" . single_cat_title('', false) . "' category";
+  } elseif (is_day()) {
+    $wpmp_title = "Archive for " . get_the_time('F jS, Y');
+  } elseif (is_month()) {
+    $wpmp_title = "Archive for " . get_the_time('F, Y');
+  } elseif (is_year()) {
+    $wpmp_title = "Archive for " . get_the_time('Y');
+  } elseif (is_author()) {
+    $wpmp_title = "Author archive";
+  } elseif (isset($_GET['paged']) && !empty($_GET['paged'])) {
+    $wpmp_title = "Blog archives";
+  }
+} else {
+  $wpmp_title = "Page not found";
+  $wpmp_not_found = true;
+}
+
+if ($wpmp_title!='') {
+  if ($wpmp_group == 'nokia_low' || $wpmp_group == 'nokia_mid' || $wpmp_group == 'nokia_high') {
+    print "<div id='wrapper'><div id='content'>";
+    print "<h1>$wpmp_title</h1>";
+  } else {
+    print "<h2 class='pagetitle'>$wpmp_title</h2>";
+    print "<div id='wrapper'><div id='content'>";
+  }
+}
+
 ?>
-<?php if (isset($_GET['archives']) && ($archives = $_GET['archives'])!='') { ?>
-  <h2 class="pagetitle">Blog archives</h2>
-  <div id="wrapper">
-    <div id="content">
-      <?php
+
+
+    <?php
+      if ($wpmp_not_found) {
+        print "<p>Use the menu to navigate the site, or search for a keyword:</p>";
+        include (TEMPLATEPATH . "/searchform.php");
+      
+      } elseif ($wpmp_archives) {
         if ($archives=='category') {
           print "<h2>Archives by category</h2>";
           $links = array();
@@ -58,33 +103,10 @@ get_header();
           print "<p>No archives found. Use the menu to navigate the site, or search for a keyword:</p>";
           include (TEMPLATEPATH . "/searchform.php");
         }
+      
+      } else { 
       ?>
-    </div>
-    <?php get_sidebar(); ?>
-  </div>
-<?php } elseif (have_posts()) { ?>
-  <?php $post = $posts[0]; ?>
-  <?php if (is_search()) { ?>
-    <h2 class="pagetitle">Search results</h2>
-  <?php } elseif (is_tag()) { ?>
-    <h2 class="pagetitle">Archive for the '<?php echo single_tag_title(); ?>' tag</h2>
-  <?php } elseif (is_category()) { ?>
-    <h2 class="pagetitle">Archive for the '<?php echo single_cat_title(); ?>' category</h2>
-  <?php } elseif (is_day()) { ?>
-    <h2 class="pagetitle">Archive for <?php the_time('F jS, Y'); ?></h2>
-  <?php } elseif (is_month()) { ?>
-    <h2 class="pagetitle">Archive for <?php the_time('F, Y'); ?></h2>
-  <?php } elseif (is_year()) { ?>
-    <h2 class="pagetitle">Archive for <?php the_time('Y'); ?></h2>
-  <?php } elseif (is_search()) { ?>
-    <h2 class="pagetitle">Search results</h2>
-  <?php } elseif (is_author()) { ?>
-    <h2 class="pagetitle">Author archive</h2>
-  <?php } elseif (isset($_GET['paged']) && !empty($_GET['paged'])) { ?>
-    <h2 class="pagetitle">Blog archives</h2>
-  <?php } ?>
-  <div id="wrapper">
-    <div id="content">
+    
       <?php $summary = get_option('wpmp_theme_post_summary'); ?>
       <?php global $more; ?>
       <?php $more=(is_single() || is_page())?1:0; ?>
@@ -97,9 +119,9 @@ get_header();
             <h2><a href="<?php the_permalink() ?>" rel="bookmark" title="Link to <?php the_title(); ?>"><?php the_title(); ?></a></h2>
           </div>
           <?php if(is_single() || is_page() || ($summary!='none' && !($summary=='firstteaser' && !$first))) { ?>
-            <div class="entry">
+            <p class="entry">
               <?php the_content('Read more'); ?>
-            </div>
+            </p>
           <?php } ?>
           <p class="metadata">Posted in <?php the_category(', ') ?> | <?php edit_post_link('Edit','',' |'); ?> <?php comments_popup_link('No comments', '1 comment', '% comments'); ?>
             <?php if(is_single() || is_page()) { ?>
@@ -114,21 +136,16 @@ get_header();
         </div>
         <?php if((is_single() || is_page()) && (!function_exists('wpmp_transcoder_is_last_page') || wpmp_transcoder_is_last_page())) { comments_template(); } ?>
         <?php $first = false; ?>
-     <?php } ?>
+      <?php } ?>
       <div class="navigation">
         <?php next_posts_link('Older') ?> <?php previous_posts_link('Newer') ?>
       </div>
-    </div>
-    <?php get_sidebar(); ?>
+    
+      <?php
+      }
+    ?>
+
   </div>
-<?php } else { ?>
-  <div id="wrapper">
-    <div id="content">
-      <h2>Page not found</h2>
-      <p>Use the menu to navigate the site, or search for a keyword:</p>
-      <?php include (TEMPLATEPATH . "/searchform.php"); ?>
-    </div>
-    <?php get_sidebar(); ?>
-  </div>
-<?php } ?>
+  <?php get_sidebar(); ?>
+</div>
 <?php get_footer(); ?>

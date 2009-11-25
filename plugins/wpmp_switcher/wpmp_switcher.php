@@ -44,7 +44,7 @@ define("WPMP_SWITCHER_REDIRECT_TO_DESKTOP", 4);
 define("WPMP_SWITCHER_MOBILE_INTERSTITIAL", 5);
 define("WPMP_SWITCHER_DESKTOP_INTERSTITIAL", 6);
 
-if (file_exists($theme_functions_persist = get_theme_root() . '/mobile_pack_base/functions_persist.php')) {
+if (file_exists($theme_functions_persist = str_replace('/', DIRECTORY_SEPARATOR, get_theme_root()) . DIRECTORY_SEPARATOR . 'mobile_pack_base' . DIRECTORY_SEPARATOR . 'functions_persist.php')) {
   include_once($theme_functions_persist);
 }
 
