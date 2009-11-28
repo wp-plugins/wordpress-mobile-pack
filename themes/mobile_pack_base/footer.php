@@ -27,7 +27,14 @@ specific language governing permissions and limitations under the License.
 
 ?>
       <div id="footer">
-        <p>Powered by the <a href="http://mobiforge.mobi/wordpress-mobile-pack">WordPress Mobile Pack</a> | Theme designed by <a href="http://ribot.co.uk">ribot</a></p>
+        <p>Powered by the <a href="http://mobiforge.mobi/wordpress-mobile-pack">WordPress Mobile Pack</a> | Theme <?php
+          $wpmp_group = wpmp_theme_device_group();
+          if ($wpmp_group == 'nokia_low' || $wpmp_group == 'nokia_mid' || $wpmp_group == 'nokia_high') {
+            print 'designed by <a href="http://forumnokia.mobi">Forum Nokia</a>';
+          } else {
+            print 'designed by <a href="http://ribot.co.uk">ribot</a>';
+          }
+        ?></p>
         <?php wp_footer(); ?>
       </div>
     </div>

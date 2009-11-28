@@ -85,7 +85,7 @@ body {
 
 
 /* LIGHTEST */
-#header, #header h1 a, #header h1 a:hover, #header h2, #footer a, #footer a:hover, #footer, #submit  {
+#header, #header a, #header a:hover, #header h2, #footer a, #footer a:hover, #footer, #submit  {
   color:#FFFFFF;
 }
 div.navigation, h3, div.post, #footer {

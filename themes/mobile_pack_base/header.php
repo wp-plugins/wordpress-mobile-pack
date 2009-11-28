@@ -39,8 +39,15 @@ if ($wpmp_group == 'nokia_high') {
   <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
   <head profile="http://gmpg.org/xfn/11">
     <link href="<?php print $wpmp_group_templates; ?>/styles/reset.css" rel="stylesheet" type="text/css" />
-    <link href="<?php print $wpmp_group_templates; ?>/styles/baseStyles.css" rel="stylesheet" type="text/css" />
+    <?php if (get_bloginfo('stylesheet_url') != $base_style = get_theme_root_uri() . '/mobile_pack_base/style.css') { ?>
+      <link href="<?php print $base_style ?>" rel="stylesheet" type="text/css" />
+    <?php } ?>
     <link href="<?php bloginfo('stylesheet_url'); ?>" rel="stylesheet" type="text/css" />
+    <link href="<?php print $wpmp_group_templates; ?>/styles/baseStyles.css" rel="stylesheet" type="text/css" />
+    <?php if (get_bloginfo('stylesheet_url') != $base_style = get_theme_root_uri() . '/mobile_pack_base/style.css') { ?>
+      <link href="<?php print $base_style ?>.nokia.css" rel="stylesheet" type="text/css" />
+    <?php } ?>
+    <link href="<?php bloginfo('stylesheet_url'); ?>.nokia.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="<?php print $wpmp_group_templates; ?>/scripts/templates.js"></script>
     <script type="text/javascript">
       function init() {
@@ -57,26 +64,49 @@ if ($wpmp_group == 'nokia_high') {
       addEvent("onload",init);
       </script>
   <?php
+
 } elseif ($wpmp_group == 'nokia_mid') {
+
   ?><!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
   <html xmlns="http://www.w3.org/1999/xhtml">
   <head profile="http://gmpg.org/xfn/11">
     <link href="<?php print $wpmp_group_templates; ?>/styles/reset-mid.css" rel="stylesheet" type="text/css" />
-    <link href="<?php print $wpmp_group_templates; ?>/styles/baseStyles-mid.css" rel="stylesheet" type="text/css" />
+    <?php if (get_bloginfo('stylesheet_url') != $base_style = get_theme_root_uri() . '/mobile_pack_base/style.css') { ?>
+      <link href="<?php print $base_style ?>" rel="stylesheet" type="text/css" />
+    <?php } ?>
     <link href="<?php bloginfo('stylesheet_url'); ?>" rel="stylesheet" type="text/css" />
+    <link href="<?php print $wpmp_group_templates; ?>/styles/baseStyles-mid.css" rel="stylesheet" type="text/css" />
+    <?php if (get_bloginfo('stylesheet_url') != $base_style = get_theme_root_uri() . '/mobile_pack_base/style.css') { ?>
+      <link href="<?php print $base_style ?>.nokia.css" rel="stylesheet" type="text/css" />
+    <?php } ?>
+    <link href="<?php bloginfo('stylesheet_url'); ?>.nokia.css" rel="stylesheet" type="text/css" />
   <?php
+
 } elseif ($wpmp_group == 'nokia_low') {
+
   ?><!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
   <html xmlns="http://www.w3.org/1999/xhtml">
   <head profile="http://gmpg.org/xfn/11">
     <link href="<?php print $wpmp_group_templates; ?>/styles/reset-low.css" rel="stylesheet" type="text/css" />
-    <link href="<?php print $wpmp_group_templates; ?>/styles/baseStyles-low.css" rel="stylesheet" type="text/css" />
+    <?php if (get_bloginfo('stylesheet_url') != $base_style = get_theme_root_uri() . '/mobile_pack_base/style.css') { ?>
+      <link href="<?php print $base_style ?>" rel="stylesheet" type="text/css" />
+    <?php } ?>
     <link href="<?php bloginfo('stylesheet_url'); ?>" rel="stylesheet" type="text/css" />
+    <link href="<?php print $wpmp_group_templates; ?>/styles/baseStyles-low.css" rel="stylesheet" type="text/css" />
+    <?php if (get_bloginfo('stylesheet_url') != $base_style = get_theme_root_uri() . '/mobile_pack_base/style.css') { ?>
+      <link href="<?php print $base_style ?>.nokia.css" rel="stylesheet" type="text/css" />
+    <?php } ?>
+    <link href="<?php bloginfo('stylesheet_url'); ?>.nokia.css" rel="stylesheet" type="text/css" />
   <?php
+
 } else {
+
   ?><!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.1//EN" "http://www.openmobilealliance.org/tech/DTD/xhtml-mobile11.dtd">
   <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
   <head profile="http://gmpg.org/xfn/11">
+    <?php if (get_bloginfo('stylesheet_url') != $base_style = get_theme_root_uri() . '/mobile_pack_base/style.css') { ?>
+      <link href="<?php print $base_style ?>" rel="stylesheet" type="text/css" />
+    <?php } ?>
     <link href="<?php bloginfo('stylesheet_url'); ?>" rel="stylesheet" type="text/css" />
     <link href="<?php print get_theme_root_uri(); ?>/mobile_pack_base/style_structure.css" rel="stylesheet" type="text/css" />
   <?php
@@ -91,7 +121,7 @@ if ($wpmp_group == 'nokia_high') {
     <?php wp_head(); ?>
     <!-- Device group: <?php print $wpmp_group; ?> -->
   </head>
-  <body>
+  <body class='<?php print $wpmp_group; ?>'>
     <div id="wrap">
       <?php if ($wpmp_group == 'nokia_low' || $wpmp_group == 'nokia_mid' || $wpmp_group == 'nokia_high') { ?>
         <div id="header" style='height:auto'>

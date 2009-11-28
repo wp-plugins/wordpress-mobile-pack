@@ -67,83 +67,90 @@ if ($wpmp_title!='') {
     print "<h2 class='pagetitle'>$wpmp_title</h2>";
     print "<div id='wrapper'><div id='content'>";
   }
+} else {
+  print "<div id='wrapper'><div id='content'>";
 }
 
 ?>
 
-
-    <?php
-      if ($wpmp_not_found) {
-        print "<p>Use the menu to navigate the site, or search for a keyword:</p>";
-        include (TEMPLATEPATH . "/searchform.php");
-      
-      } elseif ($wpmp_archives) {
-        if ($archives=='category') {
-          print "<h2>Archives by category</h2>";
-          $links = array();
-          foreach(get_categories() as $category) {
-            $links[] = "<a href='" . get_category_link( $category->term_id ) . "'>$category->name</a>";
-          }
-          $links = implode(', ', $links);
-        } elseif ($archives=='tag') {
-          print "<h2>Archives by tag</h2>";
-          $links = array();
-          foreach(get_tags() as $tag) {
-            $links[] = "<a href='" . get_tag_link( $tag->term_id ) . "'>$tag->name</a> ($tag->count)";
-          }
-          $links = implode(', ', $links);
-        } elseif ($archives=='week' || $archives=='month' || $archives=='year') {
-          print "<h2>Archives by $archives</h2>";
-          $links = " ";
-          wp_get_archives(array('type'=>$archives.'ly', 'show_post_count'=>true));
-        }
-        if($links) {
-          print "<p>$links</p>";
-        } else {
-          print "<p>No archives found. Use the menu to navigate the site, or search for a keyword:</p>";
-          include (TEMPLATEPATH . "/searchform.php");
-        }
-      
-      } else { 
-      ?>
-    
-      <?php $summary = get_option('wpmp_theme_post_summary'); ?>
-      <?php global $more; ?>
-      <?php $more=(is_single() || is_page())?1:0; ?>
-      <?php $first = true; ?>
-      <?php while (have_posts()) { ?>
-        <?php the_post(); ?>
-        <div class="post" id="post-<?php the_ID(); ?>">
-          <div class="titleback">
-            <p class="metadata"><?php the_time('F jS, Y') ?> by <?php the_author() ?></p>
-            <h2><a href="<?php the_permalink() ?>" rel="bookmark" title="Link to <?php the_title(); ?>"><?php the_title(); ?></a></h2>
-          </div>
-          <?php if(is_single() || is_page() || ($summary!='none' && !($summary=='firstteaser' && !$first))) { ?>
-            <p class="entry">
-              <?php the_content('Read more'); ?>
-            </p>
-          <?php } ?>
-          <p class="metadata">Posted in <?php the_category(', ') ?> | <?php edit_post_link('Edit','',' |'); ?> <?php comments_popup_link('No comments', '1 comment', '% comments'); ?>
-            <?php if(is_single() || is_page()) { ?>
-              <br />
-              <?php if ($post->comment_status=='open') { ?>
-                You can <a href="#respond">leave a comment</a> for this post.
-              <?php } else { ?>
-                Comments are closed for this post.
-              <?php } ?>
-            <?php } ?>
-          </p>
-        </div>
-        <?php if((is_single() || is_page()) && (!function_exists('wpmp_transcoder_is_last_page') || wpmp_transcoder_is_last_page())) { comments_template(); } ?>
-        <?php $first = false; ?>
-      <?php } ?>
-      <div class="navigation">
-        <?php next_posts_link('Older') ?> <?php previous_posts_link('Newer') ?>
-      </div>
-    
-      <?php
+<?php
+  if ($wpmp_not_found) {
+    print "<p>Use the menu to navigate the site, or search for a keyword:</p>";
+    include (TEMPLATEPATH . "/searchform.php");
+  
+  } elseif ($wpmp_archives) {
+    if ($archives=='category') {
+      print "<h2>Archives by category</h2>";
+      $links = array();
+      foreach(get_categories() as $category) {
+        $links[] = "<a href='" . get_category_link( $category->term_id ) . "'>$category->name</a>";
       }
-    ?>
+      $links = implode(', ', $links);
+    } elseif ($archives=='tag') {
+      print "<h2>Archives by tag</h2>";
+      $links = array();
+      foreach(get_tags() as $tag) {
+        $links[] = "<a href='" . get_tag_link( $tag->term_id ) . "'>$tag->name</a> ($tag->count)";
+      }
+      $links = implode(', ', $links);
+    } elseif ($archives=='week' || $archives=='month' || $archives=='year') {
+      print "<h2>Archives by $archives</h2>";
+      $links = " ";
+      wp_get_archives(array('type'=>$archives.'ly', 'show_post_count'=>true));
+    }
+    if($links) {
+      print "<p>$links</p>";
+    } else {
+      print "<p>No archives found. Use the menu to navigate the site, or search for a keyword:</p>";
+      include (TEMPLATEPATH . "/searchform.php");
+    }
+  
+  } else { 
+  ?>
+
+  <?php $summary = get_option('wpmp_theme_post_summary'); ?>
+  <?php global $more; ?>
+  <?php $more=(is_single() || is_page())?1:0; ?>
+  <?php $first = true; ?>
+  <?php while (have_posts()) { ?>
+    <?php the_post(); ?>
+    <div class="post" id="post-<?php the_ID(); ?>">
+      <?php if(is_single() || is_page()) { ?>
+        <h1><?php the_title(); ?></h1>
+        <p class="metadata"><?php the_time('F jS, Y') ?> by <?php the_author() ?></p>
+        <p class="entry">
+          <?php the_content(); ?>
+        </p>
+      <?php } else { ?>
+        <h2><a href="<?php the_permalink() ?>" rel="bookmark" title="Link to <?php the_title(); ?>"><?php the_title(); ?></a></h2>
+        <p class="metadata"><?php the_time('F jS, Y') ?> by <?php the_author() ?></p>
+        <?php if ($summary!='none' && ($summary!='firstteaser' || $first)) { ?>
+          <p class="entry">
+            <?php the_content('Read more'); ?>
+          </p>
+        <?php } ?>
+      <?php } ?>
+      <p class="metadata">Posted in <?php the_category(', ') ?> | <?php edit_post_link('Edit','',' |'); ?> <?php comments_popup_link('No comments', '1 comment', '% comments'); ?>
+        <?php if(is_single() || is_page()) { ?>
+          <br />
+          <?php if ($post->comment_status=='open') { ?>
+            You can <a href="#respond">leave a comment</a> for this post.
+          <?php } else { ?>
+            Comments are closed for this post.
+          <?php } ?>
+        <?php } ?>
+      </p>
+    </div>
+    <?php if((is_single() || is_page()) && (!function_exists('wpmp_transcoder_is_last_page') || wpmp_transcoder_is_last_page())) { comments_template(); } ?>
+    <?php $first = false; ?>
+  <?php } ?>
+  <div class="navigation">
+    <?php next_posts_link('Older') ?> <?php previous_posts_link('Newer') ?>
+  </div>
+
+  <?php
+  }
+?>
 
   </div>
   <?php get_sidebar(); ?>

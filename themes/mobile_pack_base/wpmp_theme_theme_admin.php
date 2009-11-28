@@ -32,6 +32,9 @@ specific language governing permissions and limitations under the License.
       <?php _e('Part of the WordPress Mobile Pack'); ?>
     </p>
   </h2>
+  <p>
+    <?php _e('<strong>Select the mobile theme itself on the <a href="themes.php?page=wpmp_switcher_admin">switcher settings</a> page.</strong> The page below allows you to further configure its behaviour.'); ?>
+  </p>
   <form method="post" action="">
     <table class="form-table">
       <tr>

@@ -37,6 +37,7 @@ specific language governing permissions and limitations under the License.
     <?php global $wp_registered_sidebars, $wp_registered_widgets; ?>
     <?php $enabled = get_option('wpmp_theme_widget'); ?>
     <?php $sidebar_widgets = wp_get_sidebars_widgets(); ?>
+    <p><?php _e("Use this page to select which of your <a href='/wp-admin/widgets.php'>currently visible widgets</a> will appear for your mobile users."); ?></p>
     <?php foreach($sidebar_widgets as $sidebar=>$widgets) { ?>
       <?php if ($sidebar!='wp_inactive_widgets') { ?>
         <h3>

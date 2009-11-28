@@ -26,7 +26,7 @@ specific language governing permissions and limitations under the License.
 */
 
 function group_detection() {
-	return 'nokia_high';
+	//return 'nokia_low';
 	
   $user_agent = strtolower($_SERVER['HTTP_USER_AGENT']);
   if (

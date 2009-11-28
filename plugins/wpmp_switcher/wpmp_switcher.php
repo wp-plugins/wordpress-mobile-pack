@@ -193,10 +193,10 @@ function wpmp_switcher_wp_footer($force=false) {
   }
   switch (wpmp_switcher_outcome()) {
     case WPMP_SWITCHER_MOBILE_PAGE:
-      print wpmp_switcher_link('desktop', __('Switch to our desktop site'));
+      print "<p>" . wpmp_switcher_link('desktop', __('Switch to our desktop site')) . "</p>";
       break;
     case WPMP_SWITCHER_DESKTOP_PAGE:
-      print wpmp_switcher_link('mobile', __('Switch to our mobile site'));
+      print "<p>" . wpmp_switcher_link('mobile', __('Switch to our mobile site')) . "</p>";
       break;
   }
 }
