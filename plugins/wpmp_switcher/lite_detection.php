@@ -147,13 +147,16 @@ function lite_detection_ua_contains() {
     'ipod',
     'lge vx',
     'midp',
+    'maemo',
     'mmp',
     'netfront',
-    'palm',
-    'psp',
+    'nintendo DS',
+    'novarra',
     'openweb',
     'opera mobi',
     'opera mini',
+    'palm',
+    'psp',
     'phone',
     'smartphone',
     'symbian',
@@ -161,8 +164,6 @@ function lite_detection_ua_contains() {
     'up.link',
     'wap',
     'windows ce',
-    'intendo DS',
-    'ovarra',
   ));
 }
 

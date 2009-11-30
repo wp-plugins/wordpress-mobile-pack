@@ -31,9 +31,14 @@ function wpmp_ms_mobile_top($title, $menu=array()) {
 <!DOCTYPE html PUBLIC '-//WAPFORUM//DTD XHTML Mobile 1.0//EN' 'http://www.wapforum.org/DTD/xhtml-mobile10.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
   <head profile="http://gmpg.org/xfn/11">
+    <?php if (get_bloginfo('stylesheet_url') != $base_style = get_theme_root_uri() . '/mobile_pack_base/style.css') { ?>
+      <link href="<?php print $base_style ?>" rel="stylesheet" type="text/css" />
+    <?php } ?>
+    <link href="<?php bloginfo('stylesheet_url'); ?>" rel="stylesheet" type="text/css" />
+    <link href="<?php print get_theme_root_uri(); ?>/mobile_pack_base/style_structure.css" rel="stylesheet" type="text/css" />
+
     <meta http-equiv="Content-Type" content="<?php bloginfo('html_type'); ?>; charset=<?php bloginfo('charset'); ?>" />
     <title><?php bloginfo('name'); ?> <?php print $title; ?></title>
-    <link rel="stylesheet" href="<?php bloginfo('stylesheet_url'); ?>" type="text/css" media="screen" />
     <link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="<?php bloginfo('rss2_url'); ?>" />
     <link rel="alternate" type="text/xml" title="RSS .92" href="<?php bloginfo('rss_url'); ?>" />
     <link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="<?php bloginfo('atom_url'); ?>" />
