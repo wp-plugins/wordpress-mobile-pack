@@ -81,7 +81,9 @@ body.nokia_low h1, body.nokia_mid h1 {
 ul.list li {
   white-space:nowrap;
 }
-
+a:hover, a:focus {
+  outline: none!important;
+}
 
 
 /* PALETTE */
