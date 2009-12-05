@@ -67,7 +67,7 @@ div.dateicon, p.metadata {
 
 
 /* LIGHT MID */
-#menu, #sidebar ul h2, div.post, ol.commentlist, #commentform {
+#menu, #sidebar ul h2, h1, div.post, ol.commentlist, #commentform {
   border-color:#DDDFD9;
 }
 
@@ -88,6 +88,6 @@ body {
 #header, #header a, #header a:hover, #header h2, #footer a, #footer a:hover, #footer, #submit  {
   color:#FFFFFF;
 }
-div.navigation, h3, div.post, #footer {
+.navigation, h3, div.post, #footer {
   border-top-color:#FFFFFF;
 }

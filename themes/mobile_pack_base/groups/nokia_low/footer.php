@@ -1,9 +1,9 @@
 <?php
 
 /*
-$Id$
+$Id: footer.php 177682 2009-11-28 13:02:13Z jamesgpearce $
 
-$URL$
+$URL: http://plugins.svn.wordpress.org/wordpress-mobile-pack/trunk/themes/mobile_pack_base/footer.php $
 
 Copyright (c) 2009 mTLD Top Level Domain Limited
 
@@ -27,18 +27,4 @@ specific language governing permissions and limitations under the License.
 
 ?>
 
-      <div id="footer">
-        <?php
-          if (file_exists($wpmp_include = wpmp_theme_group_file('footer.php'))) {
-            include_once($wpmp_include);
-          } else {
-            ?>
-              <p>Powered by the <a href="http://mobiforge.mobi/wordpress-mobile-pack">WordPress Mobile Pack</a> | Theme designed by <a href="http://ribot.co.uk">ribot</a></p>
-            <?php
-          }
-        ?>
-        <?php wp_footer(); ?>
-      </div>
-    </div>
-  </body>
-</html>
+<p>Powered by the <a href="http://mobiforge.mobi/wordpress-mobile-pack">WordPress Mobile Pack</a> | Theme designed by <a href="http://forumnokia.mobi">Forum Nokia</a></p>

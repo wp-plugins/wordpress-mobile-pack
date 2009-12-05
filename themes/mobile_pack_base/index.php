@@ -27,8 +27,6 @@ specific language governing permissions and limitations under the License.
 
 get_header();
 
-$wpmp_group = wpmp_theme_device_group();
-
 $wpmp_title = '';
 $wpmp_archives = false;
 $wpmp_not_found = false;
@@ -53,31 +51,25 @@ if (isset($_GET['archives']) && ($archives = $_GET['archives'])!='') {
     $wpmp_title = "Author archive";
   } elseif (isset($_GET['paged']) && !empty($_GET['paged'])) {
     $wpmp_title = "Blog archives";
+  } elseif (!is_single() && !is_page()) {
+    $wpmp_title = "Recent posts";
   }
 } else {
   $wpmp_title = "Page not found";
   $wpmp_not_found = true;
 }
 
-if ($wpmp_title!='') {
-  if ($wpmp_group == 'nokia_low' || $wpmp_group == 'nokia_mid' || $wpmp_group == 'nokia_high') {
-    print "<div id='wrapper'><div id='content'>";
-    print "<h1>$wpmp_title</h1>";
-  } else {
-    print "<h2 class='pagetitle'>$wpmp_title</h2>";
-    print "<div id='wrapper'><div id='content'>";
-  }
-} else {
+
   print "<div id='wrapper'><div id='content'>";
-}
+  if ($wpmp_title!='') {
+    print "<h1>$wpmp_title</h1>";
+  }
 
-?>
 
-<?php
   if ($wpmp_not_found) {
     print "<p>Use the menu to navigate the site, or search for a keyword:</p>";
     include (TEMPLATEPATH . "/searchform.php");
-  
+
   } elseif ($wpmp_archives) {
     if ($archives=='category') {
       print "<h2>Archives by category</h2>";
@@ -104,52 +96,87 @@ if ($wpmp_title!='') {
       print "<p>No archives found. Use the menu to navigate the site, or search for a keyword:</p>";
       include (TEMPLATEPATH . "/searchform.php");
     }
-  
-  } else { 
-  ?>
 
-  <?php $summary = get_option('wpmp_theme_post_summary'); ?>
-  <?php global $more; ?>
-  <?php $more=(is_single() || is_page())?1:0; ?>
-  <?php $first = true; ?>
-  <?php while (have_posts()) { ?>
-    <?php the_post(); ?>
-    <div class="post" id="post-<?php the_ID(); ?>">
-      <?php if(is_single() || is_page()) { ?>
-        <h1><?php the_title(); ?></h1>
-        <p class="metadata"><?php the_time('F jS, Y') ?> by <?php the_author() ?></p>
-        <p class="entry">
-          <?php the_content(); ?>
-        </p>
-      <?php } else { ?>
-        <h2><a href="<?php the_permalink() ?>" rel="bookmark" title="Link to <?php the_title(); ?>"><?php the_title(); ?></a></h2>
-        <p class="metadata"><?php the_time('F jS, Y') ?> by <?php the_author() ?></p>
-        <?php if ($summary!='none' && ($summary!='firstteaser' || $first)) { ?>
-          <p class="entry">
-            <?php the_content('Read more'); ?>
-          </p>
-        <?php } ?>
-      <?php } ?>
-      <p class="metadata">Posted in <?php the_category(', ') ?> | <?php edit_post_link('Edit','',' |'); ?> <?php comments_popup_link('No comments', '1 comment', '% comments'); ?>
-        <?php if(is_single() || is_page()) { ?>
-          <br />
-          <?php if ($post->comment_status=='open') { ?>
-            You can <a href="#respond">leave a comment</a> for this post.
-          <?php } else { ?>
-            Comments are closed for this post.
-          <?php } ?>
-        <?php } ?>
-      </p>
-    </div>
-    <?php if((is_single() || is_page()) && (!function_exists('wpmp_transcoder_is_last_page') || wpmp_transcoder_is_last_page())) { comments_template(); } ?>
-    <?php $first = false; ?>
-  <?php } ?>
-  <div class="navigation">
-    <?php next_posts_link('Older') ?> <?php previous_posts_link('Newer') ?>
-  </div>
+  } else {
 
-  <?php
+    global $more;
+    $more=(is_single() || is_page())?1:0;
+
+    if (file_exists($wpmp_include = wpmp_theme_group_file('index.php'))) {
+      include_once($wpmp_include);
+    } else {
+
+      while (have_posts()) {
+        the_post();
+        print '<div class="post" id="post-' . get_the_ID() . '">';
+        if(is_single() || is_page()) {
+          print '<h1>' . get_the_title() . '</h1>';
+          wpmp_theme_post_single();
+        } else {
+          print '<h2><a href="'; the_permalink(); print '" rel="bookmark" title="Link to ' . get_the_title() . '">' . get_the_title() . '</a></h2>';
+          wpmp_theme_post_summary();
+        }
+      }
+      if(!is_single() && !is_page()) {
+        print '<p class="navigation">';
+        next_posts_link('Older');
+        print ' ';
+        previous_posts_link('Newer');
+        print '</p>';
+      }
+
+    }
   }
+
+function wpmp_theme_post_single() {
+  wpmp_theme_post(true);
+  print '<p class="metadata">'; previous_post_link('Previous post: %link'); print '<br />'; next_post_link('Next post: %link'); print '</p>';
+  if(!function_exists('wpmp_transcoder_is_last_page') || wpmp_transcoder_is_last_page()) {
+    global $post;
+    if (!$post->comment_status=='open') {
+      print '<p class="metadata">Comments are closed for this post.</p>';
+      print '</div>';
+    } else {
+      print '</div>';
+      comments_template();
+    }
+  }
+}
+
+function wpmp_theme_post_summary() {
+  wpmp_theme_post();
+  print '</div>';
+}
+
+function wpmp_theme_post($single = false) {
+  global $wpmp_summary_first;
+  if (!isset($wpmp_summary_first)) {
+    $wpmp_summary_first=true;
+  }
+  $summary = get_option('wpmp_theme_post_summary');
+  $metadata = get_option('wpmp_theme_post_summary_metadata')=='true';
+  if ($single || $metadata) {
+    print '<p class="metadata">'. get_the_time('F jS, Y') . ' by ' . get_the_author() . '</p>';
+  }
+  if ($single || ($summary!='none' && ($summary!='firstteaser' || $wpmp_summary_first))) {
+    print '<p class="entry">';
+    the_content('Read more');
+    print '</p>';
+    $wpmp_summary_first = false;
+  }
+  if ($single || $metadata) {
+    print '<p class="metadata">Posted in ';
+    the_category(', ');
+    print ' | ';
+    edit_post_link('Edit');
+    if ($comments_link) {
+      print ' | ';
+      comments_popup_link('No comments', '1 comment', '% comments');
+    }
+    print '</p>';
+  }
+}
+
 ?>
 
   </div>

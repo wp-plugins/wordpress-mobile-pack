@@ -74,7 +74,9 @@ specific language governing permissions and limitations under the License.
         <td>
           <?php print wpmp_theme_option('wpmp_theme_post_summary', 'wpmpThemeSummary()'); ?>
           <br />
-          <?php _e('This applies when your site is displaying a list of posts.'); ?>
+            <?php print wpmp_theme_option('wpmp_theme_post_summary_metadata'); ?> <strong><?php _e("Display metadata for posts (author, tags, etc)"); ?></strong>
+          <br />
+          <?php _e('These settings apply when your site is displaying a list of posts.'); ?>
         </td>
       </tr>
       <tr class='wpmp_teaser'>

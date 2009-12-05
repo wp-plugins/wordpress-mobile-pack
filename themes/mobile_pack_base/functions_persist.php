@@ -30,6 +30,7 @@ function wpmp_theme_init() {
   foreach(array(
     'wpmp_theme_home_link_in_menu'=>'true',
     'wpmp_theme_post_summary'=>'teaser',
+    'wpmp_theme_post_summary_metadata'=>'true',
     'wpmp_theme_post_count'=>'5',
     'wpmp_theme_teaser_length'=>'50',
     'wpmp_theme_widget_list_count'=>'5',
@@ -89,6 +90,7 @@ function wpmp_theme_options_write() {
     'wpmp_theme_home_link_in_menu'=>true,
     'wpmp_theme_post_count'=>false,
     'wpmp_theme_post_summary'=>false,
+    'wpmp_theme_post_summary_metadata'=>true,
     'wpmp_theme_teaser_length'=>false,
     'wpmp_theme_widget_list_count'=>false,
     'wpmp_theme_transcoder_remove_media'=>true,
@@ -153,8 +155,8 @@ function wpmp_theme_option($option, $onchange='') {
     case 'wpmp_theme_transcoder_shrink_images':
     case 'wpmp_theme_transcoder_simplify_styling':
     case 'wpmp_theme_transcoder_clear_cache_now':
+    case 'wpmp_theme_post_summary_metadata':
     case 'wpmp_theme_nokia_templates_beta':
-    
       return wpmp_theme_option_checkbox(
         $option,
         $onchange

@@ -32,17 +32,29 @@ add_filter('dynamic_sidebar_params', 'wpmp_theme_dynamic_sidebar_params');
 add_action('pre_get_posts', 'wpmp_theme_pre_get_posts');
 add_action('the_content', 'wpmp_theme_the_content');
 
-function wpmp_theme_device_group() {
-  global $wpmp_theme_device_group;
-  if(!isset($wpmp_theme_device_group)) {
+function wpmp_theme_group() {
+  global $wpmp_theme_group;
+  if(!isset($wpmp_theme_group)) {
     if (get_option('wpmp_theme_nokia_templates_beta')=='true') {
       include_once('group_detection.php');
-      $wpmp_theme_device_group = group_detection();
+      $wpmp_theme_group = group_detection();
     } else {
-      $wpmp_theme_device_group = '';
+      $wpmp_theme_group = '';
     }
   }
-  return $wpmp_theme_device_group;
+  return $wpmp_theme_group;
+}
+
+function wpmp_theme_group_file($file='index.php') {
+  return dirname(__FILE__) . DIRECTORY_SEPARATOR . 'groups' . DIRECTORY_SEPARATOR . wpmp_theme_group() . DIRECTORY_SEPARATOR . $file;
+}
+
+function wpmp_theme_group_uri() {
+  return get_theme_root_uri() . "/mobile_pack_base/groups/" . wpmp_theme_group();
+}
+
+function wpmp_theme_base_style() {
+  return get_theme_root_uri() . '/mobile_pack_base/style.css';
 }
 
 function wpmp_theme_init_in_use() {
