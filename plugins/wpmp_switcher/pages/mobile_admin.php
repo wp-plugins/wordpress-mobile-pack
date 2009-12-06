@@ -220,12 +220,26 @@ specific language governing permissions and limitations under the License.
     $id = $_GET['c'];
     if(is_numeric($id)) {
       global $wpdb;
-      if(isset($_GET['action']) && $_GET['action']=="approvecomment" && wpmp_msma_check_referer()) {
-        $wpdb->query("UPDATE $wpdb->comments SET comment_approved='1' WHERE comment_ID='$id' LIMIT 1");
-      } elseif (isset($_GET['action']) && $_GET['action']=="deletecomment" && wpmp_msma_check_referer()) {
-        $wpdb->query("UPDATE $wpdb->comments SET comment_approved='spam' WHERE comment_ID='$id' LIMIT 1");
-//        exit;
-      } else {
+      if(isset($_GET['action']) && $_GET['action']=="approvecomment" && wpmp_msma_check_referer()) 
+		{
+			//Writing directly to the database is unsafe. In this case, it also prevents comment actions taking place (email notification etc)
+			//$wpdb->query("UPDATE $wpdb->comments SET comment_approved='1' WHERE comment_ID='$id' LIMIT 1");
+			//Use official function http://codex.wordpress.org/Function_Reference/wp_set_comment_status
+			wp_set_comment_status( $id, 'approve' );
+		} 
+		elseif (isset($_GET['action']) && $_GET['action']=="deletecomment" && wpmp_msma_check_referer()) 
+		{
+			//Use official function http://codex.wordpress.org/Function_Reference/wp_set_comment_status
+			wp_set_comment_status( $id, 'delete' );
+      } 
+		elseif (isset($_GET['action']) && $_GET['action']=="spamcomment" && wpmp_msma_check_referer()) 
+		{
+			//$wpdb->query("UPDATE $wpdb->comments SET comment_approved='spam' WHERE comment_ID='$id' LIMIT 1");
+			//Use official function http://codex.wordpress.org/Function_Reference/wp_set_comment_status
+			wp_set_comment_status( $id, 'spam' );
+      } 
+		else 
+		{
     		$comment = $wpdb->get_results("SELECT $wpdb->comments.*, $wpdb->posts.post_title FROM $wpdb->comments INNER JOIN $wpdb->posts ON $wpdb->comments.comment_post_id = $wpdb->posts.id WHERE comment_ID=$id;" );
       }
     }
@@ -276,10 +290,11 @@ specific language governing permissions and limitations under the License.
       }
     }
     $approve = "<a href='comment.php?action=approvecomment&amp;c=$id'>Approve</a>";
-    $spam = "<a href='comment.php?action=deletecomment&amp;c=$id'>Spam</a>";
+    $delete = "<a href='comment.php?action=deletecomment&amp;c=$id'>Delete</a>";
+    $spam = "<a href='comment.php?action=spamcomment&amp;c=$id'>Spam</a>";
     print "<p><strong>$title</strong> on $comment->post_title" .
       "<br />$content" .
-      "<br />$approve | $spam" .
+      "<br />$approve | $delete | $spam" .
       "</p>";
   }
 
