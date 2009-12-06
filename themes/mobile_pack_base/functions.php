@@ -108,6 +108,12 @@ function wpmp_theme_the_content($content) {
     global $id;
     $suffix = true;
   }
+	//@edent Stop the teaser showing plugin text ("[caption id" etc) as though it were part of the normal text 
+	//Fixes Bug 60 https://www.assembla.com/spaces/wordpress-mobile-pack/tickets/60-Teaser-shows-shortcode-tags
+	if(strpos($content, '[')!==false) //if a '[' is found (i.e. not false) just empty the whole string. TODO Only empty *from* the first [.
+	{
+		$content = "Read more";  //Replace the entire string with a link to "Read more" (can this go through i18n?)
+	}
   if (substr($content, -9)=='Read more') {
     $content = substr($content, 0, -9);
     $suffix = true;
