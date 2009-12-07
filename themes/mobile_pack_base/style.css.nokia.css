@@ -61,10 +61,14 @@ body.nokia_high h1 {
   background-repeat:repeat-x;
 }
 body.nokia_high div#header,
-body.nokia_high div#menu,
-body.nokia_high div#footer {
+body.nokia_high div#menu {
   background-image: url(img/radial.png);
   background-position:0 -10px;
+  background-repeat:repeat-x;
+}
+body.nokia_high div#footer {
+  background-image: url(img/dahs.png);
+  background-position:top;
   background-repeat:repeat-x;
 }
 #sidebar ul {

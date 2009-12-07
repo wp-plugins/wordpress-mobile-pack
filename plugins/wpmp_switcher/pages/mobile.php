@@ -27,16 +27,20 @@ specific language governing permissions and limitations under the License.
 
 function wpmp_ms_mobile_top($title, $menu=array()) {
   print "<?xml version='1.0' encoding='UTF-8'?>";
-?>
-<!DOCTYPE html PUBLIC '-//WAPFORUM//DTD XHTML Mobile 1.0//EN' 'http://www.wapforum.org/DTD/xhtml-mobile10.dtd'>
-<html xmlns='http://www.w3.org/1999/xhtml'>
-  <head profile="http://gmpg.org/xfn/11">
-    <?php if (get_bloginfo('stylesheet_url') != $base_style = get_theme_root_uri() . '/mobile_pack_base/style.css') { ?>
-      <link href="<?php print $base_style ?>" rel="stylesheet" type="text/css" />
-    <?php } ?>
-    <link href="<?php bloginfo('stylesheet_url'); ?>" rel="stylesheet" type="text/css" />
-    <link href="<?php print get_theme_root_uri(); ?>/mobile_pack_base/style_structure.css" rel="stylesheet" type="text/css" />
-
+  if (file_exists($wpmp_include = wpmp_theme_group_file('header.php'))) {
+    include_once($wpmp_include);
+  } else {
+    ?><!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.1//EN" "http://www.openmobilealliance.org/tech/DTD/xhtml-mobile11.dtd">
+    <html xmlns="http://www.w3.org/1999/xhtml">
+    <head profile="http://gmpg.org/xfn/11">
+      <?php if (get_bloginfo('stylesheet_url') != wpmp_theme_base_style()) { ?>
+        <link href="<?php print wpmp_theme_base_style() ?>" rel="stylesheet" type="text/css" />
+      <?php } ?>
+      <link href="<?php bloginfo('stylesheet_url'); ?>" rel="stylesheet" type="text/css" />
+      <link href="<?php print get_theme_root_uri(); ?>/mobile_pack_base/style_structure.css" rel="stylesheet" type="text/css" />
+    <?php
+  }
+  ?>
     <meta http-equiv="Content-Type" content="<?php bloginfo('html_type'); ?>; charset=<?php bloginfo('charset'); ?>" />
     <title><?php bloginfo('name'); ?> <?php print $title; ?></title>
     <link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="<?php bloginfo('rss2_url'); ?>" />
@@ -45,16 +49,16 @@ function wpmp_ms_mobile_top($title, $menu=array()) {
     <link rel="pingback" href="<?php bloginfo('pingback_url'); ?>" />
     <?php wp_head(); ?>
   </head>
-  <body>
-    <div id="page">
-      <div id="header">
-        <h1><a href="<?php echo get_option('home'); ?>/"><?php bloginfo('name'); ?></a></h1>
-        <h2><?php bloginfo('description'); ?></h2>
+  <body class='<?php print wpmp_theme_group(); ?>'>
+    <div id="wrap">
+      <div id="header" style='height:auto'>
+        <p><a href="<?php echo get_option('home'); ?>/"><strong><?php bloginfo('name'); ?></strong></a></p>
+        <p><?php bloginfo('description'); ?></p>
       </div>
       <?php
         if($menu) {
           $base = get_option('home');
-          print '<div id="menu"><ul>';
+          print '<div id="menu"><ul class="breadcrumbs">';
           $page = $_SERVER['REQUEST_URI'];
           if(substr($page, -9)=="/wp-admin") {
             $page="$base/wp-admin/index.php";
@@ -68,26 +72,36 @@ function wpmp_ms_mobile_top($title, $menu=array()) {
             if(substr($link, 0, 7)!="http://" && substr($link, 0, 8)!="https://") {
               $link = $base . $link;
             }
-            $item .= 'page_item"><a href="' . $link . '" title="' . $name . '">' . __($name) . '</a></li>';
+            $item .= 'page_item"><a href="' . $link . '" title="' . $name . '">' . __($name) . '</a></li> ';
             if ($name[0]!='_') {
               print $item;
             }
           }
-          print '</ul>&#160;</div>';
+          print '</ul></div>';
         }
       ?>
       <div id="wrapper">
         <div id="content">
-          <h2><?php print $title; ?></h2>
+          <h1><?php print $title; ?></h1>
           <?php
           }
+
+
 
           function wpmp_ms_mobile_bottom() {
           ?>
         </div>
       </div>
         <div id="footer">
-        <p>Powered by the <a href="http://mobiforge.mobi/wordpress-mobile-pack">WordPress Mobile Pack</a> | Theme designed by <a href="http://ribot.co.uk">ribot</a></p>
+        <?php
+          if (file_exists($wpmp_include = wpmp_theme_group_file('footer.php'))) {
+            include_once($wpmp_include);
+          } else {
+            ?>
+              <p>Powered by the <a href="http://mobiforge.mobi/wordpress-mobile-pack">WordPress Mobile Pack</a> | Theme designed by <a href="http://ribot.co.uk">ribot</a></p>
+            <?php
+          }
+        ?>
         <?php wpmp_switcher_wp_footer(true); ?>
       </div>
     </div>

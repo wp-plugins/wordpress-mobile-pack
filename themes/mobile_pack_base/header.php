@@ -35,7 +35,7 @@ if (file_exists($wpmp_include = wpmp_theme_group_file('header.php'))) {
   include_once($wpmp_include);
 } else {
   ?><!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.1//EN" "http://www.openmobilealliance.org/tech/DTD/xhtml-mobile11.dtd">
-  <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <html xmlns="http://www.w3.org/1999/xhtml">
   <head profile="http://gmpg.org/xfn/11">
     <?php if (get_bloginfo('stylesheet_url') != wpmp_theme_base_style()) { ?>
       <link href="<?php print wpmp_theme_base_style() ?>" rel="stylesheet" type="text/css" />

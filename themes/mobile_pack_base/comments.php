@@ -34,57 +34,81 @@ specific language governing permissions and limitations under the License.
   <?php return; ?>
 <?php } ?>
 
-<?php if ($comments) { ?>
-  <h3 id="comments"><?php comments_number('No comments', '1 comment', '% comments' );?> on this post.</h3>
-  <ol class="commentlist">
-    <?php foreach ($comments as $comment) { ?>
-      <li>
-        <a name="#comment-<?php comment_ID() ?>"></a>
-        <p><?php comment_author_link() ?>:</p>
-        <?php if ($comment->comment_approved == '0') { ?>
-          <em>Your comment is awaiting moderation.</em>
-        <?php } ?>
-        <p class="metadata"><?php comment_date('F jS, Y') ?> at <?php comment_time() ?> <?php edit_comment_link('Edit','',''); ?></p>
-        <?php comment_text() ?>
-      </li>
-    <?php } ?>
-  </ol>
-<?php } ?>
-<?php if ($post->comment_status == 'open') { ?>
-  <h3 id="respond">Leave a comment</h3>
-  <?php if ( get_option('comment_registration') && !$user_ID ) { ?>
-    <p>You must be <a href="<?php echo get_option('siteurl'); ?>/wp-login.php?redirect_to=<?php the_permalink(); ?>">logged in</a> to post a comment.</p>
-  <?php } else { ?>
-    <form action="<?php echo get_option('siteurl'); ?>/wp-comments-post.php" method="post" id="commentform">
-      <?php if ( $user_ID ) { ?>
-        <p>Logged in as <a href="<?php echo get_option('siteurl'); ?>/wp-admin/profile.php"><?php echo $user_identity; ?></a>. <a href="<?php echo get_option('siteurl'); ?>/wp-login.php?action=logout" title="Log out of this account">Logout</a></p>
-      <?php } else { ?>
-        <p>
-          <label for="author">Name <?php if ($req) echo "(required)"; ?></label>
-          <br />
-          <input type="text" name="author" id="author" value="<?php echo $comment_author; ?>" />
-        </p>
-        <p>
-          <label for="email">Mail (<?php if ($req) echo "required, but "; ?>not published)</label>
-          <br />
-          <input type="text" name="email" id="email" value="<?php print empty($comment_author_email)?"":$comment_author_email; ?>" />
-        </p>
-        <p>
-          <label for="url">Website</label>
-          <br />
-          <input type="text" name="url" id="url" value="<?php print empty($comment_author_url)?"http://":$comment_author_url; ?>"/>
-        </p>
+<?php
+  if (file_exists($wpmp_include = wpmp_theme_group_file('comments.php'))) {
+    include_once($wpmp_include);
+  } else {
+    if ($comments) {
+      print '<h3 id="comments">'; comments_number('No comments', '1 comment', '% comments' ); print ' on this post.</h3>';
+      wpmp_theme_comment_list($comments);
+    }
+    if ($post->comment_status == 'open') {
+      print '<h3 id="respond">Leave a comment</h3>';
+      wpmp_theme_comment_form($user_ID, $user_identity, $req, $comment_author, $comment_author_url, $id, $post);
+    }
+  }
+?>
+
+
+<?php
+  function wpmp_theme_comment_list($comments) {
+    global $comment; //ouch
+    ?>
+    <ol class="commentlist">
+      <?php foreach ($comments as $comment) { ?>
+        <li>
+          <a name="#comment-<?php comment_ID($comment->comment_ID) ?>"></a>
+          <p><?php comment_author_link($comment->comment_ID) ?>:</p>
+          <?php if ($comment->comment_approved == '0') { ?>
+            <em>Your comment is awaiting moderation.</em>
+          <?php } ?>
+          <p class="metadata"><?php comment_date('F jS, Y') ?> at <?php comment_time() ?> <?php edit_comment_link('Edit','',''); ?></p>
+          <?php comment_text() ?>
+        </li>
       <?php } ?>
-      <p>
-        <label for="comment">Comment</label>
-        <br />
-        <textarea name="comment" id="comment" rows="3"></textarea>
-      </p>
-      <p>
-        <input name="submit" type="submit" id="submit" value="Submit comment" />
-        <input type="hidden" name="comment_post_ID" value="<?php echo $id; ?>" />
-      </p>
-      <?php do_action('comment_form', $post->ID); ?>
-    </form>
-  <?php } ?>
-<?php } ?>
+    </ol>
+  <?php
+  }
+?>
+
+<?php
+  function wpmp_theme_comment_form($user_ID, $user_identity, $req, $comment_author, $comment_author_url, $id, $post) {
+    ?>
+    <?php if ( get_option('comment_registration') && !$user_ID ) { ?>
+      <p>You must be <a href="<?php echo get_option('siteurl'); ?>/wp-login.php?redirect_to=<?php the_permalink(); ?>">logged in</a> to post a comment.</p>
+    <?php } else { ?>
+      <form action="<?php echo get_option('siteurl'); ?>/wp-comments-post.php" method="post" id="commentform">
+        <?php if ( $user_ID ) { ?>
+          <p>Logged in as <a href="<?php echo get_option('siteurl'); ?>/wp-admin/profile.php"><?php echo $user_identity; ?></a>. <a href="<?php echo get_option('siteurl'); ?>/wp-login.php?action=logout" title="Log out of this account">Logout</a></p>
+        <?php } else { ?>
+          <p>
+            <label for="author">Name <?php if ($req) echo "(required)"; ?></label>
+            <br />
+            <input type="text" name="author" id="author" value="<?php echo $comment_author; ?>" />
+          </p>
+          <p>
+            <label for="email">Mail (<?php if ($req) echo "required, but "; ?>not published)</label>
+            <br />
+            <input type="text" name="email" id="email" value="<?php print empty($comment_author_email)?"":$comment_author_email; ?>" />
+          </p>
+          <p>
+            <label for="url">Website</label>
+            <br />
+            <input type="text" name="url" id="url" value="<?php print empty($comment_author_url)?"http://":$comment_author_url; ?>"/>
+          </p>
+        <?php } ?>
+        <p>
+          <label for="comment">Comment</label>
+          <br />
+          <textarea name="comment" id="comment" rows="3"></textarea>
+        </p>
+        <p>
+          <input name="submit" type="submit" id="submit" value="Submit comment" />
+          <input type="hidden" name="comment_post_ID" value="<?php echo $id; ?>" />
+        </p>
+        <?php do_action('comment_form', $post->ID); ?>
+      </form>
+    <?php
+    }
+  }
+?>
