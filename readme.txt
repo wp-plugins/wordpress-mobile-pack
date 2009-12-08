@@ -19,7 +19,7 @@ Features highlights:
 
 *  **mobile switcher**, i.e. the plug-in automatically suggests desktop or mobile presentation, but lets users switch to the other and remembers. Read more about "switching" on [mobiForge](http://mobiforge.com/designing/story/a-very-modern-mobile-switching-algorithm-part-i "A very modern switching algorithm Part I")
 *  **base mobile theme**, crafted by [ribot](http://ribot.co.uk "ribot"), a top UK mobile design team, the WordPress Mobile Pack comes with a base theme and 3 color variations that you can choose. All mark-up is valid XHTML-MP 1 and the site scores 5 on [mobiReady](http://mobiready.com "mobiReady")
-*  **device adaptation**, the plug-in has basic recognition of mobile devices and is capable of rescaling images, splitting articles and posts in multiple pages, simplifying style and remove media. With the upcoming release of [DeviceAtlas Personal](http://deviceatlas.com/wordpress "DeviceAtlas Personal"), full adaptation will be implemented.
+*  **device adaptation**, the plug-in has basic recognition of mobile devices and is capable of rescaling images, splitting articles and posts in multiple pages, simplifying style and remove media. Theme variations are provided for major families of devices.
 *  **mobile admin panel**, allows the blog managers to access the admin interface, specifically designed for mobile, with simplified access to the most common features such as editing a post or approving comments.
 *  **mobile ad widget**, easily enable mobile ads with AdMob or mobile Adsense
 *  **barcode widget**, add to your full site a barcode that devices with a suitable reader can use to quickly visit the front page of the mobile site, or deep link within it
