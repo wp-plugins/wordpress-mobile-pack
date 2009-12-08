@@ -143,6 +143,7 @@ function lite_detection_ua_prefixes() {
 function lite_detection_ua_contains() {
   return implode("|", array(
     'android',
+    'blackberry',
     'hiptop',
     'ipod',
     'lge vx',
