@@ -1,5 +1,5 @@
 === WordPress Mobile Pack ===
-Contributors: jamesgpearce, andreatrasatti
+Contributors: jamesgpearce, andreatrasatti, edent
 Tags: mobile, mobile web, mobile internet, wireless, pda, iphone, android, webkit, wap, dotMobi, theme, blackberry, admob, mobile adsense, qr-code, device, switcher, cellular
 Requires at least: 2.5
 Tested up to: 2.8.6
