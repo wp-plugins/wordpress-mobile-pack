@@ -5,7 +5,7 @@ $Id$
 
 $URL$
 
-Copyright (c) 2009 mTLD Top Level Domain Limited
+Copyright (c) 2009 James Pearce & friends, portions mTLD Top Level Domain Limited, ribot, Forum Nokia
 
 Online support: http://mobiforge.com/forum/dotmobi/wordpress
 

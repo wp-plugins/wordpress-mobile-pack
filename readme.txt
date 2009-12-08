@@ -1,4 +1,5 @@
 === WordPress Mobile Pack ===
+Contributors: jamesgpearce, andreatrasatti
 Tags: mobile, mobile web, mobile internet, wireless, pda, iphone, android, webkit, wap, dotMobi, theme, blackberry, admob, mobile adsense, qr-code, device, switcher, cellular
 Requires at least: 2.5
 Tested up to: 2.8.6
@@ -8,7 +9,7 @@ The WordPress Mobile Pack is a complete toolkit to help mobilize your WordPress 
 
 == Description ==
 
-The dotMobi WordPress Mobile Pack is a complete toolkit to help mobilize your WordPress site and blog.
+The WordPress Mobile Pack is a complete toolkit to help mobilize your WordPress site and blog.
 
 It includes a mobile switcher to select themes based on the type of user that is visiting the site, a selection of mobile themes, extra widgets, device adaptation and a mobile administration panel to allow users to edit the site or write new posts when out and about.
 
@@ -22,6 +23,9 @@ Features highlights:
 *  **mobile admin panel**, allows the blog managers to access the admin interface, specifically designed for mobile, with simplified access to the most common features such as editing a post or approving comments.
 *  **mobile ad widget**, easily enable mobile ads with AdMob or mobile Adsense
 *  **barcode widget**, add to your full site a barcode that devices with a suitable reader can use to quickly visit the front page of the mobile site, or deep link within it
+
+Note: this 1.1.9 release features beta provision of special Nokia device themes. Your feedback on these themes is very welcome. They will be fully released (and enabled by default) on 18th December 2009.
+
 
 == Installation ==
 
@@ -77,6 +81,19 @@ We run the development of the plugin over at [Assembla](http://www.assembla.com/
 
 
 == Changelog ==
+
+= 1.1.9 =
+* Multi-device theming engine
+* Metadata in post lists can be hidden
+* More tolerance of installs on Windows servers
+* Changes to comment status now generate emails
+* Shortcodes filtered from teasers
+* Beta: Nokia themes: low, mid, and high templates (http://tinyurl.com/ykbz96y)
+* Beta: Support for other WebKit devices (iPhone, Android, Palm, etc)
+* NB1: beta themes are disabled by default in 1.1.9, but will be *enabled* by default in 1.2.0; see the 'Mobile theme' settings
+* NB2: the base theme patterns have been reworked a little, and any derived themes may need to be updated
+* NB3: 1.2.0 will be launched on the 18th December
+* NB4: *Feedback on the Nokia themes is very welcome, nay encouraged!*
 
 = 1.1.3 =
 * Ensure subdirectoried blogs work correctly with switcher

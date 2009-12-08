@@ -5,7 +5,7 @@ $Id$
 
 $URL$
 
-Copyright (c) 2009 mTLD Top Level Domain Limited
+Copyright (c) 2009 James Pearce & friends, portions mTLD Top Level Domain Limited, ribot, Forum Nokia
 
 Online support: http://mobiforge.com/forum/dotmobi/wordpress
 
@@ -108,13 +108,12 @@ function wpmp_theme_the_content($content) {
     global $id;
     $suffix = true;
   }
-	//@edent Stop the teaser showing plugin text ("[caption id" etc) as though it were part of the normal text 
+	//@edent Stop the teaser showing plugin text ("[caption id" etc) as though it were part of the normal text
 	//Fixes Bug 60 https://www.assembla.com/spaces/wordpress-mobile-pack/tickets/60-Teaser-shows-shortcode-tags
-	if(strpos($content, '[')!==false) //if a '[' is found (i.e. not false) just empty the whole string. TODO Only empty *from* the first [.
-	{
-		$content = "Read more";  //Replace the entire string with a link to "Read more" (can this go through i18n?)
+	if(strpos($content, '[')!==false) { //TODO Only empty *from* the first [.
+		$content = __("Read more");
 	}
-  if (substr($content, -9)=='Read more') {
+  if (substr($content, strlen(__("Read more")))==__("Read more")) {
     $content = substr($content, 0, -9);
     $suffix = true;
   }

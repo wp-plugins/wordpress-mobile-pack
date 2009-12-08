@@ -5,7 +5,7 @@ $Id: header.php 179317 2009-12-03 19:55:03Z jamesgpearce $
 
 $URL: http://plugins.svn.wordpress.org/wordpress-mobile-pack/trunk/themes/mobile_pack_base/header.php $
 
-Copyright (c) 2009 mTLD Top Level Domain Limited
+Copyright (c) 2009 James Pearce & friends, portions mTLD Top Level Domain Limited, ribot, Forum Nokia
 
 Online support: http://mobiforge.com/forum/dotmobi/wordpress
 

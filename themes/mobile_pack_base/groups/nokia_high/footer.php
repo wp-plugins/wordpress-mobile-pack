@@ -5,7 +5,7 @@ $Id: footer.php 177682 2009-11-28 13:02:13Z jamesgpearce $
 
 $URL: http://plugins.svn.wordpress.org/wordpress-mobile-pack/trunk/themes/mobile_pack_base/footer.php $
 
-Copyright (c) 2009 mTLD Top Level Domain Limited
+Copyright (c) 2009 James Pearce & friends, portions mTLD Top Level Domain Limited, ribot, Forum Nokia
 
 Online support: http://mobiforge.com/forum/dotmobi/wordpress
 

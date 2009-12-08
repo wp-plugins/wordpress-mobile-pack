@@ -5,7 +5,7 @@ $Id: group_detection.php 134485 2009-07-12 17:04:19Z jamesgpearce $
 
 $URL: http://plugins.svn.wordpress.org/wordpress-mobile-pack/trunk/plugins/wpmp_switcher/lite_detection.php $
 
-Copyright (c) 2009 mTLD Top Level Domain Limited
+Copyright (c) 2009 James Pearce & friends, portions mTLD Top Level Domain Limited, ribot, Forum Nokia
 
 Online support: http://mobiforge.com/forum/dotmobi/wordpress
 

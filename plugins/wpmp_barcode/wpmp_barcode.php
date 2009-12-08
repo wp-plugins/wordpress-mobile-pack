@@ -5,7 +5,7 @@ $Id$
 
 $URL$
 
-Copyright (c) 2009 mTLD Top Level Domain Limited
+Copyright (c) 2009 James Pearce & friends, portions mTLD Top Level Domain Limited, ribot, Forum Nokia
 
 Online support: http://mobiforge.com/forum/dotmobi/wordpress
 
@@ -29,8 +29,8 @@ specific language governing permissions and limitations under the License.
 Plugin Name: Mobile Barcode
 Plugin URI: http://wordpress.org/extend/plugins/wordpress-mobile-pack/
 Description: Provides a widget (intended to be used on a desktop theme) that displays a 2D-barcode for navigating to the mobile site. This plugin is tested with WordPress 2.5, 2.6 and 2.7.
-Version: 1.1.3
-Author: James Pearce, dotMobi, and team
+Version: 1.1.9
+Author: James Pearce & friends
 Author URI: http://www.assembla.com/spaces/wordpress-mobile-pack
 */
 

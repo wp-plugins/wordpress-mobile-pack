@@ -5,7 +5,7 @@ $Id$
 
 $URL$
 
-Copyright (c) 2009 mTLD Top Level Domain Limited
+Copyright (c) 2009 James Pearce & friends, portions mTLD Top Level Domain Limited, ribot, Forum Nokia
 
 Online support: http://mobiforge.com/forum/dotmobi/wordpress
 
@@ -29,8 +29,8 @@ specific language governing permissions and limitations under the License.
 Plugin Name: Mobile Transcoder
 Plugin URI: http://wordpress.org/extend/plugins/wordpress-mobile-pack/
 Description: Rewrites blog pages and posts for the mobile theme, to ensure compatibility with mobile devices
-Version: 1.1.3
-Author: James Pearce, dotMobi, and team
+Version: 1.1.9
+Author: James Pearce & friends
 Author URI: http://www.assembla.com/spaces/wordpress-mobile-pack
 */
 
