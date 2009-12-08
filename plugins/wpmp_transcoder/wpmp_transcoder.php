@@ -448,6 +448,19 @@ function wpmp_transcoder_fetch_image($url, &$width, &$height, &$type, &$location
   @file_put_contents("$full_location.meta", "<?php $"."width='$width';$"."height='$height';$"."type='$type'; ?>");
 }
 
+if (!function_exists('file_put_contents')) {
+  function file_put_contents($filename, $data) {
+    $f = @fopen($filename, 'w');
+    if (!$f) {
+      return false;
+    } else {
+      $bytes = fwrite($f, $data);
+      fclose($f);
+      return $bytes;
+    }
+  }
+}
+
 function wpmp_transcoder_convert_image($url, $width, $height) {
   if (wpmp_transcoder_fetch_image($url, $_w, $_h, $type, $location)===false) {
     return;
