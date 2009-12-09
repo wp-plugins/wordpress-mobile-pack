@@ -27,6 +27,21 @@ specific language governing permissions and limitations under the License.
 
 function wpmp_ms_mobile_top($title, $menu=array()) {
   print "<?xml version='1.0' encoding='UTF-8'?>";
+
+  //defend against old, confused or custom mobile themes
+  include_once(get_theme_root() . DIRECTORY_SEPARATOR . 'mobile_pack_base' . DIRECTORY_SEPARATOR . 'functions.php');
+  if(!function_exists('wpmp_theme_group_file')) {
+    function wpmp_theme_group_file($file='index.php') {
+      return 'none';
+    }
+    function wpmp_theme_base_style() {
+      return get_bloginfo('stylesheet_url');
+    }
+    function wpmp_theme_group() {
+      return 'none';
+    }
+  }
+
   if (file_exists($wpmp_include = wpmp_theme_group_file('header.php'))) {
     include_once($wpmp_include);
   } else {
