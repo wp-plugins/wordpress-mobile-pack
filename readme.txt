@@ -82,6 +82,9 @@ We run the development of the plugin over at [Assembla](http://www.assembla.com/
 
 == Changelog ==
 
+= 1.1.91 =
+* Fixed admin bug when using older themes
+
 = 1.1.9 =
 * Multi-device theming engine
 * Metadata in post lists can be hidden
