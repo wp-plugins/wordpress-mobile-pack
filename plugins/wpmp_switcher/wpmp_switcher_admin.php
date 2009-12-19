@@ -117,7 +117,6 @@ specific language governing permissions and limitations under the License.
     jQuery(".wpmp_mobile_domain").children().fadeTo(speed, domain ? 1 : wpmp_pale);
     jQuery(".wpmp_theme").children().fadeTo(speed, (domain||browser) ? 1 : wpmp_pale);
     jQuery(".wpmp_links").children().fadeTo(speed, (domain||browser) ? 1 : wpmp_pale);
-    wpmpSwitcherDetection(speed);
   }
   wpmpSwitcherMode(-1);
 </script>

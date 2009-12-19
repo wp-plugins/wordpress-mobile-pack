@@ -3,7 +3,7 @@ Contributors: jamesgpearce, andreatrasatti, edent
 Tags: mobile, mobile web, mobile internet, wireless, pda, iphone, android, webkit, wap, dotMobi, theme, blackberry, admob, mobile adsense, qr-code, device, switcher, cellular
 Requires at least: 2.5
 Tested up to: 2.8.6
-Stable tag: 1.1.91
+Stable tag: 1.1.92
 
 The WordPress Mobile Pack is a complete toolkit to help mobilize your WordPress site. It has a mobile switcher, themes, widgets, and mobile admin panel.
 
@@ -13,7 +13,7 @@ The WordPress Mobile Pack is a complete toolkit to help mobilize your WordPress 
 
 It includes a mobile switcher to select themes based on the type of user that is visiting the site, a selection of mobile themes, extra widgets, device adaptation and a mobile administration panel to allow users to edit the site or write new posts when out and about.
 
-The pack has been tested on WordPress 2.5.1, 2.6.5, 2.7.1 and 2.8.1 to 2.8.6. It has been tested on WordPress MU 2.6 in the 'plugins', rather than 'mu_plugins', mode. PHP 5.x is also highly recommended, although the plugin will tolerate PHP4.x.
+The pack has been tested on WordPress 2.5.1, 2.6.5, 2.7.1, 2.8.6, and 2.9.0. It has been tested on WordPress MU 2.6 in the 'plugins', rather than 'mu_plugins', mode. PHP 5.x is also highly recommended, although the plugin will tolerate PHP4.3.
 
 Features highlights:
 
@@ -24,7 +24,7 @@ Features highlights:
 *  **mobile ad widget**, easily enable mobile ads with AdMob or mobile Adsense
 *  **barcode widget**, add to your full site a barcode that devices with a suitable reader can use to quickly visit the front page of the mobile site, or deep link within it
 
-**Note: this 1.1.9 release features beta provision of special Nokia device themes. Your feedback on these themes is very welcome. They will be fully released (and enabled by default) on 18th December 2009.**
+**Note: this 1.1.9 release features beta provision of special Nokia device themes. Your feedback on these themes is very welcome. They will be fully released (and enabled by default) on 21st December 2009.**
 
 
 == Installation ==
@@ -81,6 +81,9 @@ We run the development of the plugin over at [Assembla](http://www.assembla.com/
 
 
 == Changelog ==
+
+= 1.1.92 =
+* Prevented javascript being displayed in posts
 
 = 1.1.91 =
 * Fixed admin bug when using older themes

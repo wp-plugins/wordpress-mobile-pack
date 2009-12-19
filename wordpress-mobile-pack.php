@@ -29,12 +29,12 @@ specific language governing permissions and limitations under the License.
 Plugin Name: WordPress Mobile Pack
 Plugin URI: http://wordpress.org/extend/plugins/wordpress-mobile-pack/
 Description: The WordPress Mobile Pack is a complete toolkit to help mobilize your WordPress site and blog. It includes a <a href='themes.php?page=wpmp_switcher_admin'>mobile switcher</a>, <a href='themes.php?page=wpmp_theme_widget_admin'>filtered widgets</a>, and content adaptation for mobile device characteristics. Activating this plugin will also install a selection of mobile <a href='themes.php'>themes</a> by <a href='http://ribot.co.uk'>ribot</a>, a top UK mobile design team. Also check out <a href='http://mobiforge.com/wordpress-mobile-pack' target='_blank'>the documentation</a> and <a href='http://mobiforge.com/forum/dotmobi/wordpress' target='_blank'>the forums</a>. If you like the plugin, please rate us on the <a href='http://wordpress.org/extend/plugins/wordpress-mobile-pack/'>WordPress directory</a>.
-Version: 1.1.9
+Version: 1.2.0
 Author: James Pearce & friends
 Author URI: http://www.assembla.com/spaces/wordpress-mobile-pack
 */
 
-define('WPMP_VERSION', '1.1.9');
+define('WPMP_VERSION', '1.2.0');
 
 // you could disable sub-plugins here
 global $wpmp_plugins;
@@ -44,6 +44,7 @@ $wpmp_plugins = array(
   "wpmp_ads",
   "wpmp_deviceatlas",
   "wpmp_transcoder",
+  "wpmp_mpexo",
 );
 
 if(!$warning=get_option('wpmp_warning')) {

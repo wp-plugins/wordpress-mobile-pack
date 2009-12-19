@@ -29,7 +29,7 @@ specific language governing permissions and limitations under the License.
 Plugin Name: Mobile Transcoder
 Plugin URI: http://wordpress.org/extend/plugins/wordpress-mobile-pack/
 Description: Rewrites blog pages and posts for the mobile theme, to ensure compatibility with mobile devices
-Version: 1.1.9
+Version: 1.2.0
 Author: James Pearce & friends
 Author URI: http://www.assembla.com/spaces/wordpress-mobile-pack
 */
@@ -43,19 +43,22 @@ function wpmp_transcoder_activate() {
 function wpmp_transcoder_remove_media(&$content) {
 
   $remove_tags = array(
-    "object",
-    "embed",
-    "marquee",
-    "script",
-    "frame",
-    "iframe",
+    "script"=>true,
+    "object"=>false,
+    "embed"=>false,
+    "marquee"=>false,
+    "frame"=>false,
+    "iframe"=>false,
   );
 
   $remove_attributes = array(
     "on[^=]*",
   );
 
-  foreach($remove_tags as $remove_tag) {
+  foreach($remove_tags as $remove_tag=>$and_inner) {
+    if($and_inner) {
+      $content = preg_replace("/\<$remove_tag.*\<\/$remove_tag"."[^>]*\>/Usi", "", $content);
+    }
     $content = preg_replace("/\<\/?$remove_tag"."[^>]*\>/Usi", "", $content);
   }
 
