@@ -80,7 +80,6 @@ function wpmp_mpexo_init() {
 function wpmp_mpexo_activate() {
   foreach(array(
     'wpmp_mpexo_client_key'=>uniqid('', true),
-    'wpmp_mpexo_enabled_beta'=>'false',
     'wpmp_mpexo_description'=>'tagline',
     'wpmp_mpexo_description_custom'=>get_option('blogdescription'),
     'wpmp_mpexo_classification'=>'both',
@@ -88,6 +87,7 @@ function wpmp_mpexo_activate() {
     'wpmp_mpexo_popularity'=>'true',
     'wpmp_mpexo_diagnostics'=>'true',
     'wpmp_mpexo_email'=>'true',
+    'wpmp_mpexo_enabled_beta'=>'false',
   ) as $name=>$value) {
     if (get_option($name)=='') {
       update_option($name, $value);
@@ -187,14 +187,17 @@ function wpmp_mpexo_update_category($category_id) {
 function wpmp_mpexo_update_post($post_id) {
   if(get_option('wpmp_mpexo_content')=='posts' || get_option('wpmp_mpexo_content')=='both') {
     if ($post_id==0) {
+      if(!($post_count=get_option('wpmp_theme_post_count'))) {
+        $post_count = 5;
+      }
       foreach(get_posts(array(
         'post_type'=>'post',
-        'numberposts'=>get_option('wpmp_theme_post_count')
+        'numberposts'=>$post_count
       )) as $post) {
-        wpmp_mpexo_add_to_payload('p'.$post->ID, $post->post_title);
+        wpmp_mpexo_update_single_post_or_page($post, true);
       }
     } else {
-      wpmp_mpexo_add_to_payload('p'.$post_id, get_post($post_id)->post_title);
+      wpmp_mpexo_update_single_post_or_page($post_id, true);
     }
   }
 }
@@ -205,14 +208,33 @@ function wpmp_mpexo_update_page($page_id) {
         'post_type'=>'page',
         'numberposts'=>0
       )) as $page) {
-        wpmp_mpexo_add_to_payload('g'.$page->ID, $page->post_title);
+        wpmp_mpexo_update_single_post_or_page($page, false);
       }
     } else {
-      wpmp_mpexo_add_to_payload('g'.$page_id, get_post($page_id)->post_title);
+      wpmp_mpexo_update_single_post_or_page($page_id, false);
     }
   }
 }
 
+function wpmp_mpexo_update_single_post_or_page($post_or_page, $is_post=true) {
+  $prefix = $is_post ? 'p' : 'g';
+  if (is_numeric($post_or_page)) {
+    $post_or_page = get_post($post_or_page);
+  }
+  wpmp_mpexo_add_to_payload($prefix.$post_or_page->ID, $post_or_page->post_title);
+  if($is_post) {
+    $categories = array();
+    foreach(wp_get_post_categories($post_or_page->ID) as $category) {
+      $categories[]=$category;
+    }
+    wpmp_mpexo_add_to_payload("$prefix{$post_or_page->ID}c", join('.', $categories));
+    $tags = array();
+    foreach(wp_get_post_tags($post_or_page->ID, array('fields'=>'ids')) as $tag) {
+      $tags[]=$tag;
+    }
+    wpmp_mpexo_add_to_payload("$prefix{$post_or_page->ID}t", join('.', $tags));
+  }
+}
 
 function wpmp_mpexo_shutdown() {
   global $wpmp_mpexo_payload;
