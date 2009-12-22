@@ -64,9 +64,11 @@ function wpmp_switcher_init() {
     case WPMP_SWITCHER_NO_SWITCH:
       break;
     case WPMP_SWITCHER_DESKTOP_PAGE:
+      wpmp_switcher_hit('desktop');
       wpmp_switcher_set_cookie('desktop');
       break;
     case WPMP_SWITCHER_MOBILE_PAGE:
+      wpmp_switcher_hit('mobile');
       wpmp_switcher_set_cookie('mobile');
       if (strpos(strtolower($_SERVER['REQUEST_URI']), '/wp-login.php')!==false) {
         wpmp_switcher_mobile_login();
@@ -143,7 +145,10 @@ function wpmp_switcher_activate() {
     'wpmp_switcher_mobile_theme'=>$default_theme['Name'],
     'wpmp_switcher_mobile_theme_stylesheet'=>$default_theme['Stylesheet'],
     'wpmp_switcher_mobile_theme_template'=>$default_theme['Template'],
-    'wpmp_switcher_footer_links'=>'true'
+    'wpmp_switcher_footer_links'=>'true',
+    'wpmp_switcher_hits_desktop'=>'0',
+    'wpmp_switcher_hits_mobile'=>'0',
+    'wpmp_switcher_hits_start'=>microtime(true),
   ) as $name=>$value) {
     if (get_option($name)=='') {
       update_option($name, $value);
@@ -183,6 +188,10 @@ function wpmp_switcher_admin_menu() {
 function wpmp_switcher_admin() {
   if(sizeof($_POST)>0) {
     print '<div id="message" class="updated fade"><p><strong>' . wpmp_switcher_options_write() . '</strong></p></div>';
+    if(isset($_POST['wpmp_switcher_hit_reset']) && $_POST['wpmp_switcher_hit_reset']=='true') {
+      wpmp_switcher_hit_reset();
+      print '<div id="message" class="updated fade"><p><strong>Hit counter reset.</strong></p></div>';
+    }
   }
   include_once('wpmp_switcher_admin.php');
 }
@@ -240,6 +249,84 @@ function wpmp_switcher_option_home_siteurl($value) {
       }
   }
   return $value;
+}
+
+function wpmp_switcher_hit($type='desktop') {
+  $current = get_option("wpmp_switcher_hits_$type");
+  if(!is_numeric($current)) {
+    wpmp_switcher_hit_reset();
+    $current = '0';
+  }
+  if(function_exists('bcadd')) {
+    $next = bcadd($current, '1');
+  } else {
+    $next = $current + 1;
+  }
+  update_option("wpmp_switcher_hits_$type", $next);
+}
+function wpmp_switcher_hit_reset() {
+  update_option("wpmp_switcher_hits_desktop", 0);
+  update_option("wpmp_switcher_hits_mobile", 0);
+  update_option("wpmp_switcher_hits_start", microtime(true));
+}
+function wpmp_switcher_hit_data() {
+  $desktop = get_option("wpmp_switcher_hits_desktop");
+  $mobile = get_option("wpmp_switcher_hits_mobile");
+  $duration = floor(microtime(true) - get_option("wpmp_switcher_hits_start"))+1;
+  return "1.$desktop.$mobile.$duration";
+}
+function wpmp_switcher_hit_summary() {
+  $desktop = wpmp_switcher_humanize_number(get_option("wpmp_switcher_hits_desktop"));
+  $desktop .= ' desktop hit' . ($desktop=='1'?'':'s');
+  $mobile = wpmp_switcher_humanize_number(get_option("wpmp_switcher_hits_mobile"));
+  $mobile .= ' mobile hit' . ($mobile=='1'?'':'s');
+  $duration = wpmp_switcher_humanize_delta(microtime(true) - get_option("wpmp_switcher_hits_start"));
+  $percentage = round(100 * $mobile / ($desktop + $mobile), 1);
+  return "<strong>$percentage% of your traffic is currently from mobile users.</strong><br />" .
+          "You've had $desktop and $mobile in the last $duration.";
+}
+
+function wpmp_switcher_humanize_number($number) {
+  $number = $number * 1;
+  $suffix = '';
+  if ($number>(1000000000000)){
+    $suffix=' trillion';
+    $number = $number / (1000000000000);
+  } elseif ($number>(1000000000)){
+    $suffix=' billion';
+    $number = $number / (1000000000);
+  } elseif ($number>(1000000)){
+    $suffix=' million';
+    $number = $number / (1000000);
+  }
+  return round($number, 1) . $suffix;
+}
+
+function wpmp_switcher_humanize_delta($seconds) {
+  $seconds = $seconds * 1;
+  $suffix = ' seconds';
+  if (($seconds)>60*60*24*365*2){
+    $suffix=' years';
+    $seconds = round($seconds / (60*60*24*365), 1);
+  } elseif ($seconds>60*60*24*30*2){
+    $suffix=' months';
+    $seconds = round($seconds / (60*60*24*30), 0);
+  } elseif ($seconds>60*60*24*7*2){
+    $suffix=' weeks';
+    $seconds = round($seconds / (60*60*24*7), 1);
+  } elseif ($seconds>60*60*24*2){
+    $suffix=' days';
+    $seconds = round($seconds / (60*60*24), 1);
+  } elseif ($seconds>60*60*2){
+    $suffix=' hours';
+    $seconds = round($seconds / (60*60), 1);
+  } elseif ($seconds>60){
+    $suffix=' minutes';
+    $seconds = round($seconds / 60, 1);
+  } else {
+    $seconds = round($seconds, 1);
+  }
+  return $seconds . $suffix;
 }
 
 function wpmp_switcher_outcome() {
@@ -530,6 +617,7 @@ function wpmp_switcher_option($option, $onchange='') {
       );
 
     case 'wpmp_switcher_footer_links':
+    case 'wpmp_switcher_hit_reset':
       return wpmp_switcher_option_checkbox(
         $option,
         $onchange

@@ -50,7 +50,6 @@ function wpmp_ads_activate() {
     'wpmp_ads_provider'=>'none',
     'wpmp_ads_publisher_id'=>'',
     'wpmp_ads_desktop_disable'=>'true',
-    'wpmp_ads_not_available'=>'[There are no adverts to show]'
   ) as $name=>$value) {
     if (get_option($name)=='') {
       update_option($name, $value);

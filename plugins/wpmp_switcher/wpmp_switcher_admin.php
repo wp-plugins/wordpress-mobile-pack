@@ -37,6 +37,14 @@ specific language governing permissions and limitations under the License.
   <form method="post" action="">
     <table class="form-table">
       <tr>
+        <th><?php _e('Mobile activity'); ?></th>
+        <td>
+          <?php print wpmp_switcher_hit_summary(); ?>
+          <br />
+          <?php print wpmp_switcher_option('wpmp_switcher_hit_reset'); ?> <strong><?php _e("Reset counter"); ?></strong>
+        </td>
+      </tr>
+      <tr>
         <th><?php _e('Switcher mode'); ?></th>
         <td>
           <?php print wpmp_switcher_option('wpmp_switcher_mode', 'wpmpSwitcherMode();'); ?>
