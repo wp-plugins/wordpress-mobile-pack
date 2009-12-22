@@ -430,7 +430,7 @@ function wpmp_mpexo_shutdown() {
   $wpmp_mpexo_payload['wpmp_mpexo_client_key'] = get_option('wpmp_mpexo_client_key');
   $wpmp_mpexo_payload['wpmp_mpexo_server_key'] = get_option('wpmp_mpexo_server_key');
 
-  $url = 'http://localhost:8081/api';
+  $url = 'http://www.mpexo.com/api';
 
   $query_aliases = array(
     'siteurl'=>'u',
