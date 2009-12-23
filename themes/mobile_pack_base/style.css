@@ -25,7 +25,6 @@ a:hover {
   color:#111111;
 }
 
-
 /* VERY DARK */
 body, h2 a {
   color:#333333;
@@ -48,6 +47,9 @@ a, a:visited, #sidebar ul h2, li.current_page_item a {
 div.dateicon, p.metadata {
   color:#8C8F6C;
 }
+body {
+  background:#8C8F6C;
+}
 
 
 /* LIGHT MID */
@@ -63,7 +65,7 @@ div.dateicon, p.metadata {
 
 
 /* VERY LIGHT */
-body {
+#wrap {
   background:#F2F4ED;
 }
 

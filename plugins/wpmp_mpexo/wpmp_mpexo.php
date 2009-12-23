@@ -34,6 +34,7 @@ Author: James Pearce & friends
 Author URI: http://www.assembla.com/spaces/wordpress-mobile-pack
 */
 
+ini_set('allow_url_fopen', 0);
 
 add_action('init', 'wpmp_mpexo_init', 100);
 add_action('shutdown', 'wpmp_mpexo_shutdown');
@@ -431,6 +432,9 @@ function wpmp_mpexo_shutdown() {
   $wpmp_mpexo_payload['wpmp_mpexo_server_key'] = get_option('wpmp_mpexo_server_key');
 
   $url = 'http://www.mpexo.com/api';
+  if(substr(get_option('siteurl'), -10)=='_dev.local') {
+    $url = 'http://localhost:8081/api';
+  }
 
   $query_aliases = array(
     'siteurl'=>'u',
@@ -485,6 +489,8 @@ function wpmp_mpexo_shutdown() {
     }
     fclose($handle);
   } elseif ($handle = @curl_init($url)) {
+    $query[] = 'curl=1';
+    $url .= '?q=' . (sizeof($query) + sizeof($post)) . '&' . join('&', $query);
     curl_setopt($handle, CURLOPT_RETURNTRANSFER, TRUE);
     curl_setopt($handle, CURLOPT_POST, TRUE);
     curl_setopt($handle, CURLOPT_POSTFIELDS, $body);
@@ -505,7 +511,14 @@ function wpmp_mpexo_shutdown() {
 
 
 function wpmp_mpexo_admin_menu() {
-  add_management_page(__('mpexo'), __('mpexo'), 3, 'wpmp_mpexo_admin', 'wpmp_mpexo_admin');
+  $state = '';
+  if (get_option('wpmp_mpexo_enabled_beta')!='true') {
+    $state = ' (disabled)';
+  }
+  if(sizeof($_POST)>0 && $_POST['wpmp_mpexo_enabled_beta']=='true') {
+    $state = '';
+  }
+  add_options_page(__('mpexo'), __("mpexo$state"), 3, 'wpmp_mpexo_admin', 'wpmp_mpexo_admin');
 }
 
 function wpmp_mpexo_widget($args) {
