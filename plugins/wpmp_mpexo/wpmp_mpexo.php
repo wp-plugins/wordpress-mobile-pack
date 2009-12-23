@@ -34,8 +34,6 @@ Author: James Pearce & friends
 Author URI: http://www.assembla.com/spaces/wordpress-mobile-pack
 */
 
-ini_set('allow_url_fopen', 0);
-
 add_action('init', 'wpmp_mpexo_init', 100);
 add_action('shutdown', 'wpmp_mpexo_shutdown');
 add_action('admin_menu', 'wpmp_mpexo_admin_menu');
