@@ -35,7 +35,7 @@ add_action('the_content', 'wpmp_theme_the_content');
 function wpmp_theme_group() {
   global $wpmp_theme_group;
   if(!isset($wpmp_theme_group)) {
-    if (get_option('wpmp_theme_nokia_templates_beta')=='true') {
+    if (get_option('wpmp_theme_nokia_templates')=='true') {
       include_once('group_detection.php');
       $wpmp_theme_group = group_detection();
     } else {

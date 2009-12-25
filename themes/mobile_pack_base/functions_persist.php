@@ -38,7 +38,7 @@ function wpmp_theme_init() {
     'wpmp_theme_transcoder_partition_pages'=>'true',
     'wpmp_theme_transcoder_shrink_images'=>'true',
     'wpmp_theme_transcoder_simplify_styling'=>'true',
-    'wpmp_theme_nokia_templates_beta'=>'false'
+    'wpmp_theme_nokia_templates'=>'true'
   ) as $name=>$value) {
     if (get_option($name)=='') {
       update_option($name, $value);
@@ -97,7 +97,7 @@ function wpmp_theme_options_write() {
     'wpmp_theme_transcoder_partition_pages'=>true,
     'wpmp_theme_transcoder_shrink_images'=>true,
     'wpmp_theme_transcoder_simplify_styling'=>true,
-    'wpmp_theme_nokia_templates_beta'=>true,
+    'wpmp_theme_nokia_templates'=>true,
   ) as $option=>$checkbox) {
     if(isset($_POST[$option])){
       $value = $_POST[$option];
@@ -156,7 +156,7 @@ function wpmp_theme_option($option, $onchange='') {
     case 'wpmp_theme_transcoder_simplify_styling':
     case 'wpmp_theme_transcoder_clear_cache_now':
     case 'wpmp_theme_post_summary_metadata':
-    case 'wpmp_theme_nokia_templates_beta':
+    case 'wpmp_theme_nokia_templates':
       return wpmp_theme_option_checkbox(
         $option,
         $onchange

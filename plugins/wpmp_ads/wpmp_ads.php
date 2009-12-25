@@ -41,12 +41,12 @@ function wpmp_ads_init() {
   wp_register_sidebar_widget('wpmp_ads_widget', __('Mobile Ads'), 'wpmp_ads_widget',
     array('classname' => 'wpmp_ads_widget', 'description' => __( "Displays AdMob or Google mobile ads"))
   );
-  wp_register_widget_control('wpmp_ads_widget', __('Mobile Ads Google'), 'wpmp_ads_widget_control');
+  wp_register_widget_control('wpmp_ads_widget', __('Mobile Ads'), 'wpmp_ads_widget_control');
 }
 
 function wpmp_ads_activate() {
   foreach(array(
-    'wpmp_ads_title'=>'Mobile ads',
+    'wpmp_ads_title'=>__('Mobile ads'),
     'wpmp_ads_provider'=>'none',
     'wpmp_ads_publisher_id'=>'',
     'wpmp_ads_desktop_disable'=>'true',
@@ -70,7 +70,7 @@ function wpmp_ads_widget($args) {
     extract($args);
     $buffer = $before_widget;
     if (($title = get_option('wpmp_ads_title'))=='') {
-      $title = "Mobile ads";
+      $title = __("Mobile ads");
     }
     $buffer .= $before_title . $title . $after_title;
     if(strpos($provider, '_')!==false) {
@@ -125,10 +125,10 @@ function wpmp_ads_option($option, $onchange='', $class='', $style='') {
       return wpmp_ads_option_dropdown(
         $option,
         array(
-          "none"=>"None",
-          "admob"=>"AdMob",
-          "google_mobile_single"=>"Google (single ad)",
-          "google_mobile_double"=>"Google (double ads)",
+          "none"=>__("None"),
+          "admob"=>__("AdMob"),
+          "google_mobile_single"=>__("Google (single ad)"),
+          "google_mobile_double"=>__("Google (double ads)"),
         ),
         $onchange
       );

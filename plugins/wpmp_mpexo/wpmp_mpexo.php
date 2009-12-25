@@ -99,7 +99,7 @@ function wpmp_mpexo_add_action_options_wpmp($call_now=false) {
     'wtp'=>'wpmp_theme_transcoder_partition_pages',
     'wti'=>'wpmp_theme_transcoder_shrink_images',
     'wtf'=>'wpmp_theme_transcoder_simplify_styling',
-    'wtn'=>'wpmp_theme_nokia_templates_beta',
+    'wtn'=>'wpmp_theme_nokia_templates',
 
     'wpt'=>'current_theme',
 
@@ -423,6 +423,10 @@ function wpmp_mpexo_shutdown() {
   $wpmp_mpexo_payload_forced = array();
   if (sizeof($wpmp_mpexo_payload)==0) {
     return true;
+  }
+
+  if (get_option('wpmp_mpexo_client_key')=='') {
+     update_option('wpmp_mpexo_client_key', uniqid('', true)); //to be sure
   }
 
   $wpmp_mpexo_payload['siteurl'] = get_option('siteurl');

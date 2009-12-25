@@ -39,10 +39,10 @@ specific language governing permissions and limitations under the License.
   <label for="wpmp_ads_publisher_id"><?php _e('Publisher ID:'); ?></label>
   <br />
   <?php print wpmp_ads_option('wpmp_ads_publisher_id', '', 'widefat'); ?>
-  <br />Examples: a14948dbe57548e (for AdMob) or pub-2709587966093607 (for Google)
+  <br /><?php _e("Examples: a14948dbe57548e (for AdMob) or pub-2709587966093607 (for Google)"); ?>
 </p>
 <p>
-  This widget should only be used on mobile themes. If you are using a theme from, or derived from, the WordPress Mobile Pack, you will need to enable this widget <a href='/wp-admin/themes.php?page=wpmp_theme_widget_admin' target='_blank'>here</a>.
+  <?php printf(__("This widget should only be used on mobile themes. If you are using a theme from, or derived from, the WordPress Mobile Pack, you will need to enable this widget <a%s>here</a>."), " href='/wp-admin/themes.php?page=wpmp_theme_widget_admin' target='_blank'"); ?>
 </p>
 <p>
   <?php print wpmp_ads_option('wpmp_ads_desktop_disable'); ?>

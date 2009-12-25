@@ -40,9 +40,9 @@ specific language governing permissions and limitations under the License.
       <tr>
         <th><?php _e('Enable Nokia templates'); ?></th>
         <td>
-          <?php print wpmp_theme_option('wpmp_theme_nokia_templates_beta'); ?>
+          <?php print wpmp_theme_option('wpmp_theme_nokia_templates'); ?>
           <br />
-          <?php _e('<strong>Beta feature.</strong> Check this to provide additional optimisations for users of Nokia handsets. It also enables a rich theme for WebKit-based mobile browsers, such as the Apple iPhone and Palm Pre.'); ?>
+          <?php _e('Check this to provide additional optimisations for users of Nokia handsets. It also enables a rich theme for WebKit-based mobile browsers, such as the Apple iPhone and Palm Pre.'); ?>
         </td>
       </tr>
       <tr>

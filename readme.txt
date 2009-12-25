@@ -1,6 +1,6 @@
 === WordPress Mobile Pack ===
 Contributors: jamesgpearce, andreatrasatti, edent
-Tags: mobile, mobile web, mobile internet, wireless, pda, iphone, android, webkit, wap, dotMobi, theme, blackberry, admob, mobile adsense, qr-code, device, switcher, cellular
+Tags: mobile, mobile web, mobile internet, wireless, pda, iphone, android, webkit, wap, dotMobi, theme, blackberry, admob, mobile adsense, qr-code, device, switcher, cellular, palm, nokia
 Requires at least: 2.5
 Tested up to: 2.9
 Stable tag: 1.1.92
@@ -18,13 +18,12 @@ The pack has been tested on WordPress 2.5.1, 2.6.5, 2.7.1, 2.8.6, and 2.9. It ha
 Features highlights:
 
 *  **mobile switcher**, i.e. the plug-in automatically suggests desktop or mobile presentation, but lets users switch to the other and remembers. Read more about "switching" on [mobiForge](http://mobiforge.com/designing/story/a-very-modern-mobile-switching-algorithm-part-i "A very modern switching algorithm Part I")
-*  **base mobile theme**, crafted by [ribot](http://ribot.co.uk "ribot"), a top UK mobile design team, the WordPress Mobile Pack comes with a base theme and 3 color variations that you can choose. All mark-up is valid XHTML-MP 1 and the site scores 5 on [mobiReady](http://mobiready.com "mobiReady")
-*  **device adaptation**, the plug-in has basic recognition of mobile devices and is capable of rescaling images, splitting articles and posts in multiple pages, simplifying style and remove media. Theme variations are provided for major families of devices.
+*  **base mobile theme**, crafted by [ribot](http://ribot.co.uk "ribot"), a top UK mobile design team, and Forum Nokia. The WordPress Mobile Pack comes with base themes, adapted to your users' devices, and 3 sample color variations that you can choose from. All mark-up is valid XHTML-MP 1 and the site scores 5 on [mobiReady](http://mobiready.com "mobiReady")
+*  **device adaptation**, the plug-in has basic recognition of mobile devices and is capable of rescaling images, splitting articles and posts in multiple pages, simplifying style and remove media. Theme variations are provided for major families of devices, such as Nokia and WebKit browsers (including Android, iPhone and Palm)
 *  **mobile admin panel**, allows the blog managers to access the admin interface, specifically designed for mobile, with simplified access to the most common features such as editing a post or approving comments.
 *  **mobile ad widget**, easily enable mobile ads with AdMob or mobile Adsense
 *  **barcode widget**, add to your full site a barcode that devices with a suitable reader can use to quickly visit the front page of the mobile site, or deep link within it
-
-**Note: this 1.1.9 release features beta provision of special Nokia device themes. Your feedback on these themes is very welcome. They will be fully released (and enabled by default) on 21st December 2009.**
+*  **Automatic listing** on <a href='http://www.mpexo.com/blogs'>mpexo</a>, making it easier for users to discover that you have a mobile-friendly site. (NB: you can enable the mpexo listing in the 'Settings' dashboard menu.)
 
 
 == Installation ==
@@ -35,6 +34,7 @@ On WordPress v2.7 and later, the installation is as follows:
 1.	Upload wordpress-mobile-pack.zip then press 'Install now'.
 1.	Activate the switcher plugin. Change its settings as required.
 1.	Select which desktop widgets are to appear on the mobile theme.
+1.  Enable your site to be listed on mpexo.
 1.	Enjoy.
 
 
@@ -44,6 +44,7 @@ On WordPress v2.5 and v2.6, the installation is very slightly different:
 1.	Extract the contents of wordpress-mobile-pack.zip into wp-content/plugins
 1.	Activate the switcher plugin. Change its settings as required.
 1.	Select which desktop widgets are to appear on the mobile theme.
+1.  Enable your site to be listed on mpexo.
 1.	Enjoy.
 
 
@@ -56,17 +57,17 @@ The Pack comes with complete documentation in HTML format that you can read on y
 == Frequently Asked Questions ==
 
 = Where are my widgets? =
-
 You need to select which of your desktop widgets you want to have appear on the mobile theme. Go to the 'Mobile Widgets' admin page to do so.
 
 = Are shrinked images cached? =
-
 Yes, all images, once rescaled, are cached locally.
 
 = Where is the cache directory? =
-
 From your root directory of WordPress, go to:
 *wp-content/plugins/wordpress-mobile-pack/plugins/wpmp_transcoder/c*
+
+= How do I place mobile ads on my site? =
+The plugin provides a widget to display either Google AdSense or AdMob mobile ads. Enable it for the sidebar in the 'Widgets' menu, provide your publisher ID, and then ensure it is also enabled as in the 'Mobile Widgets' list.
 
 = What version of PHP do I need? =
 Although most of the functionality of the pack does in fact work with PHP4, we only theoretically support and warrant running it with PHP5. If you must use PHP4, give it a test drive and make sure it works for your environment before going live. The plugin will be (deliberately) disabled if you try to use it with PHP6.
@@ -82,6 +83,11 @@ We run the development of the plugin over at [Assembla](http://www.assembla.com/
 
 == Changelog ==
 
+= 1.2.0 =
+* Nokia themes enabled by default: low, mid, and high templates. [More details](http://tinyurl.com/ykc4ear).
+* Support for other WebKit devices (iPhone, Android, Palm, etc)
+* Automatic [mpexo](http://www.mpexo.com) listings. (Enabled in the settings menu)
+
 = 1.1.92 =
 * Prevented javascript being displayed in posts
 
@@ -94,12 +100,7 @@ We run the development of the plugin over at [Assembla](http://www.assembla.com/
 * More tolerance of installs on Windows servers
 * Changes to comment status now generate emails
 * Shortcodes filtered from teasers
-* *Beta*: Nokia themes: low, mid, and high templates (http://tinyurl.com/ykc4ear)
-* *Beta*: Support for other WebKit devices (iPhone, Android, Palm, etc)
-* **NB1**: beta themes are disabled by default in 1.1.9, but will be *enabled* by default in 1.2.0; see the 'Mobile theme' settings
-* **NB2**: the base theme patterns have been reworked a little, and any derived themes may need to be updated
-* **NB3**: 1.2.0 will be launched on the 18th December
-* **NB4**: *Feedback on the Nokia themes is very welcome, nay encouraged!*
+* base theme patterns refactored, and any derived themes may need to be updated
 
 = 1.1.3 =
 * Ensure subdirectoried blogs work correctly with switcher
