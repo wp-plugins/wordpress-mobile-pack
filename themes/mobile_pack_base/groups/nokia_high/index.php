@@ -32,15 +32,15 @@ while (have_posts()) {
     print '<h1>' . get_the_title() . '</h1>';
     wpmp_theme_post_single();
   } else {
-    print '<ul class="list"><li><a href="'; the_permalink(); print '" rel="bookmark" title="Link to ' . get_the_title() . '">' . get_the_title() . '</a></li></ul>';
+    print '<ul class="list"><li><a href="'; the_permalink(); print '" rel="bookmark" title="' . __('Link to') . ' ' . get_the_title() . '">' . get_the_title() . '</a></li></ul>';
     wpmp_theme_post_summary();
   }
 }
 if(!is_single() && !is_page()) {
   print '<p class="navigation">';
-  next_posts_link('Older');
+  next_posts_link(__('Older'));
   print ' ';
-  previous_posts_link('Newer');
+  previous_posts_link(__('Newer'));
   print '</p>';
 }
 

@@ -27,14 +27,14 @@ specific language governing permissions and limitations under the License.
 
 ?><html>
   <head>
-    <title><?php bloginfo('name'); ?> - select site</title>
+    <title><?php bloginfo('name'); ?> - <?php _e("Select site"); ?></title>
     <link rel="stylesheet" href="<?php bloginfo('stylesheet_url'); ?>" type="text/css" media="screen" />
     <?php wp_head(); ?>
   </head>
   <body>
-    <h2>Select site</h2>
-    <p>You've requested the mobile site, but you appear to have a desktop browser.</p>
-    <p><?php print wpmp_switcher_link('desktop', "Revert to the desktop site"); ?></p>
-    <p><?php print wpmp_switcher_link('mobile', "Continue to our mobile site"); ?></p>
+    <h2><?php _e("Select site"); ?></h2>
+    <p><?php _e("You've requested the mobile site, but you appear to have a desktop browser."); ?></p>
+    <p><?php print wpmp_switcher_link('desktop', __("Revert to the desktop site")); ?></p>
+    <p><?php print wpmp_switcher_link('mobile', __("Continue to our mobile site")); ?></p>
   </body>
 </html>

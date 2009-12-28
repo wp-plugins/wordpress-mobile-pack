@@ -47,14 +47,14 @@ if (file_exists($wpmp_include = wpmp_theme_group_file('header.php'))) {
 ?>
 
   <meta http-equiv="Content-Type" content="<?php bloginfo('html_type'); ?>; charset=<?php bloginfo('charset'); ?>" />
-  <title><?php bloginfo('name'); ?> <?php if ( is_single() ) { ?>&#187; Blog Archive <?php } ?><?php wp_title('&#187;'); ?></title>
+  <title><?php bloginfo('name'); ?> <?php if ( is_single() ) { print '&#187; ' . __('Blog Archive'); } ?><?php wp_title('&#187;'); ?></title>
   <link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="<?php bloginfo('rss2_url'); ?>" />
   <link rel="alternate" type="text/xml" title="RSS .92" href="<?php bloginfo('rss_url'); ?>" />
   <link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="<?php bloginfo('atom_url'); ?>" />
   <link rel="pingback" href="<?php bloginfo('pingback_url'); ?>" />
   <?php wp_head(); ?>
 </head>
-<body class='<?php print wpmp_theme_group(); ?>'>
+<body<?php if($wpmp_theme_group = wpmp_theme_group()) {print " class='$wpmp_theme_group'";} ?>>
   <div id="wrap">
     <div id="header" style='height:auto'>
       <p><a href="<?php echo get_option('home'); ?>/"><strong><?php bloginfo('name'); ?></strong></a></p>
@@ -63,7 +63,7 @@ if (file_exists($wpmp_include = wpmp_theme_group_file('header.php'))) {
     <div id="menu">
       <ul class="breadcrumbs">
         <?php if (get_option('wpmp_theme_home_link_in_menu')=='true') {?>
-          <li class="<?php if (is_home()) { ?>current_page_item<?php } else { ?>page_item<?php } ?>"><a href="<?php bloginfo('url'); ?>/" title="Home">Home</a></li>
+          <li class="<?php if (is_home()) { ?>current_page_item<?php } else { ?>page_item<?php } ?>"><a href="<?php bloginfo('url'); ?>/" title="<?php __('Home'); ?>"><?php __('Home'); ?></a></li>
         <?php } ?>
         <?php wp_list_pages('title_li=&depth=1'); ?>
       </ul>

@@ -43,7 +43,7 @@ specific language governing permissions and limitations under the License.
       "_Comment" => "/wp-admin/comment.php",
       "Switcher" => "/wp-admin/themes.php",
       "Settings" => "/wp-admin/options-general.php",
-    );
+    ); //i18n in template
     if (function_exists('wp_logout_url')) {
       $menu["Log out"] = wp_logout_url();
     } else {
@@ -78,21 +78,19 @@ specific language governing permissions and limitations under the License.
     $base = get_option('home');
     $post_count = wp_count_posts('post');
     $page_count = wp_count_posts('page');
-    print "<p>" . __("You have") . " " .
-              ($c = 0+($post_count->publish)) . " post" . ($c==1?"":"s") . " " . __("and") . " " .
-              ($c = 0+($page_count->publish)) . " page" . ($c==1?"":"s") . ", " .
-              __("contained within") . " " .
-              ($c = 0+(wp_count_terms('category'))) . " categor" . ($c==1?"y":"ies") . " " . __("and") . " " .
-              ($c = 0+(wp_count_terms('post_tag'))) . " tag" . ($c==1?"":"s") . ".</p>";
-              // I believe there's a better way to L10N this sort of thing
-
+    print "<p>";
+    printf(_n("You have one post", "You have %d posts", $c=0+($post_count->publish)), $c);
+    print ' ';
+    printf(_n("and one page", "and %d pages", $c=0+($page_count->publish)), $c);
+    print ' ' . __("contained within") . ' ';
+    printf(_n("one category", "%d categories", $c=0+(wp_count_terms('category'))), $c);
+    print ' ' . __("and") . ' ';
+    printf(_n("one tag", "%d tags", $c=0+(wp_count_terms('post_tag'))), $c);
+    print ".</p>";
   	global $wpdb;
 		$comments = $wpdb->get_results("SELECT count(*) as cnt FROM $wpdb->comments WHERE comment_approved='0'" );
     $comment_count = $comments[0];
-    print "<p>" . __("You have") . " " .
-            ($c = 0+($comment_count->cnt)) . " comment" . ($c==1?"":"s") . " " . __("to moderate") . ".</p>";
-
-
+    printf("<p>" . _n("You have one comment to moderate", "You have %d comments to moderate", $c=0+($comment_count->cnt)) . ".</p>", $c);
     print "<h3>" . __("Select an admin page:") . "</h3>";
     print "<p><ul>";
     $not_first = false;
@@ -106,9 +104,8 @@ specific language governing permissions and limitations under the License.
       $not_first = true;
     }
     print "</ul></p>";
-    print "<p>" . __("...or") . " <a href='$base/'>" . __("return to the site") . "</a></p>";
+    print "<p>" . sprintf(__("...or <a%s>return to the site</a>"), " href='$base/'") . "</p>";
     print "<p>" . __("A subset of the full WordPress administration is available through this mobile interface.") . "</p>";
-
   }
 
   function wpmp_msma_junior($menu) {
@@ -245,7 +242,7 @@ specific language governing permissions and limitations under the License.
       return;
     }
     print '<form name="post" action="' . $_SERVER['REQUEST_URI'] . '" method="post" id="post">';
-    print '<p><label for="title">Change the mobile switcher mode:</label><br />';
+    print '<p><label for="title">' . __('Change the mobile switcher mode:') . '</label><br />';
     $current = get_option('wpmp_switcher_mode');
     foreach(array(
       'none'=>__('Disabled'),
@@ -276,10 +273,10 @@ specific language governing permissions and limitations under the License.
         $content = substr($content, 0, 100) . "...";
       }
     }
-    $approve = "<a href='comment.php?action=approvecomment&amp;c=$id'>Approve</a>";
-    $delete = "<a href='comment.php?action=deletecomment&amp;c=$id'>Delete</a>";
-    $spam = "<a href='comment.php?action=spamcomment&amp;c=$id'>Spam</a>";
-    print "<p><strong>$title</strong> on $comment->post_title" .
+    $approve = "<a href='comment.php?action=approvecomment&amp;c=$id'>" . __('Approve') . "</a>";
+    $delete = "<a href='comment.php?action=deletecomment&amp;c=$id'>" . __('Delete') . "</a>";
+    $spam = "<a href='comment.php?action=spamcomment&amp;c=$id'>" . __('Spam') . "</a>";
+    print "<p>" . sprintf(_c('<strong>%1$s</strong> on %2$s|comment_title ON post_title'), $title, $comment->post_title) .
       "<br />$content" .
       "<br />$approve | $delete | $spam" .
       "</p>";
@@ -332,10 +329,10 @@ specific language governing permissions and limitations under the License.
     $next = "";
     $previous = "";
     if($page>0) {
-      $previous = "<a href='?page=" . ($page-1) . "'>Previous page</a>";
+      $previous = "<a href='?page=" . ($page-1) . "'>" . __('Previous page') . "</a>";
     }
     if(($page+1) * $size < $count) {
-      $next = "<a href='?page=" . ($page+1) . "'>Next page</a>";
+      $next = "<a href='?page=" . ($page+1) . "'>" . __('Next page') . "</a>";
     }
     if ($next || $previous) {
       print "<p>$previous";
@@ -435,7 +432,7 @@ specific language governing permissions and limitations under the License.
     $admin = "$base/wp-admin";
     $referer = $_SERVER['HTTP_REFERER'];
     if (substr($referer, 0, strlen($admin)) != $admin) {
-      print "You may only originate this action from the admin pages";
+      print __("You may only originate this action from the admin pages");
       return false;
     }
     return true;

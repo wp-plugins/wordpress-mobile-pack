@@ -37,16 +37,14 @@ specific language governing permissions and limitations under the License.
     <?php global $wp_registered_sidebars, $wp_registered_widgets; ?>
     <?php $enabled = get_option('wpmp_theme_widget'); ?>
     <?php $sidebar_widgets = wp_get_sidebars_widgets(); ?>
-    <p><?php _e("Use this page to select which of your <a href='/wp-admin/widgets.php'>currently visible widgets</a> will appear for your mobile users."); ?></p>
+    <p><?php printf(__("Use this page to select which of your <a%s>currently visible widgets</a> will appear for your mobile users."), " href='/wp-admin/widgets.php'"); ?></p>
     <?php foreach($sidebar_widgets as $sidebar=>$widgets) { ?>
       <?php if ($sidebar!='wp_inactive_widgets') { ?>
         <h3>
           <?php print $wp_registered_sidebars[$sidebar]['name']; ?>
         </h3>
         <p>
-          <?php _e('Select which of the'); ?>
-          <a target='_blank' href='/wp-admin/widgets.php?sidebar=<?php print urlencode($sidebar); ?>'><?php _e('widgets enabled for this sidebar'); ?></a>
-          <?php _e('will show on the mobile theme:'); ?>
+          <?php printf(__('Select which of the <a%s>widgets enabled for this sidebar</a> will show on the mobile theme:'), " target='_blank' href='/wp-admin/widgets.php?sidebar=" . urlencode($sidebar) . "'"); ?>
         </p>
         <table class="form-table">
           <?php

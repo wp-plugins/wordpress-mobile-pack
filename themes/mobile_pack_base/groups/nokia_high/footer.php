@@ -27,4 +27,4 @@ specific language governing permissions and limitations under the License.
 
 ?>
 
-<p>Powered by the <a href="http://wordpress.org/extend/plugins/wordpress-mobile-pack">WordPress Mobile Pack</a> | Theme designed by <a href="http://forumnokia.mobi">Forum Nokia</a></p>
+<p><?php printf(__("Powered by the <a%s>WordPress Mobile Pack</a>"), ' href="http://mobiforge.mobi/wordpress-mobile-pack"');?> | <?php printf(__("Theme designed by <a%s>Forum Nokia</a>"), ' href="http://forumnokia.mobi"'); ?></p>

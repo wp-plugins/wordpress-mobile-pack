@@ -26,12 +26,12 @@ specific language governing permissions and limitations under the License.
 */
 
   include_once('mobile.php');
-  wpmp_ms_mobile_top("Select site");
+  wpmp_ms_mobile_top(__("Select site"));
 ?>
 
-<p>You've requested the desktop site, but you appear to have a mobile browser.</p>
-<p><?php print wpmp_switcher_link('mobile', "Revert to the mobile site"); ?></p>
-<p><?php print wpmp_switcher_link('desktop', "Continue to our desktop site"); ?></p>
+<p><?php _e("You've requested the desktop site, but you appear to have a mobile browser."); ?></p>
+<p><?php print wpmp_switcher_link('mobile', __("Revert to the mobile site")); ?></p>
+<p><?php print wpmp_switcher_link('desktop', __("Continue to our desktop site")); ?></p>
 
 <?php
   wpmp_ms_mobile_bottom();

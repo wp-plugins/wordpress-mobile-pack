@@ -45,7 +45,7 @@ function wpmp_barcode_init() {
 }
 function wpmp_barcode_activate() {
   foreach(array(
-    'wpmp_barcode_title'=>'Our mobile site',
+    'wpmp_barcode_title'=>__('Our mobile site'),
     'wpmp_barcode_link'=>
       function_exists('wpmp_switcher_domains') ?
         "http://" . wpmp_switcher_domains('mobile', true) :
@@ -67,7 +67,7 @@ function wpmp_barcode_widget($args) {
   extract($args);
   print $before_widget;
   if (($title = get_option('wpmp_barcode_title'))=='') {
-    $title = "Our mobile site";
+    $title = __("Our mobile site");
   }
   print $before_title . $title . $after_title;
   $size = get_option('wpmp_barcode_size');
@@ -86,9 +86,8 @@ function wpmp_barcode_widget($args) {
   print "<img width='$size' height='$size' src='$url' />";
   if(get_option('wpmp_barcode_help')=='true') {
     print "<p>";
-    print __('This is a 2D-barcode containing the address of our');
-    print " <a href='$link' target='_blank'>" . __('mobile site') . "</a>. ";
-    print __('If your mobile has a barcode reader, simply snap this bar code with the camera and launch the site. ');
+    printf (__('This is a 2D-barcode containing the address of our <a%s>mobile site</a>.'), "href='$link' target='_blank'");
+    print __('If your mobile has a barcode reader, simply snap this bar code with the camera and launch the site.');
     print "</p>";
   }
   if(get_option('wpmp_barcode_reader_list')=='true') {

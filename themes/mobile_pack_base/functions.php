@@ -108,17 +108,15 @@ function wpmp_theme_the_content($content) {
     global $id;
     $suffix = true;
   }
-	//@edent Stop the teaser showing plugin text ("[caption id" etc) as though it were part of the normal text
-	//Fixes Bug 60 https://www.assembla.com/spaces/wordpress-mobile-pack/tickets/60-Teaser-shows-shortcode-tags
-	if(strpos($content, '[')!==false) { //TODO Only empty *from* the first [.
-		$content = __("Read more");
+	if(($pos=strpos($content, '['))!==false) {
+		$content = substr($content, 0, $pos) . ' ' . __("Read more");
 	}
   if (substr($content, strlen(__("Read more")))==__("Read more")) {
     $content = substr($content, 0, -9);
     $suffix = true;
   }
   if ($suffix) {
-    $content .= '<br /><a href="'. get_permalink() . "#more-$id\" class=\"more-link\">Read more</a>";
+    $content .= '<br /><a href="'. get_permalink() . '#more-$id" class="more-link">' . __('Read more') . "</a>";
   }
   return $content;
 }
@@ -140,7 +138,7 @@ function wpmp_theme_transcode_content(&$content) {
 
 function wpmp_theme_widget_search($args, $widget_args=1) {
   extract($args);
-  print $before_widget . $before_title . __( 'Search Site' ) . $after_title;
+  print $before_widget . $before_title . __('Search Site') . $after_title;
   include (TEMPLATEPATH . "/searchform.php");
   print $after_widget;
 }
@@ -155,11 +153,11 @@ function wpmp_theme_widget_archives($args, $widget_args=1) {
   wp_get_archives("type=monthly&show_post_count=1");
   $html = ob_get_contents();
   ob_end_clean();
-  $content = wpmp_theme_widget_trim_list($html, "<li><a href='/?archives=month'>...more months</a></li>");
+  $content = wpmp_theme_widget_trim_list($html, "<li><a href='/?archives=month'>" . __('...more months') . "</a></li>");
   if($content) {
     print $content;
   } else {
-    print "<li>No archives</li>";
+    print "<li>" . __('No archives') . "</li>";
   }
   print "</ul>$after_widget";
 }
@@ -179,7 +177,7 @@ function wpmp_theme_widget_categories($args, $widget_args=1) {
   wp_list_categories("orderby=name&hierarchical=0&show_count=1&title_li=0");
   $html = ob_get_contents();
   ob_end_clean();
-  print wpmp_theme_widget_trim_list($html, "<li><a href='/?archives=category'>...more categories</a></li>");
+  print wpmp_theme_widget_trim_list($html, "<li><a href='/?archives=category'>" . __('...more categories') . "</a></li>");
   print "</ul>$after_widget";
 }
 
@@ -193,7 +191,7 @@ function wpmp_theme_widget_tag_cloud($args, $widget_args=1) {
     $limit = get_option('wpmp_theme_widget_list_count');
     foreach($tags as $tag) {
       if($limit==0) {
-        print "<li><a href='/?archives=tag'>...more tags</a>";
+        print "<li><a href='/?archives=tag'>" . __('...more tags') . "</a>";
         break;
       }
       $limit--;
@@ -213,7 +211,7 @@ function wpmp_theme_widget_recent_comments($args, $widget_args=1) {
   }
   $original = ob_get_contents();
   ob_end_clean();
-  $original = str_ireplace('<ul id="recentcomments"></ul>', '<ul id="recentcomments"><li>No comments</li></ul>', $original);
+  $original = str_ireplace('<ul id="recentcomments"></ul>', '<ul id="recentcomments"><li>' . __('No comments') . '</li></ul>', $original);
   $original = str_ireplace("&cpage", "&amp;cpage", $original);
   print $original;
 }
@@ -233,7 +231,7 @@ function wpmp_theme_widget_calendar($args, $widget_args=1) {
     return;
   }
   preg_match_all("/(^.*)\<caption\>(.*)\<\/caption\>.*\<thead\>(.*)\<\/thead\>.*\<tfoot\>(.*)\<\/tfoot\>.*\<tbody\>(.*)\<\/tbody\>(.*$)/Usi", $original, $parts);
-  print str_replace("<h2>&nbsp;</h2>", "<h2>Calendar</h2>", $parts[1][0]) .
+  print str_replace("<h2>&nbsp;</h2>", "<h2>" . __('Calendar') . "</h2>", $parts[1][0]) .
         "<tr><td colspan='7'>" . $parts[2][0] . "</td></tr>" .
         $parts[3][0] .$parts[5][0] . $parts[4][0] .
         $parts[6][0];

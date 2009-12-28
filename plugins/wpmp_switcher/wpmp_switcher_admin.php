@@ -85,7 +85,7 @@ specific language governing permissions and limitations under the License.
           <?php _e('Use comma-separated domain fragments. eg:'); ?> <b>mysite.mobi, m.mysite.com</b>
           <?php
             if (strpos(get_option('wpmp_switcher_mode'), 'domain')!==false && wpmp_switcher_domains('desktop', true) == wpmp_switcher_domains('mobile', true)) {
-              print "<br /><strong style='color:#770000'>Warning</strong>: your primary desktop and mobile domains are the same. The switcher will default to 'browser detection' mode unless one is changed.";
+              _e("<br /><strong style='color:#770000'>Warning</strong>: your primary desktop and mobile domains are the same. The switcher will default to 'browser detection' mode unless one is changed.");
             }
           ?>
           <br/>

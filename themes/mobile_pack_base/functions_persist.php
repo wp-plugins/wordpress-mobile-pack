@@ -70,7 +70,7 @@ function wpmp_theme_theme_admin() {
     print '<div id="message" class="updated fade"><p><strong>' . wpmp_theme_options_write() . '</strong></p></div>';
     if(isset($_POST['wpmp_theme_transcoder_clear_cache_now']) && $_POST['wpmp_theme_transcoder_clear_cache_now']=='true') {
       if(function_exists('wpmp_transcoder_purge_cache') && ($count = wpmp_transcoder_purge_cache())>0) {
-        print '<div id="message" class="updated fade"><p><strong>' . $count . ' files cleared from image cache</strong></p></div>';
+        print '<div id="message" class="updated fade"><p><strong>' . sprintf(_n('One file cleared from image cache', '%d files cleared from image cache', $count), $count) . '</strong></p></div>';
       }
     }
   }

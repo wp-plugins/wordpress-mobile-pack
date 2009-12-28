@@ -49,6 +49,6 @@ specific language governing permissions and limitations under the License.
   <label for="wpmp_ads_desktop_disable"><?php _e('Attempt to automatically disable for desktop themes (when switcher is running)'); ?></label>
 </p>
 <p>
-  Note also that this widget will be completely hidden if no ads are returned from the provider you have selected.
+  <?php _e('Note also that this widget will be completely hidden if no ads are returned from the provider you have selected.'); ?>
 </p>
 <input type="hidden" id="wpmp_ads" name="wpmp_ads" value="1" />

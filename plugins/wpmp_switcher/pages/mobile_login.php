@@ -25,14 +25,14 @@ CONDITIONS OF ANY KIND, either express or implied. See the License for the
 specific language governing permissions and limitations under the License.
 */
 
-function wpmp_switcher_login_header($title = 'Login', $message = '', $wp_error = '') {
+function wpmp_switcher_login_header($title = __('Login'), $message = '', $wp_error = '') {
 	global $error;
 
 	if ( empty($wp_error) )
 		$wp_error = new WP_Error();
 
   include_once('mobile.php');
-  wpmp_ms_mobile_top("Login");
+  wpmp_ms_mobile_top(__("Login"));
 
 	if ( !empty( $message ) ) echo apply_filters('login_message', $message) . "\n";
 
@@ -153,7 +153,7 @@ default:
 <?php endif; ?>
 </form>
 
-<p id="backtoblog"><a href="<?php bloginfo('url'); ?>/" title="<?php _e('Are you lost?') ?>"><?php printf(__('&laquo; Back to %s'), get_bloginfo('title', 'display' )); ?></a></p>
+<p id="backtoblog"><a href="<?php bloginfo('url'); ?>/" title="<?php _e('Are you lost?') ?>"><?php print '&laquo; ' . sprintf(__('Back to %s'), get_bloginfo('title', 'display' )); ?></a></p>
 
 <?php
   wpmp_ms_mobile_bottom();

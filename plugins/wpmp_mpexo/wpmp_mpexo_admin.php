@@ -35,9 +35,9 @@ specific language governing permissions and limitations under the License.
       <?php _e('Part of the WordPress Mobile Pack'); ?>
     </p>
   </h2>
-  <p><a target='_blank' href='http://www.mpexo.com'>mpexo</a> is an online directory of mobile sites built using the WordPress Mobile Pack.</p>
-  <p>Using the settings below, you can easily, and automatically, get your own site listed on mpexo. It's a safe and easy way to drive traffic to the mobile version of your site.</p>
-  <p><strong>This feature is currently in beta.</strong> It is therefore disabled by default, but will be <em>enabled</em> by default in the forthcoming v2.0 of the WordPress Mobile Pack. Please provide feedback in the meantime.</p>
+  <p><?php printf(e_("<a%s>mpexo</a> is an online directory of mobile sites built using the WordPress Mobile Pack."), " target='_blank' href='http://www.mpexo.com'"); ?></p>
+  <p><?php _e("Using the settings below, you can easily, and automatically, get your own site listed on mpexo. It's a safe and easy way to drive traffic to the mobile version of your site."); ?></p>
+  <p><strong><?php _e("This feature is currently in beta."); ?></strong> <?php _e("It is therefore disabled by default, but will be <em>enabled</em> by default in the forthcoming v2.0 of the WordPress Mobile Pack. Please provide feedback in the meantime."); ?></p>
   <form method="post" action="">
     <table class="form-table">
       <tr>

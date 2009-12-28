@@ -33,7 +33,7 @@ specific language governing permissions and limitations under the License.
     </p>
   </h2>
   <p>
-    <?php _e('<strong>Select the mobile theme itself on the <a href="themes.php?page=wpmp_switcher_admin">switcher settings</a> page.</strong> The page below allows you to further configure its behaviour.'); ?>
+    <?php printf(__('<strong>Select the mobile theme itself on the <a%s>switcher settings</a> page.</strong> The page below allows you to further configure its behaviour.'), ' href="themes.php?page=wpmp_switcher_admin"'); ?>
   </p>
   <form method="post" action="">
     <table class="form-table">
@@ -58,7 +58,7 @@ specific language governing permissions and limitations under the License.
         <td>
           <?php print wpmp_theme_option('wpmp_theme_home_link_in_menu'); ?>
           <br />
-          <?php _e('Unselect this if you are using a dedicated page for the blog home. It prevents \'Home\' appearing twice in the menu.'); ?>
+          <?php _e("Unselect this if you are using a dedicated page for the blog home. It prevents 'Home' appearing twice in the menu."); ?>
         </td>
       </tr>
       <tr>
@@ -92,7 +92,7 @@ specific language governing permissions and limitations under the License.
         <td>
           <?php print wpmp_theme_option('wpmp_theme_widget_list_count'); ?>
           <br />
-          <?php _e('For 3 standard widgets \'Archives\', \'Categories\', and \'Tag cloud\' (which are often lengthy), this will shorten their number of items to the given length. Where necessary, a link will be provided to the full list.'); ?>
+          <?php _e("For 3 standard widgets 'Archives', 'Categories', and 'Tag cloud' (which are often lengthy), this will shorten their number of items to the given length. Where necessary, a link will be provided to the full list."); ?>
         </td>
       </tr>
       <?php if(function_exists('wpmp_transcoder_purge_cache')) { ?>

@@ -190,7 +190,7 @@ function wpmp_switcher_admin() {
     print '<div id="message" class="updated fade"><p><strong>' . wpmp_switcher_options_write() . '</strong></p></div>';
     if(isset($_POST['wpmp_switcher_hit_reset']) && $_POST['wpmp_switcher_hit_reset']=='true') {
       wpmp_switcher_hit_reset();
-      print '<div id="message" class="updated fade"><p><strong>Hit counter reset.</strong></p></div>';
+      print '<div id="message" class="updated fade"><p><strong>' . __('Hit counter reset.') . '</strong></p></div>';
     }
   }
   include_once('wpmp_switcher_admin.php');
@@ -277,26 +277,26 @@ function wpmp_switcher_hit_data() {
 }
 function wpmp_switcher_hit_summary() {
   $desktop = wpmp_switcher_humanize_number(get_option("wpmp_switcher_hits_desktop"));
-  $desktop .= ' desktop hit' . ($desktop=='1'?'':'s');
+  $desktop .= sprintf(_n('one desktop hit', '%d desktop hits', $desktop), $desktop);
   $mobile = wpmp_switcher_humanize_number(get_option("wpmp_switcher_hits_mobile"));
-  $mobile .= ' mobile hit' . ($mobile=='1'?'':'s');
+  $desktop .= sprintf(_n('one mobile hit', '%d mobile hits', $mobile), $mobile);
   $duration = wpmp_switcher_humanize_delta(microtime(true) - get_option("wpmp_switcher_hits_start"));
   $percentage = round(100 * $mobile / ($desktop + $mobile), 1);
-  return "<strong>$percentage% of your traffic is currently from mobile users.</strong><br />" .
-          "You've had $desktop and $mobile in the last $duration.";
+  return "<strong>" . sprintf(__('%d% of your traffic is currently from mobile users.'), $percentage) . "</strong><br />" .
+          sprintf(__('You\'ve had %1$s and %2$s in the last %3$s.'), $desktop, $mobile, $duration);
 }
 
 function wpmp_switcher_humanize_number($number) {
   $number = $number * 1;
   $suffix = '';
   if ($number>(1000000000000)){
-    $suffix=' trillion';
+    $suffix=' ' . __('trillion');
     $number = $number / (1000000000000);
   } elseif ($number>(1000000000)){
-    $suffix=' billion';
+    $suffix=' ' . __('billion');
     $number = $number / (1000000000);
   } elseif ($number>(1000000)){
-    $suffix=' million';
+    $suffix=' ' . __('million');
     $number = $number / (1000000);
   }
   return round($number, 1) . $suffix;
@@ -304,24 +304,24 @@ function wpmp_switcher_humanize_number($number) {
 
 function wpmp_switcher_humanize_delta($seconds) {
   $seconds = $seconds * 1;
-  $suffix = ' seconds';
+  $suffix = ' ' . __('seconds');
   if (($seconds)>60*60*24*365*2){
-    $suffix=' years';
+    $suffix=' ' . __('years');
     $seconds = round($seconds / (60*60*24*365), 1);
   } elseif ($seconds>60*60*24*30*2){
-    $suffix=' months';
+    $suffix=' ' . __('months');
     $seconds = round($seconds / (60*60*24*30), 0);
   } elseif ($seconds>60*60*24*7*2){
-    $suffix=' weeks';
+    $suffix=' ' . __('weeks');
     $seconds = round($seconds / (60*60*24*7), 1);
   } elseif ($seconds>60*60*24*2){
-    $suffix=' days';
+    $suffix=' ' . __('days');
     $seconds = round($seconds / (60*60*24), 1);
   } elseif ($seconds>60*60*2){
-    $suffix=' hours';
+    $suffix=' ' . __('hours');
     $seconds = round($seconds / (60*60), 1);
   } elseif ($seconds>60){
-    $suffix=' minutes';
+    $suffix=' ' . __('minutes');
     $seconds = round($seconds / 60, 1);
   } else {
     $seconds = round($seconds, 1);

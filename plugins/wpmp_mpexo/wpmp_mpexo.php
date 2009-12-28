@@ -148,10 +148,10 @@ function wpmp_mpexo_init() {
   $wpmp_mpexo_payload = array();
   global $wpmp_mpexo_payload_forced;
   $wpmp_mpexo_payload_forced = array();
-  wp_register_sidebar_widget('wpmp_mpexo_widget', __('mpexo'), 'wpmp_mpexo_widget',
+  wp_register_sidebar_widget('wpmp_mpexo_widget', 'mpexo', 'wpmp_mpexo_widget',
     array('classname' => 'wpmp_mpexo_widget', 'description' => __( "A widget to show mpexo links for this blog"))
   );
-  wp_register_widget_control('wpmp_mpexo_widget', __('mpexo'), 'wpmp_mpexo_widget_control');
+  wp_register_widget_control('wpmp_mpexo_widget', 'mpexo', 'wpmp_mpexo_widget_control');
 }
 
 function wpmp_mpexo_ping() {
@@ -570,7 +570,7 @@ function wpmp_mpexo_options_write() {
   if(wpmp_mpexo_shutdown()) {
     return __('Settings saved.');
   }
-  return __('Communications error. These settings have been saved locally and will be transmitted to mpexo when resubmitted.');
+  return __('<strong>Communications error:</strong> these settings have been saved locally and will be transmitted to mpexo when resubmitted.');
 }
 
 function wpmp_mpexo_option($option, $onchange='', $class='', $style='') {

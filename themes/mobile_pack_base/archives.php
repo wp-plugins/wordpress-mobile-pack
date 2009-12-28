@@ -31,13 +31,13 @@ get_header();
 <div id="wrapper">
   <div id="content">
     <div class="post">
-      <h2>Archives by Month:</h2>
+      <h2><?php _e('Archives by Month:'); ?></h2>
       <ul>
         <?php wp_get_archives('type=monthly'); ?>
       </ul>
     </div>
     <div class="post">
-      <h2>Archives by Subject:</h2>
+      <h2><?php _e('Archives by Subject:'); ?></h2>
       <ul>
         <?php wp_list_categories(); ?>
       </ul>
