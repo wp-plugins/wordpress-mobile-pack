@@ -54,7 +54,7 @@ specific language governing permissions and limitations under the License.
         <td>
           <?php print wpmp_mpexo_option('wpmp_mpexo_description', 'wpmpMpexo();'); ?>
           <br />
-          <?php _e('mpexo can display a description of your blog. This can be the tagline in your <a href="options-general.php">general settings</a>, or some custom text.'); ?>
+          <?php printf(__('mpexo can display a description of your blog. This can be the tagline in your <a%s>general settings</a>, or some custom text.'), ' href="options-general.php"'); ?>
           <br />
           <?php print wpmp_mpexo_option('wpmp_mpexo_description_override'); ?>
         </td>

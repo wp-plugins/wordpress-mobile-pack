@@ -120,7 +120,7 @@ default:
 		$errors = new WP_Error();
 
 	if ( isset($_POST['testcookie']) && empty($_COOKIE[TEST_COOKIE]) )
-		$errors->add('test_cookie', __("<strong>ERROR</strong>: Cookies are blocked or not supported by your browser. You must <a href='http://www.google.com/cookies.html'>enable cookies</a> to use WordPress."));
+		$errors->add('test_cookie', sprintf(__("<strong>ERROR</strong>: Cookies are blocked or not supported by your browser. You must <a%s>enable cookies</a> to use WordPress."), " href='http://www.google.com/cookies.html'"));
 
 	if		( isset($_GET['loggedout']) && TRUE == $_GET['loggedout'] )			$errors->add('loggedout', __('You are now logged out.'), 'message');
 	elseif	( isset($_GET['registration']) && 'disabled' == $_GET['registration'] )	$errors->add('registerdiabled', __('User registration is currently not allowed.'));
