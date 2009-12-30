@@ -38,14 +38,14 @@ Author URI: http://www.assembla.com/spaces/wordpress-mobile-pack
 add_action('init', 'wpmp_barcode_init');
 
 function wpmp_barcode_init() {
-  wp_register_sidebar_widget('wpmp_barcode_widget', __('Mobile Barcode'), 'wpmp_barcode_widget',
-    array('classname' => 'wpmp_barcode_widget', 'description' => __( "A 2D-barcode used for navigating to a mobile URL"))
+  wp_register_sidebar_widget('wpmp_barcode_widget', __('Mobile Barcode', 'wpmp'), 'wpmp_barcode_widget',
+    array('classname' => 'wpmp_barcode_widget', 'description' => __( "A 2D-barcode used for navigating to a mobile URL", 'wpmp'))
   );
-  wp_register_widget_control('wpmp_barcode_widget', __('Mobile Barcode'), 'wpmp_barcode_widget_control');
+  wp_register_widget_control('wpmp_barcode_widget', __('Mobile Barcode', 'wpmp'), 'wpmp_barcode_widget_control');
 }
 function wpmp_barcode_activate() {
   foreach(array(
-    'wpmp_barcode_title'=>__('Our mobile site'),
+    'wpmp_barcode_title'=>__('Our mobile site', 'wpmp'),
     'wpmp_barcode_link'=>
       function_exists('wpmp_switcher_domains') ?
         "http://" . wpmp_switcher_domains('mobile', true) :
@@ -67,7 +67,7 @@ function wpmp_barcode_widget($args) {
   extract($args);
   print $before_widget;
   if (($title = get_option('wpmp_barcode_title'))=='') {
-    $title = __("Our mobile site");
+    $title = __("Our mobile site", 'wpmp');
   }
   print $before_title . $title . $after_title;
   $size = get_option('wpmp_barcode_size');
@@ -86,13 +86,13 @@ function wpmp_barcode_widget($args) {
   print "<img width='$size' height='$size' src='$url' />";
   if(get_option('wpmp_barcode_help')=='true') {
     print "<p>";
-    printf (__('This is a 2D-barcode containing the address of our <a%s>mobile site</a>.'), "href='$link' target='_blank'");
-    print __('If your mobile has a barcode reader, simply snap this bar code with the camera and launch the site.');
+    printf (__('This is a 2D-barcode containing the address of our <a%s>mobile site</a>.', 'wpmp'), "href='$link' target='_blank'");
+    print __('If your mobile has a barcode reader, simply snap this bar code with the camera and launch the site.', 'wpmp');
     print "</p>";
   }
   if(get_option('wpmp_barcode_reader_list')=='true') {
     print "<p>";
-    print __('Many companies provide barcode readers that you can install on your mobile, and all of the following are compatible with this format:');
+    print __('Many companies provide barcode readers that you can install on your mobile, and all of the following are compatible with this format:', 'wpmp');
     print "</p>";
     include_once('barcode_reader_list.php');
     print "<ul>";

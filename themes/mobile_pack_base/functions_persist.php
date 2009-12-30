@@ -61,8 +61,8 @@ function wpmp_theme_init() {
 
 add_action('admin_menu', 'wpmp_theme_admin_menu');
 function wpmp_theme_admin_menu() {
-  add_theme_page(__('Mobile Theme'), __('Mobile Theme'), 3, 'wpmp_theme_theme_admin', 'wpmp_theme_theme_admin');
-  add_theme_page(__('Mobile Widgets'), __('Mobile Widgets'), 3, 'wpmp_theme_widget_admin', 'wpmp_theme_widget_admin');
+  add_theme_page(__('Mobile Theme', 'wpmp'), __('Mobile Theme', 'wpmp'), 3, 'wpmp_theme_theme_admin', 'wpmp_theme_theme_admin');
+  add_theme_page(__('Mobile Widgets', 'wpmp'), __('Mobile Widgets', 'wpmp'), 3, 'wpmp_theme_widget_admin', 'wpmp_theme_widget_admin');
 }
 
 function wpmp_theme_theme_admin() {
@@ -70,7 +70,7 @@ function wpmp_theme_theme_admin() {
     print '<div id="message" class="updated fade"><p><strong>' . wpmp_theme_options_write() . '</strong></p></div>';
     if(isset($_POST['wpmp_theme_transcoder_clear_cache_now']) && $_POST['wpmp_theme_transcoder_clear_cache_now']=='true') {
       if(function_exists('wpmp_transcoder_purge_cache') && ($count = wpmp_transcoder_purge_cache())>0) {
-        print '<div id="message" class="updated fade"><p><strong>' . sprintf(_n('One file cleared from image cache', '%d files cleared from image cache', $count), $count) . '</strong></p></div>';
+        print '<div id="message" class="updated fade"><p><strong>' . sprintf(__ngettext('One file cleared from image cache', '%d files cleared from image cache', $count, 'wpmp'), $count) . '</strong></p></div>';
       }
     }
   }
@@ -84,7 +84,7 @@ function wpmp_theme_widget_admin() {
 }
 
 function wpmp_theme_options_write() {
-  $message = __('Settings saved.');
+  $message = __('Settings saved.', 'wpmp');
   foreach(array(
     'wpmp_theme_widget'=>false,
     'wpmp_theme_home_link_in_menu'=>true,
@@ -115,15 +115,15 @@ function wpmp_theme_options_write() {
   }
   if (!is_numeric(get_option('wpmp_theme_post_count'))) {
     update_option('wpmp_theme_post_count', '5');
-    $message = __('Please provide a valid number of posts that you would like the theme to display.');
+    $message = __('Please provide a valid number of posts that you would like the theme to display.', 'wpmp');
   }
   if (!is_numeric(get_option('wpmp_theme_teaser_length'))) {
     update_option('wpmp_theme_teaser_length', '50');
-    $message = __('Please provide a valid teaser length.');
+    $message = __('Please provide a valid teaser length.', 'wpmp');
   }
   if (!is_numeric(get_option('wpmp_theme_widget_list_count'))) {
     update_option('wpmp_theme_widget_list_count', '5');
-    $message = __('Please provide a valid widget list length.');
+    $message = __('Please provide a valid widget list length.', 'wpmp');
   }
   return $message;
 }
@@ -134,9 +134,9 @@ function wpmp_theme_option($option, $onchange='') {
       return wpmp_theme_option_dropdown(
         $option,
         array(
-          'none'=>__('Title only'),
-          'firstteaser'=>__('Title and teaser for first post, title for the rest'),
-          'teaser'=>__('Title and teaser for all posts'),
+          'none'=>__('Title only', 'wpmp'),
+          'firstteaser'=>__('Title and teaser for first post, title for the rest', 'wpmp'),
+          'teaser'=>__('Title and teaser for all posts', 'wpmp'),
         ),
         $onchange
       );
@@ -176,7 +176,7 @@ function wpmp_theme_option_dropdown($option, $options, $onchange='') {
     } else {
       $selected = '';
     }
-    $dropdown .= '<option value="' . attribute_escape($value) . '"' . $selected . '>' . __($description) . '</option>';
+    $dropdown .= '<option value="' . attribute_escape($value) . '"' . $selected . '>' . __($description, 'wpmp') . '</option>';
   }
   $dropdown .= "</select>";
   return $dropdown;

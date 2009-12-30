@@ -28,6 +28,6 @@ specific language governing permissions and limitations under the License.
 ?>
 
 <p>
-  <?php _e("There are currently no settings for this widget"); ?>
+  <?php _e("There are currently no settings for this widget", 'wpmp'); ?>
 </p>
 <input type="hidden" id="wpmp_mpexo" name="wpmp_mpexo" value="1" />

@@ -57,8 +57,8 @@ add_filter('option_home', 'wpmp_switcher_option_home_siteurl');
 add_filter('option_siteurl', 'wpmp_switcher_option_home_siteurl');
 
 function wpmp_switcher_init() {
-  wp_register_sidebar_widget('wpmp_switcher_widget_link', __('Mobile Switcher Link'), 'wpmp_switcher_widget_link',
-    array('classname' => 'wpmp_switcher_widget_link', 'description' => __( "A link that allows users to toggle between desktop and mobile sites (when a switcher mode is enabled)"))
+  wp_register_sidebar_widget('wpmp_switcher_widget_link', __('Mobile Switcher Link', 'wpmp'), 'wpmp_switcher_widget_link',
+    array('classname' => 'wpmp_switcher_widget_link', 'description' => __( "A link that allows users to toggle between desktop and mobile sites (when a switcher mode is enabled)", 'wpmp'))
   );
   switch($switcher_outcome = wpmp_switcher_outcome()) {
     case WPMP_SWITCHER_NO_SWITCH:
@@ -101,13 +101,13 @@ function wpmp_switcher_widget_link($args) {
   if(get_option('wpmp_switcher_mode')=='none') {
     return;
   }
-  print $before_widget . $before_title . __('Switch site') . $after_title;
+  print $before_widget . $before_title . __('Switch site', 'wpmp') . $after_title;
   switch (wpmp_switcher_outcome()) {
     case WPMP_SWITCHER_MOBILE_PAGE:
-      print "<ul><li>" . wpmp_switcher_link('desktop', __('Switch to our desktop site')) . "</li></ul>";
+      print "<ul><li>" . wpmp_switcher_link('desktop', __('Switch to our desktop site', 'wpmp')) . "</li></ul>";
       break;
     case WPMP_SWITCHER_DESKTOP_PAGE:
-      print "<ul><li>" . wpmp_switcher_link('mobile', __('Switch to our mobile site')) . "</li></ul>";
+      print "<ul><li>" . wpmp_switcher_link('mobile', __('Switch to our mobile site', 'wpmp')) . "</li></ul>";
       break;
   }
   print $after_widget;
@@ -183,14 +183,14 @@ function wpmp_switcher_deactivate() {
 
 
 function wpmp_switcher_admin_menu() {
-	add_theme_page(__('Mobile Switcher'), __('Mobile Switcher'), 3, 'wpmp_switcher_admin', 'wpmp_switcher_admin');
+	add_theme_page(__('Mobile Switcher', 'wpmp'), __('Mobile Switcher', 'wpmp'), 3, 'wpmp_switcher_admin', 'wpmp_switcher_admin');
 }
 function wpmp_switcher_admin() {
   if(sizeof($_POST)>0) {
     print '<div id="message" class="updated fade"><p><strong>' . wpmp_switcher_options_write() . '</strong></p></div>';
     if(isset($_POST['wpmp_switcher_hit_reset']) && $_POST['wpmp_switcher_hit_reset']=='true') {
       wpmp_switcher_hit_reset();
-      print '<div id="message" class="updated fade"><p><strong>' . __('Hit counter reset.') . '</strong></p></div>';
+      print '<div id="message" class="updated fade"><p><strong>' . __('Hit counter reset.', 'wpmp') . '</strong></p></div>';
     }
   }
   include_once('wpmp_switcher_admin.php');
@@ -202,10 +202,10 @@ function wpmp_switcher_wp_footer($force=false) {
   }
   switch (wpmp_switcher_outcome()) {
     case WPMP_SWITCHER_MOBILE_PAGE:
-      print "<p>" . wpmp_switcher_link('desktop', __('Switch to our desktop site')) . "</p>";
+      print "<p>" . wpmp_switcher_link('desktop', __('Switch to our desktop site', 'wpmp')) . "</p>";
       break;
     case WPMP_SWITCHER_DESKTOP_PAGE:
-      print "<p>" . wpmp_switcher_link('mobile', __('Switch to our mobile site')) . "</p>";
+      print "<p>" . wpmp_switcher_link('mobile', __('Switch to our mobile site', 'wpmp')) . "</p>";
       break;
   }
 }
@@ -276,27 +276,27 @@ function wpmp_switcher_hit_data() {
   return "1.$desktop.$mobile.$duration";
 }
 function wpmp_switcher_hit_summary() {
-  $desktop = wpmp_switcher_humanize_number(get_option("wpmp_switcher_hits_desktop"));
-  $desktop .= sprintf(_n('one desktop hit', '%d desktop hits', $desktop), $desktop);
-  $mobile = wpmp_switcher_humanize_number(get_option("wpmp_switcher_hits_mobile"));
-  $desktop .= sprintf(_n('one mobile hit', '%d mobile hits', $mobile), $mobile);
+  $desktop = get_option("wpmp_switcher_hits_desktop");
+  $desktop_text = sprintf(__ngettext('one desktop hit', '%d desktop hits', wpmp_switcher_humanize_number($desktop), 'wpmp'), $desktop);
+  $mobile = get_option("wpmp_switcher_hits_mobile");
+  $mobile_text = sprintf(__ngettext('one mobile hit', '%d mobile hits', wpmp_switcher_humanize_number($mobile), 'wpmp'), $mobile);
   $duration = wpmp_switcher_humanize_delta(microtime(true) - get_option("wpmp_switcher_hits_start"));
   $percentage = round(100 * $mobile / ($desktop + $mobile), 1);
-  return "<strong>" . sprintf(__('%d% of your traffic is currently from mobile users.'), $percentage) . "</strong><br />" .
-          sprintf(__('You\'ve had %1$s and %2$s in the last %3$s.'), $desktop, $mobile, $duration);
+  return "<strong>" . sprintf(__('%d%%  of your traffic is currently from mobile users.', 'wpmp'), $percentage) . "</strong><br />" .
+          sprintf(__('You\'ve had %1$s and %2$s in the last %3$s.', 'wpmp'), $desktop_text, $mobile_text, $duration);
 }
 
 function wpmp_switcher_humanize_number($number) {
   $number = $number * 1;
   $suffix = '';
   if ($number>(1000000000000)){
-    $suffix=' ' . __('trillion');
+    $suffix=' ' . __('trillion', 'wpmp');
     $number = $number / (1000000000000);
   } elseif ($number>(1000000000)){
-    $suffix=' ' . __('billion');
+    $suffix=' ' . __('billion', 'wpmp');
     $number = $number / (1000000000);
   } elseif ($number>(1000000)){
-    $suffix=' ' . __('million');
+    $suffix=' ' . __('million', 'wpmp');
     $number = $number / (1000000);
   }
   return round($number, 1) . $suffix;
@@ -304,24 +304,24 @@ function wpmp_switcher_humanize_number($number) {
 
 function wpmp_switcher_humanize_delta($seconds) {
   $seconds = $seconds * 1;
-  $suffix = ' ' . __('seconds');
+  $suffix = ' ' . __('seconds', 'wpmp');
   if (($seconds)>60*60*24*365*2){
-    $suffix=' ' . __('years');
+    $suffix=' ' . __('years', 'wpmp');
     $seconds = round($seconds / (60*60*24*365), 1);
   } elseif ($seconds>60*60*24*30*2){
-    $suffix=' ' . __('months');
+    $suffix=' ' . __('months', 'wpmp');
     $seconds = round($seconds / (60*60*24*30), 0);
   } elseif ($seconds>60*60*24*7*2){
-    $suffix=' ' . __('weeks');
+    $suffix=' ' . __('weeks', 'wpmp');
     $seconds = round($seconds / (60*60*24*7), 1);
   } elseif ($seconds>60*60*24*2){
-    $suffix=' ' . __('days');
+    $suffix=' ' . __('days', 'wpmp');
     $seconds = round($seconds / (60*60*24), 1);
   } elseif ($seconds>60*60*2){
-    $suffix=' ' . __('hours');
+    $suffix=' ' . __('hours', 'wpmp');
     $seconds = round($seconds / (60*60), 1);
   } elseif ($seconds>60){
-    $suffix=' ' . __('minutes');
+    $suffix=' ' . __('minutes', 'wpmp');
     $seconds = round($seconds / 60, 1);
   } else {
     $seconds = round($seconds, 1);
@@ -527,7 +527,7 @@ function wpmp_switcher_mobile_admin() {
 	exit;
 }
 function wpmp_switcher_options_write() {
-  $message = __('Settings saved.');
+  $message = __('Settings saved.', 'wpmp');
   foreach(array(
     'wpmp_switcher_mode'=>false,
     'wpmp_switcher_detection'=>false,
@@ -560,7 +560,7 @@ function wpmp_switcher_options_write() {
         $domain = trim($domain);
         $trimmed_domain = wpmp_switcher_trim_domain($domain);
         if ($trimmed_domain!=$domain) {
-          $message = __('You must provide clean domain names without any leading or trailing syntax. We fixed them for you.');
+          $message = __('You must provide clean domain names without any leading or trailing syntax. We fixed them for you.', 'wpmp');
         }
         $trimmed_domains[] = $trimmed_domain;
       }
@@ -572,11 +572,11 @@ function wpmp_switcher_options_write() {
     switch(get_option('wpmp_switcher_mode')) {
       case 'domain':
         update_option('wpmp_switcher_mode', 'none');
-        $message = __('You must provide both desktop and mobile domains. Switching has been disabled.');
+        $message = __('You must provide both desktop and mobile domains. Switching has been disabled.', 'wpmp');
         break;
       case 'browserdomain':
         update_option('wpmp_switcher_mode', 'browser');
-        $message = __('You must provide both desktop and mobile domains. Switching has been changed to browser detection only.');
+        $message = __('You must provide both desktop and mobile domains. Switching has been changed to browser detection only.', 'wpmp');
         break;
     }
   }
@@ -589,10 +589,10 @@ function wpmp_switcher_option($option, $onchange='') {
       return wpmp_switcher_option_dropdown(
         $option,
         array(
-          'none'=>__('Disabled'),
-          'browser'=>__('Browser detection'),
-          'domain'=>__('Domain mapping'),
-          'browserdomain'=>__('BOTH: browser detection and domain mapping'),
+          'none'=>__('Disabled', 'wpmp'),
+          'browser'=>__('Browser detection', 'wpmp'),
+          'domain'=>__('Domain mapping', 'wpmp'),
+          'browserdomain'=>__('BOTH: browser detection and domain mapping', 'wpmp'),
         ),
         $onchange
       );
@@ -601,10 +601,10 @@ function wpmp_switcher_option($option, $onchange='') {
       return wpmp_switcher_option_themes($option);
 
     case 'wpmp_switcher_detection':
-      $options = array('simple'=>__('User-agent prefixes'));
+      $options = array('simple'=>__('User-agent prefixes', 'wpmp'));
       if(function_exists('wpmp_deviceatlas_enabled') && wpmp_deviceatlas_enabled()) {
-        $options['simple']=__('SIMPLE: User-agent prefixes');
-        $options['deviceatlas']=__('ADVANCED: DeviceAtlas recognition');
+        $options['simple']=__('SIMPLE: User-agent prefixes', 'wpmp');
+        $options['deviceatlas']=__('ADVANCED: DeviceAtlas recognition', 'wpmp');
       }
       return wpmp_switcher_option_dropdown(
         $option, $options, $onchange
@@ -637,7 +637,7 @@ function wpmp_switcher_option_dropdown($option, $options, $onchange='') {
     } else {
       $selected = '';
     }
-    $dropdown .= '<option value="' . attribute_escape($value) . '"' . $selected . '>' . __($description) . '</option>';
+    $dropdown .= '<option value="' . attribute_escape($value) . '"' . $selected . '>' . __($description, 'wpmp') . '</option>';
   }
   $dropdown .= "</select>";
   return $dropdown;

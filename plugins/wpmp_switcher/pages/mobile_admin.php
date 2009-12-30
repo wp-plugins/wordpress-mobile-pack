@@ -36,18 +36,18 @@ specific language governing permissions and limitations under the License.
     }
 
     $menu = array(
-      "Overview" => "/wp-admin/index.php",
-      "New post" => "/wp-admin/post-new.php",
-      "Edit post" => "/wp-admin/post.php?action=edit",
-      "Comments" => "/wp-admin/edit-comments.php",
-      "_Comment" => "/wp-admin/comment.php",
-      "Switcher" => "/wp-admin/themes.php",
-      "Settings" => "/wp-admin/options-general.php",
-    ); //i18n in template
+      __("Overview", 'wpmp') => "/wp-admin/index.php",
+      __("New post", 'wpmp') => "/wp-admin/post-new.php",
+      __("Edit post", 'wpmp') => "/wp-admin/post.php?action=edit",
+      __("Comments", 'wpmp') => "/wp-admin/edit-comments.php",
+      "_" . __("Comment", 'wpmp') => "/wp-admin/comment.php",
+      __("Switcher", 'wpmp') => "/wp-admin/themes.php",
+      __("Settings", 'wpmp') => "/wp-admin/options-general.php",
+    );
     if (function_exists('wp_logout_url')) {
-      $menu["Log out"] = wp_logout_url();
+      $menu[__("Log out", 'wpmp')] = wp_logout_url();
     } else {
-      $menu["Log out"] = "/wp-login.php?action=logout";
+      $menu[__("Log out", 'wpmp')] = "/wp-login.php?action=logout";
     }
 
     $page = $_SERVER['REQUEST_URI'];
@@ -79,19 +79,19 @@ specific language governing permissions and limitations under the License.
     $post_count = wp_count_posts('post');
     $page_count = wp_count_posts('page');
     print "<p>";
-    printf(_n("You have one post", "You have %d posts", $c=0+($post_count->publish)), $c);
+    printf(__ngettext("You have one post", "You have %d posts", $c=0+($post_count->publish), 'wpmp'), $c);
     print ' ';
-    printf(_n("and one page", "and %d pages", $c=0+($page_count->publish)), $c);
-    print ' ' . __("contained within") . ' ';
-    printf(_n("one category", "%d categories", $c=0+(wp_count_terms('category'))), $c);
-    print ' ' . __("and") . ' ';
-    printf(_n("one tag", "%d tags", $c=0+(wp_count_terms('post_tag'))), $c);
+    printf(__ngettext("and one page", "and %d pages", $c=0+($page_count->publish), 'wpmp'), $c);
+    print ' ' . __("contained within", 'wpmp') . ' ';
+    printf(__ngettext("one category", "%d categories", $c=0+(wp_count_terms('category')), 'wpmp'), $c);
+    print ' ' . __("and", 'wpmp') . ' ';
+    printf(__ngettext("one tag", "%d tags", $c=0+(wp_count_terms('post_tag')), 'wpmp'), $c);
     print ".</p>";
   	global $wpdb;
 		$comments = $wpdb->get_results("SELECT count(*) as cnt FROM $wpdb->comments WHERE comment_approved='0'" );
     $comment_count = $comments[0];
-    printf("<p>" . _n("You have one comment to moderate", "You have %d comments to moderate", $c=0+($comment_count->cnt)) . ".</p>", $c);
-    print "<h3>" . __("Select an admin page:") . "</h3>";
+    printf("<p>" . __ngettext("You have one comment to moderate", "You have %d comments to moderate", $c=0+($comment_count->cnt), 'wpmp') . ".</p>", $c);
+    print "<h3>" . __("Select an admin page:", 'wpmp') . "</h3>";
     print "<p><ul>";
     $not_first = false;
     foreach($menu as $name=>$link) {
@@ -99,20 +99,20 @@ specific language governing permissions and limitations under the License.
         if(substr($link, 0, 7)!="http://" && substr($link, 0, 8)!="https://") {
           $link = $base . $link;
         }
-        print "<li><a href='$link'>" . __("$name") . "</a>";
+        print "<li><a href='$link'>" . __("$name", 'wpmp') . "</a>";
       }
       $not_first = true;
     }
     print "</ul></p>";
-    print "<p>" . sprintf(__("...or <a%s>return to the site</a>"), " href='$base/'") . "</p>";
-    print "<p>" . __("A subset of the full WordPress administration is available through this mobile interface.") . "</p>";
+    print "<p>" . sprintf(__("...or <a%s>return to the site</a>", 'wpmp'), " href='$base/'") . "</p>";
+    print "<p>" . __("A subset of the full WordPress administration is available through this mobile interface.", 'wpmp') . "</p>";
   }
 
   function wpmp_msma_junior($menu) {
     $base = get_option('home');
-    print "<h3>" . __("Sorry! Permission denied...") . "</h3>";
-    print "<p>" . __("Only 'administrator' users can use the mobile admin panel.") . "</p>";
-    print "<p><a href='" . get_option('siteurl') . "$base/wp-login.php?action=logout'>" . __("Login as a different user") . "</a> " . __("or") . " <a href='$base/'>" . __("return to the site") . "</a></p>";
+    print "<h3>" . __("Sorry! Permission denied...", 'wpmp') . "</h3>";
+    print "<p>" . __("Only 'administrator' users can use the mobile admin panel.", 'wpmp') . "</p>";
+    print "<p><a href='" . get_option('siteurl') . "$base/wp-login.php?action=logout'>" . __("Login as a different user", 'wpmp') . "</a> " . __("or", 'wpmp') . " <a href='$base/'>" . __("return to the site", 'wpmp') . "</a></p>";
   }
 
   function wpmp_msma_post_new() {
@@ -122,13 +122,13 @@ specific language governing permissions and limitations under the License.
    	if (sizeof($_POST) > 0) {
       if (!wpmp_msma_check_referer()) { return; }
       @wp_update_post($_POST);
-      print "<p>" . __("Your changes have been applied.") . "</p>";
+      print "<p>" . __("Your changes have been applied.", 'wpmp') . "</p>";
       wpmp_msma_post_list();
     } else {
       if(is_numeric($id = @$_GET['post'])) {
         $post = get_post($id, OBJECT, 'edit');
         if(!$post->ID) {
-          print "<p>" . __("That post does not exist, but you may write a new one.") . "</p>";
+          print "<p>" . __("That post does not exist, but you may write a new one.", 'wpmp') . "</p>";
         }
       } elseif (!$new) {
         wpmp_msma_post_list();
@@ -149,25 +149,25 @@ specific language governing permissions and limitations under the License.
     print '<input type="hidden" name="ID" value="' . $post->ID . '" />';
     print '<input type="hidden" name="user_ID" value="' . (int) $user_ID . '" />';
 
-    print '<p><label for="title">' . __('Title') . ':</label><br />';
+    print '<p><label for="title">' . __('Title', 'wpmp') . ':</label><br />';
     print '<input type="text" name="post_title" value="' . attribute_escape(@$post->post_title) . '" id="title" /></p>';
 
-    print '<p><label for="post_status">' . __('Status') . ':</label><br />';
+    print '<p><label for="post_status">' . __('Status', 'wpmp') . ':</label><br />';
     print '<select name="post_status" id="post_status">';
-    print '<option ' . (($post->post_status == 'publish' || $post->post_status == 'private') ? 'selected="selected"' : "") . ' value="publish">' . __('Published') . '</option>';
-    print '<option ' . (($post->post_status == 'draft' || $post->post_status == 'future') ? 'selected="selected"' : "") . ' value="draft">' . __('Unpublished') . '</option>';
-    print '<option ' . (($post->post_status == 'pending') ? 'selected="selected"' : "") . ' value="pending">' . __('Pending Review') . '</option>';
+    print '<option ' . (($post->post_status == 'publish' || $post->post_status == 'private') ? 'selected="selected"' : "") . ' value="publish">' . __('Published', 'wpmp') . '</option>';
+    print '<option ' . (($post->post_status == 'draft' || $post->post_status == 'future') ? 'selected="selected"' : "") . ' value="draft">' . __('Unpublished', 'wpmp') . '</option>';
+    print '<option ' . (($post->post_status == 'pending') ? 'selected="selected"' : "") . ' value="pending">' . __('Pending Review', 'wpmp') . '</option>';
     print '</select></p>';
 
-    print '<p><label for="post_content">' . __('Content') . ':</label><br />';
+    print '<p><label for="post_content">' . __('Content', 'wpmp') . ':</label><br />';
     $safe_content = @$post->post_content;
     $safe_content = str_replace("<textarea", "<div", $safe_content);
     $safe_content = str_replace("<TEXTAREA", "<div", $safe_content);
     $safe_content = str_replace("</textarea", "</div", $safe_content);
     $safe_content = str_replace("</TEXTAREA", "</div", $safe_content);
     print '<textarea name="post_content" id="post_content" rows="6">' . $safe_content . '</textarea></p>';
-    print '<input name="submit" type="submit" id="submit" value="' . __('Apply') . '" />';
-    print '<p>' . __('You can use HTML tags to format your post. Use &lt;!--more--&gt; to indicate the end of the teaser.') . '</p>';
+    print '<input name="submit" type="submit" id="submit" value="' . __('Apply', 'wpmp') . '" />';
+    print '<p>' . __('You can use HTML tags to format your post. Use &lt;!--more--&gt; to indicate the end of the teaser.', 'wpmp') . '</p>';
 
     print '</form>';
   }
@@ -177,7 +177,7 @@ specific language governing permissions and limitations under the License.
     wp('orderby=modified');
     if(have_posts()) {
       global $post;
-      print "<p>" . __("Select a post to edit:") . "</p>";
+      print "<p>" . __("Select a post to edit:", 'wpmp') . "</p>";
       add_filter('get_pagenum_link', 'wpmp_msma_get_pagenum_link');
       while (have_posts()) {
         the_post();
@@ -190,23 +190,23 @@ specific language governing permissions and limitations under the License.
       next_posts_link('Older');
       previous_posts_link('Newer');
      } else {
-      print "<p>" . __("There are no posts to edit.") . "</p>";
+      print "<p>" . __("There are no posts to edit.", 'wpmp') . "</p>";
     }
   }
   function wpmp_msma_edit_comments() {
   	global $wpdb;
 		$comments = $wpdb->get_results("SELECT $wpdb->comments.*, $wpdb->posts.post_title FROM $wpdb->comments INNER JOIN $wpdb->posts ON $wpdb->comments.comment_post_id = $wpdb->posts.id WHERE comment_approved='0' ORDER BY comment_date_gmt DESC LIMIT 5" );
     if(sizeof($comments)==0) {
-      print "<p>" . __("This site has no comments awaiting moderation.") . "</p>";
+      print "<p>" . __("This site has no comments awaiting moderation.", 'wpmp') . "</p>";
     } else {
       switch($size = sizeof($comments)) {
         case 5:
-          print "<p>" . __("There are at least 5 comments awaiting moderation:") . "</p>";
+          print "<p>" . __("There are at least 5 comments awaiting moderation:", 'wpmp') . "</p>";
           break;
         case 1:
           return wpmp_msma_edit_comment($comments[0], true);
         default:
-          print "<p>" . __("There are $size comments awaiting moderation:") . "</p>";
+          print "<p>" . __("There are $size comments awaiting moderation:", 'wpmp') . "</p>";
       }
       foreach($comments as $comment) {
         wpmp_msma_edit_comment($comment);
@@ -237,18 +237,18 @@ specific language governing permissions and limitations under the License.
    	if (isset($_POST['wpmp_switcher_mode'])) {
       if (!wpmp_msma_check_referer()) { return; }
       update_option('wpmp_switcher_mode', $_POST['wpmp_switcher_mode']);
-      print "<p>" . __("Your changes have been applied.") . "</p>";
-      print "<p><a href='/wp-admin/'>" . __("Continue.") . "</a></p>";
+      print "<p>" . __("Your changes have been applied.", 'wpmp') . "</p>";
+      print "<p><a href='/wp-admin/'>" . __("Continue.", 'wpmp') . "</a></p>";
       return;
     }
     print '<form name="post" action="' . $_SERVER['REQUEST_URI'] . '" method="post" id="post">';
-    print '<p><label for="title">' . __('Change the mobile switcher mode:') . '</label><br />';
+    print '<p><label for="title">' . __('Change the mobile switcher mode:', 'wpmp') . '</label><br />';
     $current = get_option('wpmp_switcher_mode');
     foreach(array(
-      'none'=>__('Disabled'),
-      'browser'=>__('Browser detection'),
-      'domain'=>__('Domain mapping'),
-      'browserdomain'=>__('BOTH: browser detection and domain mapping'),
+      'none'=>__('Disabled', 'wpmp'),
+      'browser'=>__('Browser detection', 'wpmp'),
+      'domain'=>__('Domain mapping', 'wpmp'),
+      'browserdomain'=>__('BOTH: browser detection and domain mapping', 'wpmp'),
     ) as $value=>$title) {
       print "<input style='width:32px;' type='radio' name='wpmp_switcher_mode' value='$value'";
       if ($value == $current) {
@@ -257,9 +257,9 @@ specific language governing permissions and limitations under the License.
       print "/> $title<br />";
     }
     print '</select></p>';
-    print '<input name="submit" type="submit" id="submit" value="' . __('Apply') . '" />';
+    print '<input name="submit" type="submit" id="submit" value="' . __('Apply', 'wpmp') . '" />';
     print '</form>';
-    print "<p>" . __("NB: Changing the switcher mode may return you to the desktop version of the admin pages. Be cautious if you are using a mobile device.") . "</p>";
+    print "<p>" . __("NB: Changing the switcher mode may return you to the desktop version of the admin pages. Be cautious if you are using a mobile device.", 'wpmp') . "</p>";
   }
 
   function wpmp_msma_edit_comment(&$comment, $full = false) {
@@ -273,10 +273,10 @@ specific language governing permissions and limitations under the License.
         $content = substr($content, 0, 100) . "...";
       }
     }
-    $approve = "<a href='comment.php?action=approvecomment&amp;c=$id'>" . __('Approve') . "</a>";
-    $delete = "<a href='comment.php?action=deletecomment&amp;c=$id'>" . __('Delete') . "</a>";
-    $spam = "<a href='comment.php?action=spamcomment&amp;c=$id'>" . __('Spam') . "</a>";
-    print "<p>" . sprintf(_c('<strong>%1$s</strong> on %2$s|comment_title ON post_title'), $title, $comment->post_title) .
+    $approve = "<a href='comment.php?action=approvecomment&amp;c=$id'>" . __('Approve', 'wpmp') . "</a>";
+    $delete = "<a href='comment.php?action=deletecomment&amp;c=$id'>" . __('Delete', 'wpmp') . "</a>";
+    $spam = "<a href='comment.php?action=spamcomment&amp;c=$id'>" . __('Spam', 'wpmp') . "</a>";
+    print "<p>" . sprintf(_c('<strong>%1$s</strong> on %2$s|comment_title ON post_title', 'wpmp'), $title, $comment->post_title) .
       "<br />$content" .
       "<br />$approve | $delete | $spam" .
       "</p>";
@@ -287,7 +287,7 @@ specific language governing permissions and limitations under the License.
       if (sizeof($_POST) > 0) {
         if (!wpmp_msma_check_referer()) { return; }
         wpmp_msma_option_update($_POST);
-        print "<p>" . __("Your changes have been applied.") . "</p>";
+        print "<p>" . __("Your changes have been applied.", 'wpmp') . "</p>";
         return wpmp_msma_options_list();
       } else {
         return wpmp_msma_option_edit_form($id);
@@ -329,10 +329,10 @@ specific language governing permissions and limitations under the License.
     $next = "";
     $previous = "";
     if($page>0) {
-      $previous = "<a href='?page=" . ($page-1) . "'>" . __('Previous page') . "</a>";
+      $previous = "<a href='?page=" . ($page-1) . "'>" . __('Previous page', 'wpmp') . "</a>";
     }
     if(($page+1) * $size < $count) {
-      $next = "<a href='?page=" . ($page+1) . "'>" . __('Next page') . "</a>";
+      $next = "<a href='?page=" . ($page+1) . "'>" . __('Next page', 'wpmp') . "</a>";
     }
     if ($next || $previous) {
       print "<p>$previous";
@@ -341,20 +341,20 @@ specific language governing permissions and limitations under the License.
       }
       print "$next</p>";
     }
-    print "<p>" . __("NB: Some complex options cannot be edited in this mobile interface.") . "</p>";
+    print "<p>" . __("NB: Some complex options cannot be edited in this mobile interface.", 'wpmp') . "</p>";
 
   }
   function wpmp_msma_option_edit_form($id) {
     global $wpdb;
     $option = $wpdb->get_results("SELECT * FROM $wpdb->options " . wpmp_msma_options_filter() . " and option_id=$id");
     if(sizeof($option)==0) {
-      print "<p>" . __("That option is not editable.") . "</p>";
+      print "<p>" . __("That option is not editable.", 'wpmp') . "</p>";
       return wpmp_msma_options_list();
     }
     $option = $option[0];
     $value = wpmp_msma_option_value($option->option_name, $option->option_value, $editable);
     if(!$editable) {
-      print "<p>" . __("That option is not editable.") . "</p>";
+      print "<p>" . __("That option is not editable.", 'wpmp') . "</p>";
       return wpmp_msma_options_list();
     }
     print '<form name="post" action="' . $_SERVER['REQUEST_URI'] . '" method="post" id="post">';
@@ -363,9 +363,9 @@ specific language governing permissions and limitations under the License.
     print '<p><label for="title">' . wpmp_msma_option_name($option->option_name) . ':</label><br />';
     print '<input type="text" name="option_value" value="' . attribute_escape($value) . '" id="title" /></p>';
 
-    print '<input name="submit" type="submit" id="submit" value="' . __('Apply') . '" />';
+    print '<input name="submit" type="submit" id="submit" value="' . __('Apply', 'wpmp') . '" />';
     if($value==='0' or $value==='1') {
-      print '<p>' . __('For options that are usually a checkbox, use 1 for \'on\', and 0 for \'off\'') . '</p>';
+      print '<p>' . __('For options that are usually a checkbox, use 1 for \'on\', and 0 for \'off\'', 'wpmp') . '</p>';
     }
     print '</form>';  }
 
@@ -416,13 +416,13 @@ specific language governing permissions and limitations under the License.
     switch($status) {
       case 'publish':
       case 'private':
-        return __('Published');
+        return __('Published', 'wpmp');
       case 'future':
-        return __('Scheduled');
+        return __('Scheduled', 'wpmp');
       case 'pending':
-        return __('Pending Review');
+        return __('Pending Review', 'wpmp');
       default:
-        return __('Unpublished');
+        return __('Unpublished', 'wpmp');
     }
   }
 
@@ -432,7 +432,7 @@ specific language governing permissions and limitations under the License.
     $admin = "$base/wp-admin";
     $referer = $_SERVER['HTTP_REFERER'];
     if (substr($referer, 0, strlen($admin)) != $admin) {
-      print __("You may only originate this action from the admin pages");
+      print __("You may only originate this action from the admin pages", 'wpmp');
       return false;
     }
     return true;

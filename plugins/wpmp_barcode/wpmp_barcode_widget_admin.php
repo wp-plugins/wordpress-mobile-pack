@@ -28,25 +28,25 @@ specific language governing permissions and limitations under the License.
 ?>
 
 <p>
-  <label for="wpmp_barcode_title"><?php _e('Title:'); ?></label>
+  <label for="wpmp_barcode_title"><?php _e('Title:', 'wpmp'); ?></label>
   <?php print wpmp_barcode_option('wpmp_barcode_title', '', 'widefat'); ?>
 </p>
 <p>
-  <label for="wpmp_barcode_link"><?php _e('Link:'); ?></label>
+  <label for="wpmp_barcode_link"><?php _e('Link:', 'wpmp'); ?></label>
   <?php print wpmp_barcode_option('wpmp_barcode_link', '', 'widefat'); ?>
-  <br /><?php _e('If you leave this blank, the URL in the barcode will be dynamic, and will be the mobile equivalent of the actual page the user is on.'); ?>
+  <br /><?php _e('If you leave this blank, the URL in the barcode will be dynamic, and will be the mobile equivalent of the actual page the user is on.', 'wpmp'); ?>
 </p>
 <p>
-  <label for="wpmp_barcode_size"><?php _e('Size:'); ?></label>
+  <label for="wpmp_barcode_size"><?php _e('Size:', 'wpmp'); ?></label>
   <br />
   <?php print wpmp_barcode_option('wpmp_barcode_size', '', 'widefat', 'width:23%'); ?>px
 </p>
 <p>
   <?php print wpmp_barcode_option('wpmp_barcode_help'); ?>
-  <label for="wpmp_barcode_help"><?php _e('Show explanation'); ?></label>
+  <label for="wpmp_barcode_help"><?php _e('Show explanation', 'wpmp'); ?></label>
 </p>
 <p>
   <?php print wpmp_barcode_option('wpmp_barcode_reader_list'); ?>
-  <label for="wpmp_barcode_reader_list"><?php _e('Show list of readers'); ?></label>
+  <label for="wpmp_barcode_reader_list"><?php _e('Show list of readers', 'wpmp'); ?></label>
 </p>
 <input type="hidden" id="wpmp_barcode" name="wpmp_barcode" value="1" />

@@ -109,14 +109,14 @@ function wpmp_theme_the_content($content) {
     $suffix = true;
   }
 	if(($pos=strpos($content, '['))!==false) {
-		$content = substr($content, 0, $pos) . ' ' . __("Read more");
+		$content = substr($content, 0, $pos) . ' ' . __("Read more", 'wpmp');
 	}
-  if (substr($content, strlen(__("Read more")))==__("Read more")) {
+  if (substr($content, strlen(__("Read more", 'wpmp')))==__("Read more", 'wpmp')) {
     $content = substr($content, 0, -9);
     $suffix = true;
   }
   if ($suffix) {
-    $content .= '<br /><a href="'. get_permalink() . '#more-$id" class="more-link">' . __('Read more') . "</a>";
+    $content .= '<br /><a href="'. get_permalink() . '#more-$id" class="more-link">' . __('Read more', 'wpmp') . "</a>";
   }
   return $content;
 }
@@ -138,7 +138,7 @@ function wpmp_theme_transcode_content(&$content) {
 
 function wpmp_theme_widget_search($args, $widget_args=1) {
   extract($args);
-  print $before_widget . $before_title . __('Search Site') . $after_title;
+  print $before_widget . $before_title . __('Search Site', 'wpmp') . $after_title;
   include (TEMPLATEPATH . "/searchform.php");
   print $after_widget;
 }
@@ -147,17 +147,17 @@ function wpmp_theme_widget_search($args, $widget_args=1) {
 function wpmp_theme_widget_archives($args, $widget_args=1) {
   extract($args);
   $options = get_option('widget_archives');
-  $title = empty($options['title']) ? __('Archives') : $options['title'];
+  $title = empty($options['title']) ? __('Archives', 'wpmp') : $options['title'];
   print $before_widget . $before_title . $title . $after_title . "<ul>";
   ob_start();
   wp_get_archives("type=monthly&show_post_count=1");
   $html = ob_get_contents();
   ob_end_clean();
-  $content = wpmp_theme_widget_trim_list($html, "<li><a href='/?archives=month'>" . __('...more months') . "</a></li>");
+  $content = wpmp_theme_widget_trim_list($html, "<li><a href='/?archives=month'>" . __('...more months', 'wpmp') . "</a></li>");
   if($content) {
     print $content;
   } else {
-    print "<li>" . __('No archives') . "</li>";
+    print "<li>" . __('No archives', 'wpmp') . "</li>";
   }
   print "</ul>$after_widget";
 }
@@ -171,27 +171,27 @@ function wpmp_theme_widget_categories($args, $widget_args=1) {
   extract($widget_args, EXTR_SKIP);
   $options = get_option('widget_categories');
   if (!isset($options[$number])) { return; }
-  $title = empty($options[$number]['title']) ? __('Categories') : $options[$number]['title'];
+  $title = empty($options[$number]['title']) ? __('Categories', 'wpmp') : $options[$number]['title'];
   print $before_widget . $before_title . $title . $after_title . "<ul>";
   ob_start();
   wp_list_categories("orderby=name&hierarchical=0&show_count=1&title_li=0");
   $html = ob_get_contents();
   ob_end_clean();
-  print wpmp_theme_widget_trim_list($html, "<li><a href='/?archives=category'>" . __('...more categories') . "</a></li>");
+  print wpmp_theme_widget_trim_list($html, "<li><a href='/?archives=category'>" . __('...more categories', 'wpmp') . "</a></li>");
   print "</ul>$after_widget";
 }
 
 function wpmp_theme_widget_tag_cloud($args, $widget_args=1) {
   extract($args);
   $options = get_option('widget_tag_cloud');
-  $title = empty($options['title']) ? __('Tags') : $options['title'];
+  $title = empty($options['title']) ? __('Tags', 'wpmp') : $options['title'];
   $tags = get_tags();
   if(sizeof($tags)>0) {
     print $before_widget . $before_title . $title . $after_title . "<ul>";
     $limit = get_option('wpmp_theme_widget_list_count');
     foreach($tags as $tag) {
       if($limit==0) {
-        print "<li><a href='/?archives=tag'>" . __('...more tags') . "</a>";
+        print "<li><a href='/?archives=tag'>" . __('...more tags', 'wpmp') . "</a>";
         break;
       }
       $limit--;
@@ -211,7 +211,7 @@ function wpmp_theme_widget_recent_comments($args, $widget_args=1) {
   }
   $original = ob_get_contents();
   ob_end_clean();
-  $original = str_ireplace('<ul id="recentcomments"></ul>', '<ul id="recentcomments"><li>' . __('No comments') . '</li></ul>', $original);
+  $original = str_ireplace('<ul id="recentcomments"></ul>', '<ul id="recentcomments"><li>' . __('No comments', 'wpmp') . '</li></ul>', $original);
   $original = str_ireplace("&cpage", "&amp;cpage", $original);
   print $original;
 }
@@ -231,7 +231,7 @@ function wpmp_theme_widget_calendar($args, $widget_args=1) {
     return;
   }
   preg_match_all("/(^.*)\<caption\>(.*)\<\/caption\>.*\<thead\>(.*)\<\/thead\>.*\<tfoot\>(.*)\<\/tfoot\>.*\<tbody\>(.*)\<\/tbody\>(.*$)/Usi", $original, $parts);
-  print str_replace("<h2>&nbsp;</h2>", "<h2>" . __('Calendar') . "</h2>", $parts[1][0]) .
+  print str_replace("<h2>&nbsp;</h2>", "<h2>" . __('Calendar', 'wpmp') . "</h2>", $parts[1][0]) .
         "<tr><td colspan='7'>" . $parts[2][0] . "</td></tr>" .
         $parts[3][0] .$parts[5][0] . $parts[4][0] .
         $parts[6][0];

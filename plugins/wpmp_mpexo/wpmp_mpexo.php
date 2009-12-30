@@ -149,7 +149,7 @@ function wpmp_mpexo_init() {
   global $wpmp_mpexo_payload_forced;
   $wpmp_mpexo_payload_forced = array();
   wp_register_sidebar_widget('wpmp_mpexo_widget', 'mpexo', 'wpmp_mpexo_widget',
-    array('classname' => 'wpmp_mpexo_widget', 'description' => __( "A widget to show mpexo links for this blog"))
+    array('classname' => 'wpmp_mpexo_widget', 'description' => __( "A widget to show mpexo links for this blog", 'wpmp'))
   );
   wp_register_widget_control('wpmp_mpexo_widget', 'mpexo', 'wpmp_mpexo_widget_control');
 }
@@ -520,7 +520,7 @@ function wpmp_mpexo_admin_menu() {
   if(sizeof($_POST)>0 && $_POST['wpmp_mpexo_enabled_beta']=='true') {
     $state = '';
   }
-  add_options_page(__('mpexo'), __("mpexo$state"), 3, 'wpmp_mpexo_admin', 'wpmp_mpexo_admin');
+  add_options_page(__('mpexo', 'wpmp'), __("mpexo$state", 'wpmp'), 3, 'wpmp_mpexo_admin', 'wpmp_mpexo_admin');
 }
 
 function wpmp_mpexo_widget($args) {
@@ -528,7 +528,7 @@ function wpmp_mpexo_widget($args) {
   print $before_widget;
   print $before_title . 'mpexo' . $after_title;
   print "<p>";
-  print __('This site is proudly listed as a mobile blog on mpexo.');
+  print __('This site is proudly listed as a mobile blog on mpexo.', 'wpmp');
   print "</p>";
   print $after_widget;
 }
@@ -568,9 +568,9 @@ function wpmp_mpexo_options_write() {
     update_option($option, $value);
   }
   if(wpmp_mpexo_shutdown()) {
-    return __('Settings saved.');
+    return __('Settings saved.', 'wpmp');
   }
-  return __('<strong>Communications error:</strong> these settings have been saved locally and will be transmitted to mpexo when resubmitted.');
+  return __('<strong>Communications error:</strong> these settings have been saved locally and will be transmitted to mpexo when resubmitted.', 'wpmp');
 }
 
 function wpmp_mpexo_option($option, $onchange='', $class='', $style='') {
@@ -580,9 +580,9 @@ function wpmp_mpexo_option($option, $onchange='', $class='', $style='') {
       return wpmp_mpexo_option_dropdown(
         $option,
         array(
-          'none'=>__('None'),
-          'tagline'=>__('Tagline'),
-          'custom'=>__('Custom'),
+          'none'=>__('None', 'wpmp'),
+          'tagline'=>__('Tagline', 'wpmp'),
+          'custom'=>__('Custom', 'wpmp'),
         ),
         $onchange
       );
@@ -590,10 +590,10 @@ function wpmp_mpexo_option($option, $onchange='', $class='', $style='') {
       return wpmp_mpexo_option_dropdown(
         $option,
         array(
-          'none'=>__('None'),
-          'tags'=>__('Tags only'),
-          'categories'=>__('Categories only'),
-          'both'=>__('Tags and Categories'),
+          'none'=>__('None', 'wpmp'),
+          'tags'=>__('Tags only', 'wpmp'),
+          'categories'=>__('Categories only', 'wpmp'),
+          'both'=>__('Tags and Categories', 'wpmp'),
         ),
         $onchange
       );
@@ -601,10 +601,10 @@ function wpmp_mpexo_option($option, $onchange='', $class='', $style='') {
       return wpmp_mpexo_option_dropdown(
         $option,
         array(
-          'none'=>__('None'),
-          'posts'=>__('Posts only'),
-          'pages'=>__('Pages only'),
-          'both'=>__('Posts and Pages'),
+          'none'=>__('None', 'wpmp'),
+          'posts'=>__('Posts only', 'wpmp'),
+          'pages'=>__('Pages only', 'wpmp'),
+          'both'=>__('Posts and Pages', 'wpmp'),
         ),
         $onchange
       );
@@ -635,7 +635,7 @@ function wpmp_mpexo_option_dropdown($option, $options, $onchange='') {
     } else {
       $selected = '';
     }
-    $dropdown .= '<option value="' . attribute_escape($value) . '"' . $selected . '>' . __($description) . '</option>';
+    $dropdown .= '<option value="' . attribute_escape($value) . '"' . $selected . '>' . __($description, 'wpmp') . '</option>';
   }
   $dropdown .= "</select>";
   return $dropdown;

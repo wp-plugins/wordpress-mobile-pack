@@ -36,7 +36,7 @@ Author URI: http://www.assembla.com/spaces/wordpress-mobile-pack
 
 function wpmp_transcoder_activate() {
   if(!is_writable($dir = $dir = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'c')) {
-    update_option('wpmp_warning', sprintf(__('<strong>Transcoder will not be able to cache images</strong> to %s.'), $dir) . ' ' . __('Please ensure that the web server has write-access to that directory.'));
+    update_option('wpmp_warning', sprintf(__('<strong>Transcoder will not be able to cache images</strong> to %s.', 'wpmp'), $dir) . ' ' . __('Please ensure that the web server has write-access to that directory.', 'wpmp'));
   }
 }
 
@@ -83,12 +83,12 @@ function wpmp_transcoder_partition_pages(&$content) {
   }
   $pager = '';
   if(sizeof($pages)>1) {
-    $pager = "<p>" . sprintf(__('Page %1$d of %2$d'), $page+1, sizeof($pages));
+    $pager = "<p>" . sprintf(__('Page %1$d of %2$d', 'wpmp'), $page+1, sizeof($pages));
     if ($page>0) {
-      $previous .= "<a href='" . wpmp_transcoder_replace_cgi("wpmp_tp", $page-1) . "'>" . __('Previous page') . "</a>";
+      $previous .= "<a href='" . wpmp_transcoder_replace_cgi("wpmp_tp", $page-1) . "'>" . __('Previous page', 'wpmp') . "</a>";
     }
     if ($page<sizeof($pages)-1) {
-      $next .= "<a href='" . wpmp_transcoder_replace_cgi("wpmp_tp", $page+1) . "'>" . __('Next page') . "</a>";
+      $next .= "<a href='" . wpmp_transcoder_replace_cgi("wpmp_tp", $page+1) . "'>" . __('Next page', 'wpmp') . "</a>";
       $wpmp_transcoder_is_last_page = false;
     } else {
       $wpmp_transcoder_is_last_page = true;

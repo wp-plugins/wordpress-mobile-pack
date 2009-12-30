@@ -31,31 +31,31 @@ $wpmp_title = '';
 $wpmp_archives = false;
 $wpmp_not_found = false;
 if (isset($_GET['archives']) && ($archives = $_GET['archives'])!='') {
-  $wpmp_title = __("Blog archives");
+  $wpmp_title = __("Blog archives", 'wpmp');
   $wpmp_archives = true;
 } elseif (have_posts()) {
   $post = $posts[0];
   if (is_search()) {
-    $wpmp_title = __("Search results");
+    $wpmp_title = __("Search results", 'wpmp');
   } elseif (is_tag()) {
-    $wpmp_title = sprintf(__("Archive for the '%s' tag"), single_tag_title('', false));
+    $wpmp_title = sprintf(__("Archive for the '%s' tag", 'wpmp'), single_tag_title('', false));
   } elseif (is_category()) {
-    $wpmp_title = sprintf(__("Archive for the '%s'"), single_cat_title('', false));
+    $wpmp_title = sprintf(__("Archive for the '%s'", 'wpmp'), single_cat_title('', false));
   } elseif (is_day()) {
-    $wpmp_title = sprintf(__("Archive for %s"), get_the_time('F jS, Y'));
+    $wpmp_title = sprintf(__("Archive for %s", 'wpmp'), get_the_time('F jS, Y'));
   } elseif (is_month()) {
-    $wpmp_title = sprintf(__("Archive for %s"), get_the_time('F, Y'));
+    $wpmp_title = sprintf(__("Archive for %s", 'wpmp'), get_the_time('F, Y'));
   } elseif (is_year()) {
-    $wpmp_title = sprintf(__("Archive for %s"), get_the_time('Y'));
+    $wpmp_title = sprintf(__("Archive for %s", 'wpmp'), get_the_time('Y'));
   } elseif (is_author()) {
-    $wpmp_title = __("Author archive");
+    $wpmp_title = __("Author archive", 'wpmp');
   } elseif (isset($_GET['paged']) && !empty($_GET['paged'])) {
-    $wpmp_title = __("Blog archives");
+    $wpmp_title = __("Blog archives", 'wpmp');
   } elseif (!is_single() && !is_page()) {
-    $wpmp_title = __("Recent posts");
+    $wpmp_title = __("Recent posts", 'wpmp');
   }
 } else {
-  $wpmp_title = __("Page not found");
+  $wpmp_title = __("Page not found", 'wpmp');
   $wpmp_not_found = true;
 }
 
@@ -67,33 +67,33 @@ if ($wpmp_title!='') {
 
 
 if ($wpmp_not_found) {
-  print "<p>" . __("Use the menu to navigate the site, or search for a keyword:") . "</p>";
+  print "<p>" . __("Use the menu to navigate the site, or search for a keyword:", 'wpmp') . "</p>";
   include (TEMPLATEPATH . "/searchform.php");
 
 } elseif ($wpmp_archives) {
   if ($archives=='category') {
-    print "<h2>" . __("Archives by category") . "</h2>";
+    print "<h2>" . __("Archives by category", 'wpmp') . "</h2>";
     $links = array();
     foreach(get_categories() as $category) {
       $links[] = "<a href='" . get_category_link( $category->term_id ) . "'>$category->name</a>";
     }
     $links = implode(', ', $links);
   } elseif ($archives=='tag') {
-    print "<h2>" . __("Archives by tag") . "</h2>";
+    print "<h2>" . __("Archives by tag", 'wpmp') . "</h2>";
     $links = array();
     foreach(get_tags() as $tag) {
       $links[] = "<a href='" . get_tag_link( $tag->term_id ) . "'>$tag->name</a> ($tag->count)";
     }
     $links = implode(', ', $links);
   } elseif ($archives=='week' || $archives=='month' || $archives=='year') {
-    print "<h2>" . sprintf(__("Archives by %s"), $archives) . "</h2>";
+    print "<h2>" . sprintf(__("Archives by %s", 'wpmp'), $archives) . "</h2>";
     $links = " ";
     wp_get_archives(array('type'=>$archives.'ly', 'show_post_count'=>true));
   }
   if($links) {
     print "<p>$links</p>";
   } else {
-    print "<p>" . __("No archives found. Use the menu to navigate the site, or search for a keyword:") . "</p>";
+    print "<p>" . __("No archives found. Use the menu to navigate the site, or search for a keyword:", 'wpmp') . "</p>";
     include (TEMPLATEPATH . "/searchform.php");
   }
 
@@ -119,9 +119,9 @@ if ($wpmp_not_found) {
     }
     if(!is_single() && !is_page()) {
       print '<p class="navigation">';
-      next_posts_link(__('Older'));
+      next_posts_link(__('Older', 'wpmp'));
       print ' ';
-      previous_posts_link(__('Newer'));
+      previous_posts_link(__('Newer', 'wpmp'));
       print '</p>';
     }
 
@@ -130,11 +130,11 @@ if ($wpmp_not_found) {
 
 function wpmp_theme_post_single() {
   wpmp_theme_post(true);
-  print '<p class="metadata">'; previous_post_link(__('Previous post:') . ' %link'); print '<br />'; next_post_link(__('Next post:') . ' %link'); print '</p>';
+  print '<p class="metadata">'; previous_post_link(__('Previous post:', 'wpmp') . ' %link'); print '<br />'; next_post_link(__('Next post:', 'wpmp') . ' %link'); print '</p>';
   if(!function_exists('wpmp_transcoder_is_last_page') || wpmp_transcoder_is_last_page()) {
     global $post;
     if (!$post->comment_status=='open') {
-      print '<p class="metadata">' . __('Comments are closed for this post.') . '</p>';
+      print '<p class="metadata">' . __('Comments are closed for this post.', 'wpmp') . '</p>';
       print '</div>';
     } else {
       print '</div>';
@@ -160,12 +160,12 @@ function wpmp_theme_post($single = false) {
   }
   if ($single || ($summary!='none' && ($summary!='firstteaser' || $wpmp_summary_first))) {
     print '<p class="entry">';
-    the_content(__('Read more'));
+    the_content(__('Read more', 'wpmp'));
     print '</p>';
     $wpmp_summary_first = false;
   }
   if ($single || $metadata) {
-    print '<p class="metadata">' . __('Posted in ');
+    print '<p class="metadata">' . __('Posted in ', 'wpmp');
     the_category(', ');
     print ' | ';
     edit_post_link('Edit');

@@ -25,14 +25,14 @@ CONDITIONS OF ANY KIND, either express or implied. See the License for the
 specific language governing permissions and limitations under the License.
 */
 
-function wpmp_switcher_login_header($title = __('Login'), $message = '', $wp_error = '') {
+function wpmp_switcher_login_header($title = __('Login', 'wpmp'), $message = '', $wp_error = '') {
 	global $error;
 
 	if ( empty($wp_error) )
 		$wp_error = new WP_Error();
 
   include_once('mobile.php');
-  wpmp_ms_mobile_top(__("Login"));
+  wpmp_ms_mobile_top(__("Login", 'wpmp'));
 
 	if ( !empty( $message ) ) echo apply_filters('login_message', $message) . "\n";
 
@@ -120,31 +120,31 @@ default:
 		$errors = new WP_Error();
 
 	if ( isset($_POST['testcookie']) && empty($_COOKIE[TEST_COOKIE]) )
-		$errors->add('test_cookie', sprintf(__("<strong>ERROR</strong>: Cookies are blocked or not supported by your browser. You must <a%s>enable cookies</a> to use WordPress."), " href='http://www.google.com/cookies.html'"));
+		$errors->add('test_cookie', sprintf(__("<strong>ERROR</strong>: Cookies are blocked or not supported by your browser. You must <a%s>enable cookies</a> to use WordPress.", 'wpmp'), " href='http://www.google.com/cookies.html'"));
 
-	if		( isset($_GET['loggedout']) && TRUE == $_GET['loggedout'] )			$errors->add('loggedout', __('You are now logged out.'), 'message');
-	elseif	( isset($_GET['registration']) && 'disabled' == $_GET['registration'] )	$errors->add('registerdiabled', __('User registration is currently not allowed.'));
-	elseif	( isset($_GET['checkemail']) && 'confirm' == $_GET['checkemail'] )	$errors->add('confirm', __('Check your e-mail for the confirmation link.'), 'message');
-	elseif	( isset($_GET['checkemail']) && 'newpass' == $_GET['checkemail'] )	$errors->add('newpass', __('Check your e-mail for your new password.'), 'message');
-	elseif	( isset($_GET['checkemail']) && 'registered' == $_GET['checkemail'] )	$errors->add('registered', __('Registration complete. Please check your e-mail.'), 'message');
+	if		( isset($_GET['loggedout']) && TRUE == $_GET['loggedout'] )			$errors->add('loggedout', __('You are now logged out.', 'wpmp'), 'message');
+	elseif	( isset($_GET['registration']) && 'disabled' == $_GET['registration'] )	$errors->add('registerdiabled', __('User registration is currently not allowed.', 'wpmp'));
+	elseif	( isset($_GET['checkemail']) && 'confirm' == $_GET['checkemail'] )	$errors->add('confirm', __('Check your e-mail for the confirmation link.', 'wpmp'), 'message');
+	elseif	( isset($_GET['checkemail']) && 'newpass' == $_GET['checkemail'] )	$errors->add('newpass', __('Check your e-mail for your new password.', 'wpmp'), 'message');
+	elseif	( isset($_GET['checkemail']) && 'registered' == $_GET['checkemail'] )	$errors->add('registered', __('Registration complete. Please check your e-mail.', 'wpmp'), 'message');
 
-	wpmp_switcher_login_header(__('Login'), '', $errors);
+	wpmp_switcher_login_header(__('Login', 'wpmp'), '', $errors);
 ?>
 
 <form name="loginform" id="loginform" action="wp-login.php" method="post">
 <?php if ( !isset($_GET['checkemail']) || !in_array( $_GET['checkemail'], array('confirm', 'newpass') ) ) : ?>
 	<p>
-		<label><?php _e('Username') ?><br />
+		<label><?php _e('Username', 'wpmp') ?><br />
 		<input type="text" name="log" id="user_login" class="input" value="<?php echo attribute_escape(stripslashes(@$user_login)); ?>" size="20" tabindex="10" /></label>
 	</p>
 	<p>
-		<label><?php _e('Password') ?><br />
+		<label><?php _e('Password', 'wpmp') ?><br />
 		<input type="password" name="pwd" id="user_pass" class="input" value="" size="20" tabindex="20" /></label>
 	</p>
 <?php do_action('login_form'); ?>
-	<p class="forgetmenot"><label><input name="rememberme" type="checkbox" id="rememberme" value="forever" tabindex="90" /> <?php _e('Remember Me'); ?></label></p>
+	<p class="forgetmenot"><label><input name="rememberme" type="checkbox" id="rememberme" value="forever" tabindex="90" /> <?php _e('Remember Me', 'wpmp'); ?></label></p>
 	<p class="submit">
-		<input type="submit" name="wp-submit" id="submit" value="<?php _e('Log In'); ?>" tabindex="100" />
+		<input type="submit" name="wp-submit" id="submit" value="<?php _e('Log In', 'wpmp'); ?>" tabindex="100" />
 		<input type="hidden" name="redirect_to" value="<?php echo attribute_escape($redirect_to); ?>" />
 		<input type="hidden" name="testcookie" value="1" />
 	</p>
@@ -153,7 +153,7 @@ default:
 <?php endif; ?>
 </form>
 
-<p id="backtoblog"><a href="<?php bloginfo('url'); ?>/" title="<?php _e('Are you lost?') ?>"><?php print '&laquo; ' . sprintf(__('Back to %s'), get_bloginfo('title', 'display' )); ?></a></p>
+<p id="backtoblog"><a href="<?php bloginfo('url'); ?>/" title="<?php _e('Are you lost?', 'wpmp') ?>"><?php print '&laquo; ' . sprintf(__('Back to %s', 'wpmp'), get_bloginfo('title', 'display' )); ?></a></p>
 
 <?php
   wpmp_ms_mobile_bottom();

@@ -27,9 +27,9 @@ specific language governing permissions and limitations under the License.
 
 ?><div class="wrap">
   <h2>
-    <?php _e('Mobile Widgets') ?>
+    <?php _e('Mobile Widgets', 'wpmp') ?>
     <p style='font-size:small;font-style:italic;margin:0'>
-      <?php _e('Part of the WordPress Mobile Pack'); ?>
+      <?php _e('Part of the WordPress Mobile Pack', 'wpmp'); ?>
     </p>
   </h2>
   <form method="post" action="">
@@ -37,14 +37,14 @@ specific language governing permissions and limitations under the License.
     <?php global $wp_registered_sidebars, $wp_registered_widgets; ?>
     <?php $enabled = get_option('wpmp_theme_widget'); ?>
     <?php $sidebar_widgets = wp_get_sidebars_widgets(); ?>
-    <p><?php printf(__("Use this page to select which of your <a%s>currently visible widgets</a> will appear for your mobile users."), " href='/wp-admin/widgets.php'"); ?></p>
+    <p><?php printf(__("Use this page to select which of your <a%s>currently visible widgets</a> will appear for your mobile users.", 'wpmp'), " href='/wp-admin/widgets.php'"); ?></p>
     <?php foreach($sidebar_widgets as $sidebar=>$widgets) { ?>
       <?php if ($sidebar!='wp_inactive_widgets') { ?>
         <h3>
           <?php print $wp_registered_sidebars[$sidebar]['name']; ?>
         </h3>
         <p>
-          <?php printf(__('Select which of the <a%s>widgets enabled for this sidebar</a> will show on the mobile theme:'), " target='_blank' href='/wp-admin/widgets.php?sidebar=" . urlencode($sidebar) . "'"); ?>
+          <?php printf(__('Select which of the <a%s>widgets enabled for this sidebar</a> will show on the mobile theme:', 'wpmp'), " target='_blank' href='/wp-admin/widgets.php?sidebar=" . urlencode($sidebar) . "'"); ?>
         </p>
         <table class="form-table">
           <?php
@@ -80,7 +80,7 @@ specific language governing permissions and limitations under the License.
       <?php } ?>
     <?php } ?>
     <p class="submit">
-      <input type="submit" name="Submit" value="<?php _e('Save Changes'); ?>" />
+      <input type="submit" name="Submit" value="<?php _e('Save Changes', 'wpmp'); ?>" />
     </p>
   </form>
 </div>

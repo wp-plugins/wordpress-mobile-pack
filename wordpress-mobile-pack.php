@@ -28,7 +28,7 @@ specific language governing permissions and limitations under the License.
 /*
 Plugin Name: WordPress Mobile Pack
 Plugin URI: http://wordpress.org/extend/plugins/wordpress-mobile-pack/
-Description: The WordPress Mobile Pack is a complete toolkit to help mobilize your WordPress site and blog. It includes a <a href='themes.php?page=wpmp_switcher_admin'>mobile switcher</a>, <a href='themes.php?page=wpmp_theme_widget_admin'>filtered widgets</a>, and content adaptation for mobile device characteristics. Activating this plugin will also install a selection of mobile <a href='themes.php'>themes</a> by <a href='http://ribot.co.uk'>ribot</a>, a top UK mobile design team, and Forum Nokia. These adapt to different families of devices, such as Nokia and WebKit browsers (including Android, iPhone and Palm). If <a href='options-general.php?page=wpmp_mpexo_admin'>enabled</a>, your site will be listed on <a href='http://www.mpexo.com'>mpexo</a>, a directory of mobile-friendly blogs. Also check out <a href='http://mobiforge.com/wordpress-mobile-pack' target='_blank'>the documentation</a> and <a href='http://mobiforge.com/forum/dotmobi/wordpress' target='_blank'>the forums</a>. If you like the plugin, please rate us on the <a href='http://wordpress.org/extend/plugins/wordpress-mobile-pack/'>WordPress directory</a>.
+Description: <strong>The WordPress Mobile Pack is a complete toolkit to help mobilize your WordPress site and blog.</strong> It includes a <a href='themes.php?page=wpmp_switcher_admin'>mobile switcher</a>, <a href='themes.php?page=wpmp_theme_widget_admin'>filtered widgets</a>, and content adaptation for mobile device characteristics. Activating this plugin will also install a selection of mobile <a href='themes.php?page=wpmp_theme_theme_admin'>themes</a> by <a href='http://ribot.co.uk'>ribot</a>, a top UK mobile design team, and Forum Nokia. These adapt to different families of devices, such as Nokia and WebKit browsers (including Android, iPhone and Palm). If <a href='options-general.php?page=wpmp_mpexo_admin'>enabled</a>, your site will be listed on <a href='http://www.mpexo.com'>mpexo</a>, a directory of mobile-friendly blogs. Also check out <a href='http://mobiforge.com/wordpress-mobile-pack' target='_blank'>the documentation</a> and <a href='http://mobiforge.com/forum/dotmobi/wordpress' target='_blank'>the forums</a>. If you like the plugin, please rate us on the <a href='http://wordpress.org/extend/plugins/wordpress-mobile-pack/'>WordPress directory</a>. <strong>And please let us know how we can improve this plugin for you!</strong></a>
 Version: 1.2.0
 Author: James Pearce & friends
 Author URI: http://www.assembla.com/spaces/wordpress-mobile-pack
@@ -57,12 +57,22 @@ if(!$warning=get_option('wpmp_warning')) {
 
 register_activation_hook('wordpress-mobile-pack/wordpress-mobile-pack.php', 'wordpress_mobile_pack_activate');
 register_deactivation_hook('wordpress-mobile-pack/wordpress-mobile-pack.php', 'wordpress_mobile_pack_deactivate');
+
+add_action('init', 'wordpress_mobile_pack_init');
 add_action('admin_notices', 'wordpress_mobile_pack_admin_notices');
 add_action('admin_menu', 'wordpress_mobile_pack_admin_menu');
-
 add_action('send_headers', 'wordpress_mobile_pack_send_headers');
 add_filter('get_the_generator_xhtml', 'wordpress_mobile_pack_generator');
 add_filter('get_the_generator_html', 'wordpress_mobile_pack_generator');
+
+add_filter('plugin_action_links', 'wordpress_mobile_pack_plugin_action_links', 10, 3);
+
+
+function wordpress_mobile_pack_init() {
+  $plugin_dir = basename(dirname(__FILE__));
+  load_plugin_textdomain('wpmp', 'wp-content/plugins/wordpress-mobile-pack', 'wordpress-mobile-pack');
+}
+
 
 function wordpress_mobile_pack_send_headers($wp) {
   @header("X-Mobilized-By: WordPress Mobile Pack " . WPMP_VERSION);
@@ -71,17 +81,41 @@ function wordpress_mobile_pack_generator($generator) {
   return '<meta name="generator" content="WordPress ' . get_bloginfo( 'version' ) . ', fitted with the WordPress Mobile Pack ' . WPMP_VERSION . '" />';
 }
 
+
+function wordpress_mobile_pack_plugin_action_links($action_links, $plugin_file, $plugin_info) {
+  $this_file = basename(__FILE__);
+  if(substr($plugin_file, -strlen($this_file))==$this_file) {
+    $new_action_links = array(
+      "<a href='themes.php?page=wpmp_switcher_admin'>Switcher</a>",
+      "<a href='themes.php?page=wpmp_theme_theme_admin'>Themes</a> ",
+      "<br /><a href='themes.php?page=wpmp_theme_widget_admin'>Widgets</a>",
+      "<a href='options-general.php?page=wpmp_mpexo_admin'>mpexo</a>",
+    );
+    foreach($action_links as $action_link) {
+      if (stripos($action_link, '>Edit<')===false) {
+        if (stripos($action_link, '>Deactivate<')!==false) {
+          $new_action_links[] = '<br />' . $action_link;
+        } else {
+          $new_action_links[] = $action_link;
+        }
+      }
+    }
+    return $new_action_links;
+  }
+  return $action_links;
+}
+
 function wordpress_mobile_pack_admin_notices() {
   if($warning=get_option('wpmp_warning')) {
     print "<div class='error'><p><strong style='color:#770000'>";
-    print __("Critical WordPress Mobile Pack Issue");
+    print __("Critical WordPress Mobile Pack Issue", 'wpmp');
     print "</strong></p><p>$warning</p><p><small>(";
-    print __('Deactivate and re-activate the WordPress Mobile Pack once resolved.');
+    print __('Deactivate and re-activate the WordPress Mobile Pack once resolved.', 'wpmp');
     print ")</small></p></div>";
   }
   if($flash=get_option('wpmp_flash')) {
     print "<div class='error'><p><strong style='color:#770000'>";
-    print __('Important WordPress Mobile Pack Notice');
+    print __('Important WordPress Mobile Pack Notice', 'wpmp');
     print "</strong></p><p>$flash</p></div>";
     update_option('wpmp_flash', '');
   }
@@ -113,35 +147,35 @@ function wordpress_mobile_pack_readiness_audit() {
 
   if (version_compare(PHP_VERSION, '6.0.0', '>=')) {
     $ready = false;
-    $why_not[] = '<strong>' . __('PHP version not supported.') . '</strong> ' . sprintf(__('PHP versions 6 and greater are not yet supported by this plugin, and you have version %s'), PHP_VERSION);
+    $why_not[] = '<strong>' . __('PHP version not supported.', 'wpmp') . '</strong> ' . sprintf(__('PHP versions 6 and greater are not yet supported by this plugin, and you have version %s', 'wpmp'), PHP_VERSION);
   }
 
   $cache_dir = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'plugins' . DIRECTORY_SEPARATOR . 'wpmp_transcoder' . DIRECTORY_SEPARATOR . 'c';
   $cache_does = '';
   if (!file_exists($cache_dir)) {
-  	$cache_does = __("That directory does not exist.");
+  	$cache_does = __("That directory does not exist.", 'wpmp');
   } elseif (!is_writable($cache_dir)) {
-  	$cache_does = __("That directory is not writable.");
+  	$cache_does = __("That directory is not writable.", 'wpmp');
   } elseif (!is_executable($cache_dir) && DIRECTORY_SEPARATOR=='/') {
-  	$cache_does = __("That directory is not executable.");
+  	$cache_does = __("That directory is not executable.", 'wpmp');
   }
   if($cache_does!='') {
     $ready = false;
-    $why_not[] = sprintf(__('<strong>Not able to cache images</strong> to %s.'), $cache_dir) . ' ' . $cache_does . ' ' . __('Please ensure that the web server has write- and execute-access to it.');
+    $why_not[] = sprintf(__('<strong>Not able to cache images</strong> to %s.', 'wpmp'), $cache_dir) . ' ' . $cache_does . ' ' . __('Please ensure that the web server has write- and execute-access to it.', 'wpmp');
   }
 
   $theme_dir = str_replace('/', DIRECTORY_SEPARATOR, get_theme_root());
   $theme_does = '';
   if (!file_exists($theme_dir)) {
-  	$theme_does = __("That directory does not exist.");
+  	$theme_does = __("That directory does not exist.", 'wpmp');
   } elseif (!is_writable($theme_dir)) {
-  	$theme_does = __("That directory is not writable.");
+  	$theme_does = __("That directory is not writable.", 'wpmp');
   } elseif (!is_executable($theme_dir) && DIRECTORY_SEPARATOR=='/') {
-  	$theme_does = __("That directory is not executable.");
+  	$theme_does = __("That directory is not executable.", 'wpmp');
   }
   if($theme_does!='') {
     $ready = false;
-    $why_not[] = sprintf(__('<strong>Not able to install theme files</strong> to %s.'), $theme_dir) . ' ' . $theme_does . ' ' . __('Please ensure that the web server has write- and execute-access to it.');
+    $why_not[] = sprintf(__('<strong>Not able to install theme files</strong> to %s.', 'wpmp'), $theme_dir) . ' ' . $theme_does . ' ' . __('Please ensure that the web server has write- and execute-access to it.', 'wpmp');
   }
 
   if (!$ready) {
@@ -160,7 +194,7 @@ function wordpress_mobile_pack_directory_copy_themes($source_dir, $destination_d
 	  	$dir_does = "That directory is not executable.";
 	  }
 	  if($dir_does!='') {
-      update_option('wpmp_warning', sprintf(__('<strong>Could not install theme files</strong> to '), $destination_dir) . ' ' . $dir_does . ' ' . __('Please ensure that the web server has write- and execute-access to it.'));
+      update_option('wpmp_warning', sprintf(__('<strong>Could not install theme files</strong> to ', 'wpmp'), $destination_dir) . ' ' . $dir_does . ' ' . __('Please ensure that the web server has write- and execute-access to it.', 'wpmp'));
       return;
     }
   } elseif (!is_dir($destination_dir)) {
@@ -176,17 +210,17 @@ function wordpress_mobile_pack_directory_copy_themes($source_dir, $destination_d
     }
     if (file_exists($destination_child = "$destination_dir/$source_file") && $benign) {
       update_option('wpmp_flash',
-                    __("<strong>Existing Mobile Pack theme files were found</strong>, but they were not overwritten by the plugin activation.") .
+                    __("<strong>Existing Mobile Pack theme files were found</strong>, but they were not overwritten by the plugin activation.", 'wpmp') .
                     "</p><p>" .
-                    sprintf(__("You are advised to upgrade your Mobile Pack theme files to version %s"), WPMP_VERSION) .
+                    sprintf(__("You are advised to upgrade your Mobile Pack theme files to version %s", 'wpmp'), WPMP_VERSION) .
                     "</p><p>" .
-                    __("(<strong>NB</strong>: take precautions if you have manually edited any existing Mobile Pack theme files - your changes will now need to be re-applied.)") .
+                    __("(<strong>NB</strong>: take precautions if you have manually edited any existing Mobile Pack theme files - your changes will now need to be re-applied.)", 'wpmp') .
                     "</p><br /><form method='post' action='" . $_SERVER['REQUEST_URI'] . "'>".
                     "<input type='submit' name='wordpress_mobile_pack_force_copy_theme' value='" .
-                    __('Yes please - I&apos;ll upgrade all my themes') .
+                    __('Yes please - I&apos;ll upgrade all my themes', 'wpmp') .
                     "' />&nbsp;&nbsp;".
                     "<input type='submit' value='" .
-                    __('No thanks - I&apos;ll leave my themes as they are') .
+                    __('No thanks - I&apos;ll leave my themes as they are', 'wpmp') .
                     "' />".
                     "</form><p>");
       continue;
@@ -197,7 +231,7 @@ function wordpress_mobile_pack_directory_copy_themes($source_dir, $destination_d
     }
 
     if (file_exists($destination_child) && !is_writable($destination_child)) {
-      update_option('wpmp_warning', sprintf(__('<strong>Could not install file</strong> to %s.'), $destination_child) . ' ' . __('Please ensure that the web server has write- access to that file.'));
+      update_option('wpmp_warning', sprintf(__('<strong>Could not install file</strong> to %s.', 'wpmp'), $destination_child) . ' ' . __('Please ensure that the web server has write- access to that file.', 'wpmp'));
       continue;
     }
     copy($source_child, $destination_child);

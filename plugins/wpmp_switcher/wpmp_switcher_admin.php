@@ -29,85 +29,85 @@ specific language governing permissions and limitations under the License.
 
 <div class="wrap">
   <h2>
-    <?php _e('Mobile Switcher') ?>
+    <?php _e('Mobile Switcher', 'wpmp') ?>
     <p style='font-size:small;font-style:italic;margin:0'>
-      <?php _e('Part of the WordPress Mobile Pack'); ?>
+      <?php _e('Part of the WordPress Mobile Pack', 'wpmp'); ?>
     </p>
   </h2>
   <form method="post" action="">
     <table class="form-table">
       <tr>
-        <th><?php _e('Mobile activity'); ?></th>
+        <th><?php _e('Mobile activity', 'wpmp'); ?></th>
         <td>
           <?php print wpmp_switcher_hit_summary(); ?>
           <br />
-          <?php print wpmp_switcher_option('wpmp_switcher_hit_reset'); ?> <strong><?php _e("Reset counter"); ?></strong>
+          <?php print wpmp_switcher_option('wpmp_switcher_hit_reset'); ?> <strong><?php _e("Reset counter", 'wpmp'); ?></strong>
         </td>
       </tr>
       <tr>
-        <th><?php _e('Switcher mode'); ?></th>
+        <th><?php _e('Switcher mode', 'wpmp'); ?></th>
         <td>
           <?php print wpmp_switcher_option('wpmp_switcher_mode', 'wpmpSwitcherMode();'); ?>
           <br />
-          <?php _e('The switcher can detect whether the user is using a mobile device or has requested a mobile domain. It will switch theme accordingly.'); ?>
+          <?php _e('The switcher can detect whether the user is using a mobile device or has requested a mobile domain. It will switch theme accordingly.', 'wpmp'); ?>
         </td>
       </tr>
       <tr class='wpmp_theme'>
-        <th><?php _e('Mobile theme'); ?></th>
+        <th><?php _e('Mobile theme', 'wpmp'); ?></th>
         <td>
           <?php print wpmp_switcher_option('wpmp_switcher_mobile_theme'); ?>
           <br />
-          <?php _e('The theme that will be sent to a mobile user. Desktop users will receive '); ?>
+          <?php _e('The theme that will be sent to a mobile user. Desktop users will receive ', 'wpmp'); ?>
           <a href='/wp-admin/themes.php' target='_blank'><?php print wpmp_switcher_desktop_theme(); ?></a>
         </td>
       </tr>
       <tr class='wpmp_browser'>
-        <th><?php _e('Browser detection'); ?></th>
+        <th><?php _e('Browser detection', 'wpmp'); ?></th>
         <td><?php print wpmp_switcher_option('wpmp_switcher_detection'); ?></td>
       </tr>
       <tr class='wpmp_desktop_domain'>
-        <th><?php _e('Desktop domains'); ?></th>
+        <th><?php _e('Desktop domains', 'wpmp'); ?></th>
         <td>
           <?php print wpmp_switcher_option('wpmp_switcher_desktop_domains'); ?>
           <br />
-          <?php _e('Use comma-separated domain names. eg:'); ?> <b>mysite.com, downloads.mysite.com</b>
+          <?php _e('Use comma-separated domain names. eg:', 'wpmp'); ?> <b>mysite.com, downloads.mysite.com</b>
           <br />
-          <?php _e("Desktop users who mistakenly access a mobile domain will be given the option to return to the first domain in this list."); ?>
+          <?php _e("Desktop users who mistakenly access a mobile domain will be given the option to return to the first domain in this list.", 'wpmp'); ?>
           <br />
-          <?php _e("This is also the domain used for switching when 'browser detection' is used, and in that case should be your site's primary domain."); ?>
+          <?php _e("This is also the domain used for switching when 'browser detection' is used, and in that case should be your site's primary domain.", 'wpmp'); ?>
         </td>
       </tr>
       <tr class='wpmp_mobile_domain'>
-        <th><?php _e('Mobile domains'); ?></th>
+        <th><?php _e('Mobile domains', 'wpmp'); ?></th>
         <td>
           <?php print wpmp_switcher_option('wpmp_switcher_mobile_domains'); ?>
           <br />
-          <?php _e('Use comma-separated domain fragments. eg:'); ?> <b>mysite.mobi, m.mysite.com</b>
+          <?php _e('Use comma-separated domain fragments. eg:', 'wpmp'); ?> <b>mysite.mobi, m.mysite.com</b>
           <?php
             if (strpos(get_option('wpmp_switcher_mode'), 'domain')!==false && wpmp_switcher_domains('desktop', true) == wpmp_switcher_domains('mobile', true)) {
-              _e("<br /><strong style='color:#770000'>Warning</strong>: your primary desktop and mobile domains are the same. The switcher will default to 'browser detection' mode unless one is changed.");
+              _e("<br /><strong style='color:#770000'>Warning</strong>: your primary desktop and mobile domains are the same. The switcher will default to 'browser detection' mode unless one is changed.", 'wpmp');
             }
           ?>
           <br/>
-          <?php _e('Mobile users who mistakenly access a desktop domain will be given the option to return to the first domain in this list.'); ?>
+          <?php _e('Mobile users who mistakenly access a desktop domain will be given the option to return to the first domain in this list.', 'wpmp'); ?>
           <br/>
-          <?php _e('<b>NB</b>: The plugin does not <i>create</i> these domains. You must be sure their DNS entries already resolve and are served by this web server.'); ?>
+          <?php _e('<b>NB</b>: The plugin does not <i>create</i> these domains. You must be sure their DNS entries already resolve and are served by this web server.', 'wpmp'); ?>
         </td>
       </tr>
       <tr class='wpmp_links'>
-        <th><?php _e('Footer links'); ?></th>
+        <th><?php _e('Footer links', 'wpmp'); ?></th>
         <td>
           <?php print wpmp_switcher_option('wpmp_switcher_footer_links'); ?>
           <br />
-          <?php _e('Places a link in the theme footer to allow users to override the detection.'); ?>
-          <?php _e('You can also enable the widget that contains this link.'); ?>
-          <?php _e('Both the footer link and the widget will only appear when a switcher mode is enabled.'); ?>
-          <?php _e('Regardless of this setting, the switcher link will always appear on the mobile admin pages.'); ?>
+          <?php _e('Places a link in the theme footer to allow users to override the detection.', 'wpmp'); ?>
+          <?php _e('You can also enable the widget that contains this link.', 'wpmp'); ?>
+          <?php _e('Both the footer link and the widget will only appear when a switcher mode is enabled.', 'wpmp'); ?>
+          <?php _e('Regardless of this setting, the switcher link will always appear on the mobile admin pages.', 'wpmp'); ?>
         </td>
       </tr>
     </table>
     <p class="submit">
-      <input type="submit" name="Submit" value="<?php _e('Save Changes'); ?>" />
+      <input type="submit" name="Submit" value="<?php _e('Save Changes', 'wpmp'); ?>" />
     </p>
   </form>
 </div>

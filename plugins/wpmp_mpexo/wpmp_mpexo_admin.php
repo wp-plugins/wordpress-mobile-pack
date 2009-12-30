@@ -30,86 +30,86 @@ specific language governing permissions and limitations under the License.
 
 <div class="wrap">
   <h2>
-    <?php _e('mpexo') ?>
+    <?php _e('mpexo', 'wpmp') ?>
     <p style='font-size:small;font-style:italic;margin:0'>
-      <?php _e('Part of the WordPress Mobile Pack'); ?>
+      <?php _e('Part of the WordPress Mobile Pack', 'wpmp'); ?>
     </p>
   </h2>
-  <p><?php printf(e_("<a%s>mpexo</a> is an online directory of mobile sites built using the WordPress Mobile Pack."), " target='_blank' href='http://www.mpexo.com'"); ?></p>
-  <p><?php _e("Using the settings below, you can easily, and automatically, get your own site listed on mpexo. It's a safe and easy way to drive traffic to the mobile version of your site."); ?></p>
-  <p><strong><?php _e("This feature is currently in beta."); ?></strong> <?php _e("It is therefore disabled by default, but will be <em>enabled</em> by default in the forthcoming v2.0 of the WordPress Mobile Pack. Please provide feedback in the meantime."); ?></p>
+  <p><?php printf(__("<a%s>mpexo</a> is an online directory of mobile sites built using the WordPress Mobile Pack.", 'wpmp'), " target='_blank' href='http://www.mpexo.com'"); ?></p>
+  <p><?php _e("Using the settings below, you can easily, and automatically, get your own site listed on mpexo. It's a safe and easy way to drive traffic to the mobile version of your site.", 'wpmp'); ?></p>
+  <p><strong><?php _e("This feature is currently in beta.", 'wpmp'); ?></strong> <?php _e("It is therefore disabled by default, but will be <em>enabled</em> by default in the forthcoming v2.0 of the WordPress Mobile Pack. Please provide feedback in the meantime.", 'wpmp'); ?></p>
   <form method="post" action="">
     <table class="form-table">
       <tr>
-        <th><?php _e('List my site on mpexo'); ?></th>
+        <th><?php _e('List my site on mpexo', 'wpmp'); ?></th>
         <td>
           <?php print wpmp_mpexo_option('wpmp_mpexo_enabled_beta', 'wpmpMpexo();'); ?>
           <br />
-          <?php _e('Publish summary information about your site to the mpexo server. This makes it easier for mobile users to find it.'); ?>
+          <?php _e('Publish summary information about your site to the mpexo server. This makes it easier for mobile users to find it.', 'wpmp'); ?>
         </td>
       </tr>
 
       <tr class='wpmp_mpexo'>
-        <th><?php _e('Site description'); ?></th>
+        <th><?php _e('Site description', 'wpmp'); ?></th>
         <td>
           <?php print wpmp_mpexo_option('wpmp_mpexo_description', 'wpmpMpexo();'); ?>
           <br />
-          <?php printf(__('mpexo can display a description of your blog. This can be the tagline in your <a%s>general settings</a>, or some custom text.'), ' href="options-general.php"'); ?>
+          <?php printf(__('mpexo can display a description of your blog. This can be the tagline in your <a%s>general settings</a>, or some custom text.', 'wpmp'), ' href="options-general.php"'); ?>
           <br />
           <?php print wpmp_mpexo_option('wpmp_mpexo_description_override'); ?>
         </td>
       </tr>
       <tr class='wpmp_mpexo_description_custom'>
-        <th><?php _e('Custom description'); ?></th>
+        <th><?php _e('Custom description', 'wpmp'); ?></th>
         <td>
           <?php print wpmp_mpexo_option('wpmp_mpexo_description_custom', '', 'regular-text'); ?>
           <br />
-          <?php _e("Use this custom description instead of the blog's tagline."); ?>
+          <?php _e("Use this custom description instead of the blog's tagline.", 'wpmp'); ?>
         </td>
       </tr>
       <tr class='wpmp_mpexo'>
-        <th><?php _e('Publish classification'); ?></th>
+        <th><?php _e('Publish classification', 'wpmp'); ?></th>
         <td>
           <?php print wpmp_mpexo_option('wpmp_mpexo_classification'); ?>
           <br />
-          <?php _e("mpexo can display your site's tags and categories, helping readers discover the topics you cover."); ?>
+          <?php _e("mpexo can display your site's tags and categories, helping readers discover the topics you cover.", 'wpmp'); ?>
         </td>
       </tr>
       <tr class='wpmp_mpexo'>
-        <th><?php _e('Publish content titles'); ?></th>
+        <th><?php _e('Publish content titles', 'wpmp'); ?></th>
         <td>
           <?php print wpmp_mpexo_option('wpmp_mpexo_content'); ?>
           <br />
-          <?php _e('mpexo can display the titles of your posts and pages so readers can see teasers of your recent content.'); ?>
+          <?php _e('mpexo can display the titles of your posts and pages so readers can see teasers of your recent content.', 'wpmp'); ?>
         </td>
       </tr>
       <tr class='wpmp_mpexo'>
-        <th><?php _e('Gather mobile popularity'); ?></th>
+        <th><?php _e('Gather mobile popularity', 'wpmp'); ?></th>
         <td>
           <?php print wpmp_mpexo_option('wpmp_mpexo_popularity'); ?>
           <br />
-          <?php _e("This will gather an aggregated summary of your site's popularity amongst mobile users. This data is never published on a per-site basis: it is merely used to order blogs by popularity."); ?>
+          <?php _e("This will gather an aggregated summary of your site's popularity amongst mobile users. This data is never published on a per-site basis: it is merely used to order blogs by popularity.", 'wpmp'); ?>
         </td>
       </tr>
       <tr class='wpmp_mpexo'>
-        <th><?php _e('Gather diagnostics'); ?></th>
+        <th><?php _e('Gather diagnostics', 'wpmp'); ?></th>
         <td>
           <?php print wpmp_mpexo_option('wpmp_mpexo_diagnostics'); ?>
           <br />
-          <?php _e("This gathers non-sensitive details regarding your Mobile Pack configuration. This is never published: it is merely used to diagnose issues you may have with your site."); ?>
+          <?php _e("This gathers non-sensitive details regarding your Mobile Pack configuration. This is never published: it is merely used to diagnose issues you may have with your site.", 'wpmp'); ?>
         </td>
       </tr>
       <tr class='wpmp_mpexo'>
-        <th><?php _e('Register email address'); ?></th>
+        <th><?php _e('Register email address', 'wpmp'); ?></th>
         <td>
           <?php print wpmp_mpexo_option('wpmp_mpexo_email'); ?>
           <br />
-          <?php _e("This registers your email address so we can contact you regarding updates to mpexo and the Mobile Pack. This is never published or shared: unchecking this box will unsubscribe you from any mailings."); ?>
+          <?php _e("This registers your email address so we can contact you regarding updates to mpexo and the Mobile Pack. This is never published or shared: unchecking this box will unsubscribe you from any mailings.", 'wpmp'); ?>
         </td>
       </tr>
     </table>
     <p class="submit">
-      <input type="submit" name="Submit" value="<?php _e('Save Changes'); ?>" />
+      <input type="submit" name="Submit" value="<?php _e('Save Changes', 'wpmp'); ?>" />
     </p>
   </form>
 </div>

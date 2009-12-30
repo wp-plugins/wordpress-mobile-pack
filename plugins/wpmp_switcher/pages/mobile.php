@@ -87,7 +87,7 @@ function wpmp_ms_mobile_top($title, $menu=array()) {
             if(substr($link, 0, 7)!="http://" && substr($link, 0, 8)!="https://") {
               $link = $base . $link;
             }
-            $item .= 'page_item"><a href="' . $link . '" title="' . $name . '">' . __($name) . '</a></li> ';
+            $item .= 'page_item"><a href="' . $link . '" title="' . $name . '">' . __($name, 'wpmp') . '</a></li> ';
             if ($name[0]!='_') {
               print $item;
             }
@@ -113,7 +113,7 @@ function wpmp_ms_mobile_top($title, $menu=array()) {
             include_once($wpmp_include);
           } else {
             ?>
-              <p><?php printf(__("Powered by the <a%s>WordPress Mobile Pack</a>"), ' href="http://mobiforge.mobi/wordpress-mobile-pack"');?> | <?php printf(__("Theme designed by <a%s>ribot</a>"), ' href="http://ribot.co.uk"'); ?></p>
+              <p><?php printf(__("Powered by the <a%s>WordPress Mobile Pack</a>", 'wpmp'), ' href="http://mobiforge.mobi/wordpress-mobile-pack"');?> | <?php printf(__("Theme designed by <a%s>ribot</a>", 'wpmp'), ' href="http://ribot.co.uk"'); ?></p>
             <?php
           }
         ?>

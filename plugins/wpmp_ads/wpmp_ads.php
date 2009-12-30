@@ -38,15 +38,15 @@ Author URI: http://www.assembla.com/spaces/wordpress-mobile-pack
 add_action('init', 'wpmp_ads_init');
 
 function wpmp_ads_init() {
-  wp_register_sidebar_widget('wpmp_ads_widget', __('Mobile Ads'), 'wpmp_ads_widget',
-    array('classname' => 'wpmp_ads_widget', 'description' => __( "Displays AdMob or Google mobile ads"))
+  wp_register_sidebar_widget('wpmp_ads_widget', __('Mobile Ads', 'wpmp'), 'wpmp_ads_widget',
+    array('classname' => 'wpmp_ads_widget', 'description' => __( "Displays AdMob or Google mobile ads", 'wpmp'))
   );
-  wp_register_widget_control('wpmp_ads_widget', __('Mobile Ads'), 'wpmp_ads_widget_control');
+  wp_register_widget_control('wpmp_ads_widget', __('Mobile Ads', 'wpmp'), 'wpmp_ads_widget_control');
 }
 
 function wpmp_ads_activate() {
   foreach(array(
-    'wpmp_ads_title'=>__('Mobile ads'),
+    'wpmp_ads_title'=>__('Mobile ads', 'wpmp'),
     'wpmp_ads_provider'=>'none',
     'wpmp_ads_publisher_id'=>'',
     'wpmp_ads_desktop_disable'=>'true',
@@ -70,7 +70,7 @@ function wpmp_ads_widget($args) {
     extract($args);
     $buffer = $before_widget;
     if (($title = get_option('wpmp_ads_title'))=='') {
-      $title = __("Mobile ads");
+      $title = __("Mobile ads", 'wpmp');
     }
     $buffer .= $before_title . $title . $after_title;
     if(strpos($provider, '_')!==false) {
@@ -125,10 +125,10 @@ function wpmp_ads_option($option, $onchange='', $class='', $style='') {
       return wpmp_ads_option_dropdown(
         $option,
         array(
-          "none"=>__("None"),
-          "admob"=>__("AdMob"),
-          "google_mobile_single"=>__("Google (single ad)"),
-          "google_mobile_double"=>__("Google (double ads)"),
+          "none"=>__("None", 'wpmp'),
+          "admob"=>__("AdMob", 'wpmp'),
+          "google_mobile_single"=>__("Google (single ad)", 'wpmp'),
+          "google_mobile_double"=>__("Google (double ads)", 'wpmp'),
         ),
         $onchange
       );
@@ -165,7 +165,7 @@ function wpmp_ads_option_dropdown($option, $options, $onchange='') {
     } else {
       $selected = '';
     }
-    $dropdown .= '<option value="' . attribute_escape($value) . '"' . $selected . '>' . __($description) . '</option>';
+    $dropdown .= '<option value="' . attribute_escape($value) . '"' . $selected . '>' . __($description, 'wpmp') . '</option>';
   }
   $dropdown .= "</select>";
   return $dropdown;

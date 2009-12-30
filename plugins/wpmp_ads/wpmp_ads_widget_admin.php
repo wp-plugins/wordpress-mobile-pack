@@ -28,27 +28,27 @@ specific language governing permissions and limitations under the License.
 ?>
 
 <p>
-  <label for="wpmp_ads_title"><?php _e('Title:'); ?></label>
+  <label for="wpmp_ads_title"><?php _e('Title:', 'wpmp'); ?></label>
   <?php print wpmp_ads_option('wpmp_ads_title', '', 'widefat'); ?>
 </p>
 <p>
-  <label for="wpmp_ads_provider"><?php _e('Provider:'); ?></label>
+  <label for="wpmp_ads_provider"><?php _e('Provider:', 'wpmp'); ?></label>
   <?php print wpmp_ads_option('wpmp_ads_provider'); ?>
 </p>
 <p>
-  <label for="wpmp_ads_publisher_id"><?php _e('Publisher ID:'); ?></label>
+  <label for="wpmp_ads_publisher_id"><?php _e('Publisher ID:', 'wpmp'); ?></label>
   <br />
   <?php print wpmp_ads_option('wpmp_ads_publisher_id', '', 'widefat'); ?>
-  <br /><?php _e("Examples: a14948dbe57548e (for AdMob) or pub-2709587966093607 (for Google)"); ?>
+  <br /><?php _e("Examples: a14948dbe57548e (for AdMob) or pub-2709587966093607 (for Google)", 'wpmp'); ?>
 </p>
 <p>
-  <?php printf(__("This widget should only be used on mobile themes. If you are using a theme from, or derived from, the WordPress Mobile Pack, you will need to enable this widget <a%s>here</a>."), " href='/wp-admin/themes.php?page=wpmp_theme_widget_admin' target='_blank'"); ?>
+  <?php printf(__("This widget should only be used on mobile themes. If you are using a theme from, or derived from, the WordPress Mobile Pack, you will need to enable this widget <a%s>here</a>.", 'wpmp'), " href='/wp-admin/themes.php?page=wpmp_theme_widget_admin' target='_blank'"); ?>
 </p>
 <p>
   <?php print wpmp_ads_option('wpmp_ads_desktop_disable'); ?>
-  <label for="wpmp_ads_desktop_disable"><?php _e('Attempt to automatically disable for desktop themes (when switcher is running)'); ?></label>
+  <label for="wpmp_ads_desktop_disable"><?php _e('Attempt to automatically disable for desktop themes (when switcher is running)', 'wpmp'); ?></label>
 </p>
 <p>
-  <?php _e('Note also that this widget will be completely hidden if no ads are returned from the provider you have selected.'); ?>
+  <?php _e('Note also that this widget will be completely hidden if no ads are returned from the provider you have selected.', 'wpmp'); ?>
 </p>
 <input type="hidden" id="wpmp_ads" name="wpmp_ads" value="1" />

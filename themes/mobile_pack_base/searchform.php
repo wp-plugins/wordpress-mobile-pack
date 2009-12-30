@@ -30,6 +30,6 @@ specific language governing permissions and limitations under the License.
 <form method="get" id="searchform" action="<?php print get_option('home'); ?>/">
   <div>
     <input type="search" value="<?php echo wp_specialchars($s, 1); ?>" name="s" id="s" placeholder="Search" results="0" />
-    <input type="submit" id="searchsubmit" value="<?php _e('Search'); ?>" />
+    <input type="submit" id="searchsubmit" value="<?php _e('Search', 'wpmp'); ?>" />
   </div>
 </form>
