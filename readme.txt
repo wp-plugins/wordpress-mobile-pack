@@ -83,10 +83,9 @@ We run the development of the plugin over at [Assembla](http://www.assembla.com/
 
 == Changelog ==
 
-= 1.2.0 =
-* Nokia themes enabled by default: low, mid, and high templates. [More details](http://tinyurl.com/ykc4ear).
-* Support for other WebKit devices (iPhone, Android, Palm, etc)
-* Automatic [mpexo](http://www.mpexo.com) listings. (Enabled in the settings menu)
+= 1.2.0b =
+* Full internationalisation and readiness for translation (see .pot file within installation)
+* Automatic [mpexo](http://www.mpexo.com) listings (enabled in the settings menu)
 
 = 1.1.92 =
 * Prevented javascript being displayed in posts
