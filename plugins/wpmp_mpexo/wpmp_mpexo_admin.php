@@ -73,6 +73,8 @@ specific language governing permissions and limitations under the License.
           <?php print wpmp_mpexo_option('wpmp_mpexo_classification'); ?>
           <br />
           <?php _e("mpexo can display your site's tags and categories, helping readers discover the topics you cover.", 'wpmp'); ?>
+          <br />
+          <?php _e("NB: mpexo does not currently display your blog's tags.", 'wpmp'); ?>
         </td>
       </tr>
       <tr class='wpmp_mpexo'>
