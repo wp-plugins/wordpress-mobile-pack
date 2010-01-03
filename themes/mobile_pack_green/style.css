@@ -20,7 +20,7 @@ Template: mobile_pack_base
 */
 
 /* VERY DARK */
-#submit, #header, #footer {
+.button, #submit, #header, #footer {
 	background-color:#6E811F;
 }
 input, textarea {

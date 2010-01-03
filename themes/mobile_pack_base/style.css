@@ -24,12 +24,16 @@ PALETTE
 a:hover {
   color:#111111;
 }
+body {
+  background:#111111;
+}
+
 
 /* VERY DARK */
 body, h2 a {
   color:#333333;
 }
-#submit, #header, #footer {
+.button, #submit, #header, #footer {
   background-color:#333333
 }
 input, textarea {
@@ -46,9 +50,6 @@ a, a:visited, #sidebar ul h2, li.current_page_item a {
 /* MID */
 div.dateicon, p.metadata {
   color:#8C8F6C;
-}
-body {
-  background:#8C8F6C;
 }
 
 
@@ -71,7 +72,7 @@ body {
 
 
 /* LIGHTEST */
-#header, #header a, #header a:hover, #header h2, #footer a, #footer a:hover, #footer, #submit  {
+#header, #header a, #header a:hover, #header h2, #footer a, #footer a:hover, #footer, #submit, .button  {
   color:#FFFFFF;
 }
 .navigation, h3, div.post, #footer {

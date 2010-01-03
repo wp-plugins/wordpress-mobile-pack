@@ -37,7 +37,7 @@ body.nokia_high h1 {
 body.nokia_high div#header,
 body.nokia_high div#menu {
   background-image: url(img/radial.png);
-  background-position:0 -10px;
+  background-position:0 -16px;
   background-repeat:repeat-x;
 }
 body.nokia_high div#footer {
@@ -56,9 +56,50 @@ h1 {
 body.nokia_low h1, body.nokia_mid h1 {
   padding-top:0.2em;
 }
-ul.list li {
+ul.list li, dl.list-accordion dt {
   white-space:nowrap;
+  background-image: url(img/radial.png);
+  background-position:top;
+  background-repeat:repeat-x;
 }
+ul.list li:hover, dl.list-accordion dt:hover {
+  background-image: url(img/dahs.png);
+  background-position:top;
+}
+body.nokia_high #sidebar {
+  margin-left:10px;
+  margin-right:10px;
+}
+
+body.nokia_high input.button {
+  border:0;
+  cursor:pointer;
+  font-weight:bold;
+  font-size: .95em;
+  padding:0 1.5em;
+  text-align:center;
+  margin: 0.4em 0;
+  background-image: url(img/radial.png);
+  background-position:0 -16px;
+  background-repeat:repeat-x;
+  height:40px;
+  line-height:40px;
+}
+input[type='search'] {
+	border: 1px solid #D8D8D8;
+	background: #FFF url(groups/nokia_high/images/img-form-input-shadow.png) repeat-x top;
+	display: block;
+	padding: 0.2em;
+	width: 98%;
+	color: #333333;
+	margin-bottom: 1em;
+}
+#wrap {
+	max-width:480px;
+	margin:0 auto;
+  position:relative;
+}
+
 
 
 /* PALETTE */
@@ -91,6 +132,9 @@ body input[type='button'] {
 }
 
 /* DARK */
+ul.list li:hover, dl.list-accordion dt:hover {
+  background-color:#444444;
+}
 
 body div#header {
   border-bottom-color: #444444;
@@ -103,17 +147,18 @@ body.nokia_mid h1, body.nokia_mid h2 {
 /* LIGHT MID */
 body.nokia_high h1,
 body div#header,
-body.nokia_low div#footer, body.nokia_mid div#footer {
+body.nokia_low div#footer, body.nokia_mid div#footer,
+ul.list li, dl.list-accordion dt {
   background-color: #DDDFD9;
 }
 body div#footer,
 body h6, blockquote, blockquote p, body table, body td, body div.header-box p, body div.box p.box-text,
-body input[type='text'], body textarea {
+body input[type='text'], body input[type='search'], body textarea {
   border-color: #DDDFD9;
 }
 
 /* VERY LIGHT */
-body, div#menu, body h6, body td.table-header, body table td.odd, body div.box p.box-text, body div.header-box p {
+div#menu, body h6, body td.table-header, body table td.odd, body div.box p.box-text, body div.header-box p {
   background-color: #F2F4ED;
 }
 

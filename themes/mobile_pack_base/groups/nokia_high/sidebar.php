@@ -1,9 +1,9 @@
 <?php
 
 /*
-$Id$
+$Id: sidebar.php 180811 2009-12-08 06:13:51Z jamesgpearce $
 
-$URL$
+$URL: http://plugins.svn.wordpress.org/wordpress-mobile-pack/trunk/themes/mobile_pack_base/sidebar.php $
 
 Copyright (c) 2009 James Pearce & friends, portions mTLD Top Level Domain Limited, ribot, Forum Nokia
 
@@ -25,11 +25,15 @@ CONDITIONS OF ANY KIND, either express or implied. See the License for the
 specific language governing permissions and limitations under the License.
 */
 
-?>
+global $wp_registered_sidebars;
+foreach($wp_registered_sidebars as $key=>$sidebar) {
+  $wp_registered_sidebars[$key]['before_widget']='';
+  $wp_registered_sidebars[$key]['after_widget']='</dd>';
+  $wp_registered_sidebars[$key]['before_title']='<dt class="collapsed"><span></span>';
+  $wp_registered_sidebars[$key]['after_title']='</dt><dd style="display: none;">';
+}
 
-<form method="get" id="searchform" action="<?php print get_option('home'); ?>/">
-  <div>
-    <input type="search" value="<?php echo wp_specialchars($s, 1); ?>" name="s" id="s" placeholder="Search" results="0" />
-    <input class='button' type="submit" id="searchsubmit" value="<?php _e('Search', 'wpmp'); ?>" />
-  </div>
-</form>
+$before_sidebar = '<dl id="accordion_widgets" class="list-accordion"><script type="text/javascript">addEvent("onload", function() {var accordion_widget = new AccordionList("accordion_widgets");});</script>';
+$after_sidebar = '</dl>';
+
+?>

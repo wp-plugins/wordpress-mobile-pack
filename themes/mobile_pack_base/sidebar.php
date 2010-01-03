@@ -25,19 +25,25 @@ CONDITIONS OF ANY KIND, either express or implied. See the License for the
 specific language governing permissions and limitations under the License.
 */
 
-?>
 
-<div id="sidebar">
-  <?php
-    ob_start();
-    ob_start();
-    dynamic_sidebar();
-    $list = ob_get_contents();
-    ob_end_clean();
-    $list = ob_get_contents() . $list; //ob stack funny stuff in old widgets
-    ob_end_clean();
-    if ($list) {
-      print "<ul>$list</ul>";
-    }
-  ?>
-</div>
+if (file_exists($wpmp_include = wpmp_theme_group_file('sidebar.php'))) {
+  include_once($wpmp_include);
+} else {
+  $before_sidebar = '<ul>';
+  $after_sidebar = '</ul>';
+}
+
+print '<div id="sidebar">';
+ob_start();
+ob_start();
+dynamic_sidebar();
+$list = ob_get_contents();
+ob_end_clean();
+$list = ob_get_contents() . $list; //ob stack funny stuff in old widgets
+ob_end_clean();
+if ($list) {
+  print $before_sidebar . $list . $after_sidebar;
+}
+print '</div>';
+
+?>

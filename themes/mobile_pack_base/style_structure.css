@@ -95,7 +95,7 @@ input, textarea {
   padding:0.2em;
 }
 
-input[type="checkbox"]{
+input[type="checkbox"], input.button {
   width:auto;
 }
 
@@ -124,7 +124,7 @@ label {
   font-size:large;
 }
 
-#header h2, #menu {
+#header h2 {
   font-size:0.8em;
 }
 

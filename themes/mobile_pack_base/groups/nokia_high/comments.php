@@ -27,6 +27,7 @@ specific language governing permissions and limitations under the License.
 
   if ($comments || $post->comment_status == 'open') {
     print '<dl id="accordion_comments" class="list-accordion">';
+    print '<script type="text/javascript">addEvent("onload", function() {var accordion_comments = new AccordionList("accordion_comments");});</script>';
     if ($comments) {
       print '<dt class="collapsed" id="comments"><span></span>'; comments_number('No comments', '1 comment', '% comments' ); print __(' on this post.', 'wpmp') . '</dt>';
       print "<dd>"; wpmp_theme_comment_list($comments); print '</dd>';
@@ -36,11 +37,6 @@ specific language governing permissions and limitations under the License.
       print "<dd>"; wpmp_theme_comment_form($user_ID, $user_identity, $req, $comment_author, $comment_author_url, $id, $post); print '</dd>';
     }
     print '</dl>';
-    ?>
-      <script type="text/javascript">
-        var accordion_comments = new AccordionList("accordion_comments");
-      </script>
-    <?php
   }
 
 ?>

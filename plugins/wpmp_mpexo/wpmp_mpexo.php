@@ -563,9 +563,9 @@ function wpmp_mpexo_widget($args) {
   extract($args);
   print $before_widget;
   print $before_title . 'mpexo' . $after_title;
-  print "<p>";
-  print __('This site is proudly listed as a mobile blog on mpexo.', 'wpmp');
-  print "</p>";
+  print "<ul><li>";
+  printf (__('This site is proudly listed as a mobile blog on <a%s>mpexo</a>.', 'wpmp'), ' href="http://www.mpexo.com"');
+  print "</li></ul>";
   print $after_widget;
 }
 

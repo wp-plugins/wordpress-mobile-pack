@@ -27,6 +27,9 @@ body input[type='button'] {
 }
 
 /* DARK */
+ul.list li:hover, dl.list-accordion dt:hover {
+  background-color:#5C7C9D;
+}
 
 body div#header {
 	border-bottom-color: #5C7C9D;
@@ -40,11 +43,12 @@ body.nokia_mid h1, body.nokia_mid h2 {
 
 body.nokia_high h1,
 body div#header,
-body.nokia_low div#footer, body.nokia_mid div#footer {
+body.nokia_low div#footer, body.nokia_mid div#footer,
+ul.list li, dl.list-accordion dt {
 	background-color: #819AB3;
 }
 body div#footer,
 body h6, blockquote, blockquote p, body table, body td, body div.header-box p, body div.box p.box-text,
-body input[type='text'], body textarea {
+body input[type='text'], body input[type='search'], body textarea {
 	border-color: #819AB3;
 }

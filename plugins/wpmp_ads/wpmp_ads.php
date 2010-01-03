@@ -72,6 +72,11 @@ function wpmp_ads_widget($args) {
     if (($title = get_option('wpmp_ads_title'))=='') {
       $title = __("Mobile ads", 'wpmp');
     }
+
+    //nice to see them in accordions
+    $before_title = str_replace('class="collapsed"', 'class="expanded"', $before_title);
+    $after_title = str_replace('style="display: none;"', 'style="display: block;"', $after_title);
+
     $buffer .= $before_title . $title . $after_title;
     if(strpos($provider, '_')!==false) {
       $provider = explode('_', $provider, 2);
