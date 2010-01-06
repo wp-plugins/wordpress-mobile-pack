@@ -76,14 +76,32 @@ function wpmp_barcode_widget($args) {
   } else {
     $size = floor($size);
   }
-  if (trim($link = get_option('wpmp_barcode_link'))=='') {
-    $link = "http://" . wpmp_switcher_domains('mobile', true) . wpmp_switcher_current_path_plus_cgi();
-  }
+  
+	$link = get_option('wpmp_barcode_link');
+	
+	//If the user hasn't specified a URL in the widget admin panel
+	if (trim($link)=='') 
+	{
+		//Get the unique ID of this post http://codex.wordpress.org/Function_Reference/get_the_ID
+		//We can use this to craft a shorter URL, thus making the QR code smaller and easier to scan.
+		//http://example.com/?p=1234 rather than http://example.com/2010/01/05/some-title
+		//Using http://codex.wordpress.org/Function_Reference/get_page
+		$page_data = get_page( get_the_ID() );
+		$link = $page_data->guid; //[guid] => (http://mydomain/?page_id={[ID]})
+		
+		//We need to add wpmp_switcher=true to force the mobile version if the switcher uses domain mapping.
+		if (get_option('wpmp_switcher_mode') != 'browser' )
+		{
+			$link .= "&wpmp_switcher=mobile";
+		}
+	}
+
   $url = "http://chart.apis.google.com/chart?chs=" .
          $size . "x" . $size .
          "&amp;cht=qr&amp;choe=UTF-8&amp;chl=" .
          urlencode($link);
-  print "<img width='$size' height='$size' src='$url' alt='QR Code – scan to visit our mobile site' />";
+
+  print "<img width='$size' height='$size' src='$url' alt='QR Code - scan to visit our mobile site' />";
   if(get_option('wpmp_barcode_help')=='true') {
     print "<p>";
     printf (__('This is a 2D-barcode containing the address of our <a%s>mobile site</a>.', 'wpmp'), "href='$link' target='_blank'");
