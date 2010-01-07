@@ -291,7 +291,8 @@ function wpmp_mpexo_update_tag($tag_id) {
       }
       wpmp_mpexo_update_post(0, null, 'tags');
     } else {
-      wpmp_mpexo_add_to_payload('t'.$tag_id, get_tag($tag_id)->name);
+      $tag = get_tag($tag_id);
+      wpmp_mpexo_add_to_payload('t'.$tag_id, $tag->name);
     }
   }
 }
@@ -313,7 +314,8 @@ function wpmp_mpexo_update_category($category_id) {
       }
       wpmp_mpexo_update_post(0, null, 'categories');
     } else {
-      wpmp_mpexo_add_to_payload('c'.$category_id, get_category($category_id)->name);
+      $category = get_category($category_id);
+      wpmp_mpexo_add_to_payload('c'.$category_id, $category->name);
     }
   }
 }
@@ -402,7 +404,8 @@ function wpmp_mpexo_update_single_post_or_page($post_or_page, $is_post=true, $ju
 }
 
 function wpmp_mpexo_delete_post_or_page($post_or_page_id) {
-  switch(get_post($post_or_page_id)->post_type) {
+  $post_or_page = get_post($post_or_page_id);
+  switch($post_or_page->post_type) {
     case 'post':
       wpmp_mpexo_delete_post($post_or_page_id);
       break;
