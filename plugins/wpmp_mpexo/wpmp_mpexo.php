@@ -443,6 +443,10 @@ function wpmp_mpexo_send_payload() {
   if (get_option('wpmp_mpexo_enabled_beta')!='true') {
     $wpmp_mpexo_payload = $wpmp_mpexo_payload_forced;
   } else {
+    if (!is_array($wpmp_mpexo_payload) || !is_array($wpmp_mpexo_payload_forced)) {
+      $wpmp_mpexo_payload = array();
+      $wpmp_mpexo_payload_forced = array();
+    }
     $wpmp_mpexo_payload = array_merge($wpmp_mpexo_payload, $wpmp_mpexo_payload_forced);
   }
   $wpmp_mpexo_payload_forced = array();

@@ -25,7 +25,7 @@ CONDITIONS OF ANY KIND, either express or implied. See the License for the
 specific language governing permissions and limitations under the License.
 */
 
-function wpmp_switcher_login_header($title = __('Login', 'wpmp'), $message = '', $wp_error = '') {
+function wpmp_switcher_login_header($title = 'Login', $message = '', $wp_error = '') {
 	global $error;
 
 	if ( empty($wp_error) )
