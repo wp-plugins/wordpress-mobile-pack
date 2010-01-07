@@ -80,8 +80,7 @@ function wpmp_barcode_widget($args) {
 	$link = get_option('wpmp_barcode_link');
 
 	//If the user hasn't specified a URL in the widget admin panel
-	if (trim($link)=='')
-	{
+	if (trim($link)=='') {
 		//Get the unique ID of this post http://codex.wordpress.org/Function_Reference/get_the_ID
 		//We can use this to craft a shorter URL, thus making the QR code smaller and easier to scan.
 		//http://example.com/?p=1234 rather than http://example.com/2010/01/05/some-title
@@ -90,8 +89,7 @@ function wpmp_barcode_widget($args) {
 		$link = $page_data->guid; //[guid] => (http://mydomain/?page_id={[ID]})
 
 		//We need to add wpmp_switcher=true to force the mobile version if the switcher uses domain mapping.
-		if (get_option('wpmp_switcher_mode') != 'browser' )
-		{
+		if (get_option('wpmp_switcher_mode') != 'browser' ) {
 			$link .= "&wpmp_switcher=mobile";
 		}
 	}
