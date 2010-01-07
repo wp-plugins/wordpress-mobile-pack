@@ -1,9 +1,9 @@
 <?php
 
 /*
-$Id$
+$Id: wpmp_switcher.php 191227 2010-01-07 20:45:22Z jamesgpearce $
 
-$URL$
+$URL: http://plugins.svn.wordpress.org/wordpress-mobile-pack/trunk/plugins/wpmp_switcher/wpmp_switcher.php $
 
 Copyright (c) 2009 James Pearce & friends, portions mTLD Top Level Domain Limited, ribot, Forum Nokia
 
@@ -29,7 +29,7 @@ specific language governing permissions and limitations under the License.
 Plugin Name: Mobile Switcher
 Plugin URI: http://wordpress.org/extend/plugins/wordpress-mobile-pack/
 Description: Detects a mobile user accessing your site and switches theme accordingly. This plugin is tested with WordPress 2.5, 2.6, 2.7 and 2.8.
-Version: 1.2.0b
+Version: 1.2.0b2
 Author: James Pearce & friends
 Author URI: http://www.assembla.com/spaces/wordpress-mobile-pack
 */

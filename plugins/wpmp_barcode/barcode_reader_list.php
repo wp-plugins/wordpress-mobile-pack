@@ -1,9 +1,9 @@
 <?php
 
 /*
-$Id$
+$Id: barcode_reader_list.php 180811 2009-12-08 06:13:51Z jamesgpearce $
 
-$URL$
+$URL: http://plugins.svn.wordpress.org/wordpress-mobile-pack/trunk/plugins/wpmp_barcode/barcode_reader_list.php $
 
 Copyright (c) 2009 James Pearce & friends, portions mTLD Top Level Domain Limited, ribot, Forum Nokia
 

@@ -1,9 +1,9 @@
 <?php
 
 /*
-$Id$
+$Id: wpmp_theme_theme_admin.php 188828 2010-01-02 02:55:52Z jamesgpearce $
 
-$URL$
+$URL: http://plugins.svn.wordpress.org/wordpress-mobile-pack/trunk/themes/mobile_pack_base/wpmp_theme_theme_admin.php $
 
 Copyright (c) 2009 James Pearce & friends, portions mTLD Top Level Domain Limited, ribot, Forum Nokia
 

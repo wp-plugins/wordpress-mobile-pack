@@ -1,9 +1,9 @@
 <?php
 
 /*
-$Id$
+$Id: wpmp_barcode_widget_admin.php 188277 2009-12-30 21:30:27Z jamesgpearce $
 
-$URL$
+$URL: http://plugins.svn.wordpress.org/wordpress-mobile-pack/trunk/plugins/wpmp_barcode/wpmp_barcode_widget_admin.php $
 
 Copyright (c) 2009 James Pearce & friends, portions mTLD Top Level Domain Limited, ribot, Forum Nokia
 

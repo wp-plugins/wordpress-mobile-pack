@@ -1,9 +1,9 @@
 <?php
 
 /*
-$Id$
+$Id: mobile_login.php 191225 2010-01-07 20:41:59Z jamesgpearce $
 
-$URL$
+$URL: http://plugins.svn.wordpress.org/wordpress-mobile-pack/trunk/plugins/wpmp_switcher/pages/mobile_login.php $
 
 Copyright (c) 2009 James Pearce & friends, portions mTLD Top Level Domain Limited, ribot, Forum Nokia
 
@@ -25,14 +25,14 @@ CONDITIONS OF ANY KIND, either express or implied. See the License for the
 specific language governing permissions and limitations under the License.
 */
 
-function wpmp_switcher_login_header($title = 'Login', $message = '', $wp_error = '') {
+function wpmp_switcher_login_header($title, $message = '', $wp_error = '') {
 	global $error;
 
 	if ( empty($wp_error) )
 		$wp_error = new WP_Error();
 
   include_once('mobile.php');
-  wpmp_ms_mobile_top(__("Login", 'wpmp'));
+  wpmp_ms_mobile_top($title);
 
 	if ( !empty( $message ) ) echo apply_filters('login_message', $message) . "\n";
 

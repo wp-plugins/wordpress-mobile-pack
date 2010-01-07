@@ -1,9 +1,9 @@
 <?php
 
 /*
-$Id$
+$Id: wpmp_transcoder.php 191227 2010-01-07 20:45:22Z jamesgpearce $
 
-$URL$
+$URL: http://plugins.svn.wordpress.org/wordpress-mobile-pack/trunk/plugins/wpmp_transcoder/wpmp_transcoder.php $
 
 Copyright (c) 2009 James Pearce & friends, portions mTLD Top Level Domain Limited, ribot, Forum Nokia
 
@@ -29,7 +29,7 @@ specific language governing permissions and limitations under the License.
 Plugin Name: Mobile Transcoder
 Plugin URI: http://wordpress.org/extend/plugins/wordpress-mobile-pack/
 Description: Rewrites blog pages and posts for the mobile theme, to ensure compatibility with mobile devices
-Version: 1.2.0b
+Version: 1.2.0b2
 Author: James Pearce & friends
 Author URI: http://www.assembla.com/spaces/wordpress-mobile-pack
 */

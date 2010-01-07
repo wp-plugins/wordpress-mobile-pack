@@ -13,7 +13,9 @@ The WordPress Mobile Pack is a complete toolkit to help mobilize your WordPress 
 
 It includes a mobile switcher to select themes based on the type of user that is visiting the site, a selection of mobile themes, extra widgets, device adaptation and a mobile administration panel to allow users to edit the site or write new posts when out and about.
 
-The pack has been tested on WordPress 2.5.1, 2.6.5, 2.7.1, 2.8.6, and 2.9. It has been tested on WordPress MU 2.6 in the 'plugins', rather than 'mu_plugins', mode. PHP 5.x is also highly recommended, although the plugin will tolerate PHP4.3.
+The pack has been tested on WordPress 2.5.1, 2.6.5, 2.7.1, 2.8.6, and 2.9. It has been tested on WordPress MU 2.6 in the 'plugins', rather than 'mu_plugins', mode. PHP 5.x is also highly recommended, although the plugin also works with PHP 4.3.
+
+**NB**: there was a bug introduced in the first v1.2.0 beta release that prevented mobile users logging in to the admin dashboard. There was also an incompatibility with PHP 4 that made it impossible to run the plugin on some servers. Both issues are fixed in beta 2. Sorry.
 
 Features highlights:
 
@@ -84,8 +86,10 @@ We run the development of the plugin over at [Assembla](http://www.assembla.com/
 == Changelog ==
 
 = 1.2.0b2 =
-* hotfix for admin login page (Andrea)
-* shortened QR-code URL's and added alt attribute to img tag to be valid XHTML (edent)
+* Shortened QR-code URLs and added alt attribute to img tag to be valid XHTML
+Two major issues were introduced in beta 1, now solved:
+* Solved mobile admin login error
+* Restored compatibility with PHP4
 
 = 1.2.0b =
 * Full internationalisation and readiness for translation (see .pot file within installation)

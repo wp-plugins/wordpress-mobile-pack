@@ -1,9 +1,9 @@
 <?php
 
 /*
-$Id$
+$Id: wpmp_barcode.php 191228 2010-01-07 20:48:42Z jamesgpearce $
 
-$URL$
+$URL: http://plugins.svn.wordpress.org/wordpress-mobile-pack/trunk/plugins/wpmp_barcode/wpmp_barcode.php $
 
 Copyright (c) 2009 James Pearce & friends, portions mTLD Top Level Domain Limited, ribot, Forum Nokia
 
@@ -29,7 +29,7 @@ specific language governing permissions and limitations under the License.
 Plugin Name: Mobile Barcode
 Plugin URI: http://wordpress.org/extend/plugins/wordpress-mobile-pack/
 Description: Provides a widget (intended to be used on a desktop theme) that displays a 2D-barcode for navigating to the mobile site. This plugin is tested with WordPress 2.5, 2.6, 2.7 and 2.8.
-Version: 1.2.0b
+Version: 1.2.0b2
 Author: James Pearce & friends
 Author URI: http://www.assembla.com/spaces/wordpress-mobile-pack
 */
@@ -76,22 +76,20 @@ function wpmp_barcode_widget($args) {
   } else {
     $size = floor($size);
   }
-  
+
 	$link = get_option('wpmp_barcode_link');
-	
+
 	//If the user hasn't specified a URL in the widget admin panel
-	if (trim($link)=='') 
-	{
+	if (trim($link)=='') {
 		//Get the unique ID of this post http://codex.wordpress.org/Function_Reference/get_the_ID
 		//We can use this to craft a shorter URL, thus making the QR code smaller and easier to scan.
 		//http://example.com/?p=1234 rather than http://example.com/2010/01/05/some-title
 		//Using http://codex.wordpress.org/Function_Reference/get_page
 		$page_data = get_page( get_the_ID() );
 		$link = $page_data->guid; //[guid] => (http://mydomain/?page_id={[ID]})
-		
+
 		//We need to add wpmp_switcher=true to force the mobile version if the switcher uses domain mapping.
-		if (get_option('wpmp_switcher_mode') != 'browser' )
-		{
+		if (get_option('wpmp_switcher_mode') != 'browser' ) {
 			$link .= "&wpmp_switcher=mobile";
 		}
 	}

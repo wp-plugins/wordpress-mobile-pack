@@ -1,9 +1,9 @@
 <?php
 
 /*
-$Id$
+$Id: lite_detection.php 180913 2009-12-08 15:42:24Z jamesgpearce $
 
-$URL$
+$URL: http://plugins.svn.wordpress.org/wordpress-mobile-pack/trunk/plugins/wpmp_switcher/lite_detection.php $
 
 Copyright (c) 2009 James Pearce & friends, portions mTLD Top Level Domain Limited, ribot, Forum Nokia
 

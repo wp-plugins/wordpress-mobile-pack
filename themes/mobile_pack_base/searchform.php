@@ -1,9 +1,9 @@
 <?php
 
 /*
-$Id$
+$Id: searchform.php 189239 2010-01-03 17:14:41Z jamesgpearce $
 
-$URL$
+$URL: http://plugins.svn.wordpress.org/wordpress-mobile-pack/trunk/themes/mobile_pack_base/searchform.php $
 
 Copyright (c) 2009 James Pearce & friends, portions mTLD Top Level Domain Limited, ribot, Forum Nokia
 
