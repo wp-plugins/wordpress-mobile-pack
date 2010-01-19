@@ -94,12 +94,26 @@ input[type='search'] {
 	color: #333333;
 	margin-bottom: 1em;
 }
-#wrap {
+body.base #wrap,
+body.nokia_low #wrap,
+body.nokia_mid #wrap
+{
 	max-width:480px;
 	margin:0 auto;
   position:relative;
 }
+body.nokia_high p.metadata {
+  font-size:0.8em;
+}
 
+#wpmp_analytics {
+	display:none!important;
+}
+#wpmp_analytics img {
+	display:none!important;
+  padding:0em!important;
+	margin:0em!important;
+}
 
 
 /* PALETTE */

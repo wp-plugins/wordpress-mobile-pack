@@ -7,7 +7,7 @@ $URL$
 
 Copyright (c) 2009 James Pearce & friends, portions mTLD Top Level Domain Limited, ribot, Forum Nokia
 
-Online support: http://mobiforge.com/forum/dotmobi/wordpress
+Online support: http://wordpress.org/extend/plugins/wordpress-mobile-pack/
 
 This file is part of the WordPress Mobile Pack.
 
@@ -40,7 +40,7 @@ specific language governing permissions and limitations under the License.
       <tr>
         <th><?php _e('Enable Nokia templates', 'wpmp'); ?></th>
         <td>
-          <?php print wpmp_theme_option('wpmp_theme_nokia_templates_beta'); ?>
+          <?php print wpmp_theme_option('wpmp_theme_nokia_templates'); ?>
           <br />
           <?php _e('Check this to provide additional optimisations for users of Nokia handsets. It also enables a rich theme for WebKit-based mobile browsers, such as the Apple iPhone and Palm Pre.', 'wpmp'); ?>
         </td>

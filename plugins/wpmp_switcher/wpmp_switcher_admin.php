@@ -7,7 +7,7 @@ $URL$
 
 Copyright (c) 2009 James Pearce & friends, portions mTLD Top Level Domain Limited, ribot, Forum Nokia
 
-Online support: http://mobiforge.com/forum/dotmobi/wordpress
+Online support: http://wordpress.org/extend/plugins/wordpress-mobile-pack/
 
 This file is part of the WordPress Mobile Pack.
 
@@ -36,14 +36,6 @@ specific language governing permissions and limitations under the License.
   </h2>
   <form method="post" action="">
     <table class="form-table">
-      <tr>
-        <th><?php _e('Mobile activity', 'wpmp'); ?></th>
-        <td>
-          <?php print wpmp_switcher_hit_summary(); ?>
-          <br />
-          <?php print wpmp_switcher_option('wpmp_switcher_hit_reset'); ?> <strong><?php _e("Reset counter", 'wpmp'); ?></strong>
-        </td>
-      </tr>
       <tr>
         <th><?php _e('Switcher mode', 'wpmp'); ?></th>
         <td>

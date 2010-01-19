@@ -7,7 +7,7 @@ $URL$
 
 Copyright (c) 2009 James Pearce & friends, portions mTLD Top Level Domain Limited, ribot, Forum Nokia
 
-Online support: http://mobiforge.com/forum/dotmobi/wordpress
+Online support: http://wordpress.org/extend/plugins/wordpress-mobile-pack/
 
 This file is part of the WordPress Mobile Pack.
 

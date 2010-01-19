@@ -7,7 +7,7 @@ $URL$
 
 Copyright (c) 2009 James Pearce & friends, portions mTLD Top Level Domain Limited, ribot, Forum Nokia
 
-Online support: http://mobiforge.com/forum/dotmobi/wordpress
+Online support: http://wordpress.org/extend/plugins/wordpress-mobile-pack/
 
 This file is part of the WordPress Mobile Pack.
 
@@ -29,7 +29,7 @@ specific language governing permissions and limitations under the License.
 Plugin Name: Mobile Ads
 Plugin URI: http://wordpress.org/extend/plugins/wordpress-mobile-pack/
 Description: Provides a widget (intended to be used on a mobile theme) that displays <a href='http://www.google.com/adsense/www/mobile/' target='_blank'>Google</a> or <a href='http://www.admob.com' target='_blank'>AdMob</a> ads. This plugin is tested with WordPress 2.5, 2.6, 2.7 and 2.8.
-Version: 1.2.0b2
+Version: 1.2.0
 Author: James Pearce & friends
 Author URI: http://www.assembla.com/spaces/wordpress-mobile-pack
 */

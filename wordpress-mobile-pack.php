@@ -7,7 +7,7 @@ $URL$
 
 Copyright (c) 2009 James Pearce & friends, portions mTLD Top Level Domain Limited, ribot, Forum Nokia
 
-Online support: http://mobiforge.com/forum/dotmobi/wordpress
+Online support: http://wordpress.org/extend/plugins/wordpress-mobile-pack/
 
 This file is part of the WordPress Mobile Pack.
 
@@ -28,13 +28,13 @@ specific language governing permissions and limitations under the License.
 /*
 Plugin Name: WordPress Mobile Pack
 Plugin URI: http://wordpress.org/extend/plugins/wordpress-mobile-pack/
-Description: <strong>The WordPress Mobile Pack is a complete toolkit to help mobilize your WordPress site and blog.</strong> It includes a <a href='themes.php?page=wpmp_switcher_admin'>mobile switcher</a>, <a href='themes.php?page=wpmp_theme_widget_admin'>filtered widgets</a>, and content adaptation for mobile device characteristics. Activating this plugin will also install a selection of mobile <a href='themes.php?page=wpmp_theme_theme_admin'>themes</a> by <a href='http://ribot.co.uk'>ribot</a>, a top UK mobile design team, and Forum Nokia. These adapt to different families of devices, such as Nokia and WebKit browsers (including Android, iPhone and Palm). If <a href='options-general.php?page=wpmp_mpexo_admin'>enabled</a>, your site will be listed on <a href='http://www.mpexo.com'>mpexo</a>, a directory of mobile-friendly blogs. Also check out <a href='http://mobiforge.com/wordpress-mobile-pack' target='_blank'>the documentation</a> and <a href='http://mobiforge.com/forum/dotmobi/wordpress' target='_blank'>the forums</a>. If you like the plugin, please rate us on the <a href='http://wordpress.org/extend/plugins/wordpress-mobile-pack/'>WordPress directory</a>. And if you don't, let us know how we can improve it!</a>
-Version: 1.2.0b2
+Description: <strong>The WordPress Mobile Pack is a complete toolkit to help mobilize your WordPress site and blog.</strong> It includes a <a href='themes.php?page=wpmp_switcher_admin'>mobile switcher</a>, <a href='themes.php?page=wpmp_theme_widget_admin'>filtered widgets</a>, and content adaptation for mobile device characteristics. Activating this plugin will also install a selection of mobile <a href='themes.php?page=wpmp_theme_theme_admin'>themes</a> by <a href='http://ribot.co.uk'>ribot</a>, a top UK mobile design team, and Forum Nokia. These adapt to different families of devices, such as Nokia and WebKit browsers (including Android, iPhone and Palm). If <a href='options-general.php?page=wpmp_mpexo_admin'>enabled</a>, your site will be listed on <a href='http://www.mpexo.com'>mpexo</a>, a directory of mobile-friendly blogs. Also check out <a href='http://wordpress.org/extend/plugins/wordpress-mobile-pack/' target='_blank'>the documentation</a> and <a href='http://www.wordpress.org/tags/wordpress-mobile-pack' target='_blank'>the forums</a>. If you like the plugin, please rate us on the <a href='http://wordpress.org/extend/plugins/wordpress-mobile-pack/'>WordPress directory</a>. And if you don't, let us know how we can improve it!
+Version: 1.2.0
 Author: James Pearce & friends
 Author URI: http://www.assembla.com/spaces/wordpress-mobile-pack
 */
 
-define('WPMP_VERSION', '1.2.0b2');
+define('WPMP_VERSION', '1.2.0');
 
 // you could disable sub-plugins here
 global $wpmp_plugins;
@@ -44,6 +44,7 @@ $wpmp_plugins = array(
   "wpmp_ads",
   "wpmp_deviceatlas",
   "wpmp_transcoder",
+  "wpmp_analytics",
   "wpmp_mpexo",
 );
 
@@ -89,12 +90,14 @@ function wordpress_mobile_pack_plugin_action_links($action_links, $plugin_file, 
       "<a href='themes.php?page=wpmp_switcher_admin'>Switcher</a>",
       "<a href='themes.php?page=wpmp_theme_theme_admin'>Themes</a> ",
       "<br /><a href='themes.php?page=wpmp_theme_widget_admin'>Widgets</a>",
-      "<a href='options-general.php?page=wpmp_mpexo_admin'>mpexo</a>",
+      "<a href='edit.php?page=wpmp_analytics_admin'>Analytics</a> ",
+      "<br /><a href='options-general.php?page=wpmp_mpexo_admin'>mpexo</a>",
     );
     foreach($action_links as $action_link) {
       if (stripos($action_link, '>Edit<')===false) {
         if (stripos($action_link, '>Deactivate<')!==false) {
-          $new_action_links[] = '<br />' . $action_link;
+          #$new_action_links[] = '<br />' . $action_link;
+          $new_action_links[] = $action_link;
         } else {
           $new_action_links[] = $action_link;
         }
@@ -217,10 +220,10 @@ function wordpress_mobile_pack_directory_copy_themes($source_dir, $destination_d
                     __("(<strong>NB</strong>: take precautions if you have manually edited any existing Mobile Pack theme files - your changes will now need to be re-applied.)", 'wpmp') .
                     "</p><br /><form method='post' action='" . $_SERVER['REQUEST_URI'] . "'>".
                     "<input type='submit' name='wordpress_mobile_pack_force_copy_theme' value='" .
-                    __('Yes please - I&apos;ll upgrade all my themes', 'wpmp') .
+                    __('Yes, please - upgrade all my themes for me (recommended)', 'wpmp') .
                     "' />&nbsp;&nbsp;".
                     "<input type='submit' value='" .
-                    __('No thanks - I&apos;ll leave my themes as they are', 'wpmp') .
+                    __('No, thanks - leave my themes as they are', 'wpmp') .
                     "' />".
                     "</form><p>");
       continue;

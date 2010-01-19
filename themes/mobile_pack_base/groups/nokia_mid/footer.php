@@ -7,7 +7,7 @@ $URL: http://plugins.svn.wordpress.org/wordpress-mobile-pack/trunk/themes/mobile
 
 Copyright (c) 2009 James Pearce & friends, portions mTLD Top Level Domain Limited, ribot, Forum Nokia
 
-Online support: http://mobiforge.com/forum/dotmobi/wordpress
+Online support: http://wordpress.org/extend/plugins/wordpress-mobile-pack/
 
 This file is part of the WordPress Mobile Pack.
 
@@ -27,4 +27,4 @@ specific language governing permissions and limitations under the License.
 
 ?>
 
-<p><?php printf(__("Powered by the <a%s>WordPress Mobile Pack</a>", 'wpmp'), ' href="http://mobiforge.mobi/wordpress-mobile-pack"');?> | <?php printf(__("Theme designed by <a%s>Forum Nokia</a>", 'wpmp'), ' href="http://forumnokia.mobi"'); ?></p>
+<p><?php printf(__("Powered by the <a%s>WordPress Mobile Pack</a>", 'wpmp'), ' href="http://wordpress.org/extend/plugins/wordpress-mobile-pack/"');?> | <?php printf(__("Theme designed by <a%s>Forum Nokia</a>", 'wpmp'), ' href="http://forumnokia.mobi"'); ?></p>

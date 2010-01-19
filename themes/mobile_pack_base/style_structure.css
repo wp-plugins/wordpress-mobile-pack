@@ -47,6 +47,7 @@ img {
   padding:0.2em;
 }
 
+
 a, a:hover, a:visited {
   text-decoration:underline
 }
@@ -226,3 +227,13 @@ ol.commentlist li {
   width:auto;
   padding:0.2em;
 }
+
+#wpmp_analytics {
+	display:none!important;
+}
+#wpmp_analytics img {
+	display:none!important;
+  padding:0em!important;
+	margin:0em!important;
+}
+

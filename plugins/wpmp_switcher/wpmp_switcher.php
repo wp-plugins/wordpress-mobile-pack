@@ -7,7 +7,7 @@ $URL$
 
 Copyright (c) 2009 James Pearce & friends, portions mTLD Top Level Domain Limited, ribot, Forum Nokia
 
-Online support: http://mobiforge.com/forum/dotmobi/wordpress
+Online support: http://wordpress.org/extend/plugins/wordpress-mobile-pack/
 
 This file is part of the WordPress Mobile Pack.
 
@@ -29,7 +29,7 @@ specific language governing permissions and limitations under the License.
 Plugin Name: Mobile Switcher
 Plugin URI: http://wordpress.org/extend/plugins/wordpress-mobile-pack/
 Description: Detects a mobile user accessing your site and switches theme accordingly. This plugin is tested with WordPress 2.5, 2.6, 2.7 and 2.8.
-Version: 1.2.0b2
+Version: 1.2.0
 Author: James Pearce & friends
 Author URI: http://www.assembla.com/spaces/wordpress-mobile-pack
 */
@@ -188,10 +188,6 @@ function wpmp_switcher_admin_menu() {
 function wpmp_switcher_admin() {
   if(sizeof($_POST)>0) {
     print '<div id="message" class="updated fade"><p><strong>' . wpmp_switcher_options_write() . '</strong></p></div>';
-    if(isset($_POST['wpmp_switcher_hit_reset']) && $_POST['wpmp_switcher_hit_reset']=='true') {
-      wpmp_switcher_hit_reset();
-      print '<div id="message" class="updated fade"><p><strong>' . __('Hit counter reset.', 'wpmp') . '</strong></p></div>';
-    }
   }
   include_once('wpmp_switcher_admin.php');
 }
@@ -617,7 +613,6 @@ function wpmp_switcher_option($option, $onchange='') {
       );
 
     case 'wpmp_switcher_footer_links':
-    case 'wpmp_switcher_hit_reset':
       return wpmp_switcher_option_checkbox(
         $option,
         $onchange

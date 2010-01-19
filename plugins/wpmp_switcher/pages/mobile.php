@@ -7,7 +7,7 @@ $URL$
 
 Copyright (c) 2009 James Pearce & friends, portions mTLD Top Level Domain Limited, ribot, Forum Nokia
 
-Online support: http://mobiforge.com/forum/dotmobi/wordpress
+Online support: http://wordpress.org/extend/plugins/wordpress-mobile-pack/
 
 This file is part of the WordPress Mobile Pack.
 
@@ -64,7 +64,7 @@ function wpmp_ms_mobile_top($title, $menu=array()) {
     <link rel="pingback" href="<?php bloginfo('pingback_url'); ?>" />
     <?php wp_head(); ?>
   </head>
-  <body class='<?php print wpmp_theme_group(); ?>'>
+  <body class="<?php if($wpmp_theme_group = wpmp_theme_group()) {print $wpmp_theme_group;} else {print 'base';} ?>">
     <div id="wrap">
       <div id="header" style='height:auto'>
         <p><a href="<?php echo get_option('home'); ?>/"><strong><?php bloginfo('name'); ?></strong></a></p>
@@ -113,7 +113,7 @@ function wpmp_ms_mobile_top($title, $menu=array()) {
             include_once($wpmp_include);
           } else {
             ?>
-              <p><?php printf(__("Powered by the <a%s>WordPress Mobile Pack</a>", 'wpmp'), ' href="http://mobiforge.mobi/wordpress-mobile-pack"');?> | <?php printf(__("Theme designed by <a%s>ribot</a>", 'wpmp'), ' href="http://ribot.co.uk"'); ?></p>
+              <p><?php printf(__("Powered by the <a%s>WordPress Mobile Pack</a>", 'wpmp'), ' href="http://wordpress.org/extend/plugins/wordpress-mobile-pack/"');?> | <?php printf(__("Theme designed by <a%s>ribot</a>", 'wpmp'), ' href="http://ribot.co.uk"'); ?></p>
             <?php
           }
         ?>

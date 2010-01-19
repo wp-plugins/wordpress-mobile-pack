@@ -7,7 +7,7 @@ $URL$
 
 Copyright (c) 2009 James Pearce & friends, portions mTLD Top Level Domain Limited, ribot, Forum Nokia
 
-Online support: http://mobiforge.com/forum/dotmobi/wordpress
+Online support: http://wordpress.org/extend/plugins/wordpress-mobile-pack/
 
 This file is part of the WordPress Mobile Pack.
 
@@ -166,7 +166,7 @@ specific language governing permissions and limitations under the License.
     $safe_content = str_replace("</textarea", "</div", $safe_content);
     $safe_content = str_replace("</TEXTAREA", "</div", $safe_content);
     print '<textarea name="post_content" id="post_content" rows="6">' . $safe_content . '</textarea></p>';
-    print '<input name="submit" type="submit" id="submit" value="' . __('Apply', 'wpmp') . '" />';
+    print '<input class="button" name="submit" type="submit" id="submit" value="' . __('Apply', 'wpmp') . '" />';
     print '<p>' . __('You can use HTML tags to format your post. Use &lt;!--more--&gt; to indicate the end of the teaser.', 'wpmp') . '</p>';
 
     print '</form>';
@@ -257,7 +257,7 @@ specific language governing permissions and limitations under the License.
       print "/> $title<br />";
     }
     print '</select></p>';
-    print '<input name="submit" type="submit" id="submit" value="' . __('Apply', 'wpmp') . '" />';
+    print '<input class="button" name="submit" type="submit" id="submit" value="' . __('Apply', 'wpmp') . '" />';
     print '</form>';
     print "<p>" . __("NB: Changing the switcher mode may return you to the desktop version of the admin pages. Be cautious if you are using a mobile device.", 'wpmp') . "</p>";
   }
@@ -363,7 +363,7 @@ specific language governing permissions and limitations under the License.
     print '<p><label for="title">' . wpmp_msma_option_name($option->option_name) . ':</label><br />';
     print '<input type="text" name="option_value" value="' . attribute_escape($value) . '" id="title" /></p>';
 
-    print '<input name="submit" type="submit" id="submit" value="' . __('Apply', 'wpmp') . '" />';
+    print '<input class="button" name="submit" type="submit" id="submit" value="' . __('Apply', 'wpmp') . '" />';
     if($value==='0' or $value==='1') {
       print '<p>' . __('For options that are usually a checkbox, use 1 for \'on\', and 0 for \'off\'', 'wpmp') . '</p>';
     }
