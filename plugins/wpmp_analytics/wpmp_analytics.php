@@ -34,8 +34,20 @@ Author: James Pearce & friends
 Author URI: http://www.assembla.com/spaces/wordpress-mobile-pack
 */
 
+add_action('init', 'wpmp_analytics_init');
 add_action('admin_menu', 'wpmp_analytics_admin_menu');
 add_action('wp_footer', 'wpmp_analytics_wp_footer');
+
+function wpmp_analytics_init() {
+  if(($provider_id=get_option('wpmp_analytics_provider_id'))=='') {
+    return;
+  }
+  switch (get_option('wpmp_analytics_provider')) {
+    case 'percent':
+      include_once('lib/percent_mobile.php');
+      break;
+  }
+}
 
 function wpmp_analytics_activate() {
   foreach(array(
@@ -55,7 +67,6 @@ function wpmp_analytics_wp_footer() {
   print "<span id='wpmp_analytics'>";
   switch (get_option('wpmp_analytics_provider')) {
     case 'percent':
-      include_once('lib/percent_mobile.php');
       percent_mobile_track($provider_id);
       break;
   }

@@ -35,7 +35,7 @@ Features include:
 
 *  **Mobile analytics**, allowing you to track your mobile traffic with [PercentMobile](http://percentmobile.com), and view simple local traffic tallies.
 
-*  **A barcode widget** which adds a barcode to your desktop site so that devices with a suitable reader can quickly bookmark your mobile site, or deep link within it
+*  **A barcode widget** which adds a barcode to your desktop site so that devices with a suitable reader can quickly bookmark your mobile site, or deep link within it.
 
 *  **Automatic listing** on <a href='http://www.mpexo.com/blogs'>mpexo</a>, making it easier for users to discover that you have a mobile-friendly site. (NB: you can enable the mpexo listing in the 'Settings' dashboard menu.)
 
@@ -146,7 +146,7 @@ Yes, all images, once rescaled, are cached locally.
 
 = Where is the cache directory? =
 From your root directory of WordPress, go to:
-*wp-content/plugins/wordpress-mobile-pack/plugins/wpmp_transcoder/c*
+`wp-content/plugins/wordpress-mobile-pack/plugins/wpmp_transcoder/c`
 
 = How do I place mobile ads on my site? =
 The plugin provides a widget to display either Google AdSense or AdMob mobile ads. Enable it for the sidebar in the 'Widgets' menu, provide your publisher ID, and then ensure it is also enabled as in the 'Mobile Widgets' list.
