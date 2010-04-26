@@ -42,6 +42,18 @@ function wpmp_transcoder_activate() {
 
 function wpmp_transcoder_remove_media(&$content) {
 
+	// in some cases we might know what the tag wants to do, so we can replace it
+	// with something good like a link to the mobile site of YouTube no need to
+	// replace vimeo as the embedding code already comes with a nice link in case
+	// the object is not supported or removed
+  $patterns_to_replace = array(
+    '/<object.*movie\"\ value=\"http\:\/\/(www\.|m\.)?youtube\.com\/(watch\?v=|v\/)(\w+).*\">.*\/object>/i',
+  );
+  $replacements = array(
+    '<a href="http://m.youtube.com/#/watch?v=${3}">YouTube video</a>',  // replace the youtube embedding object with a link to the mobile page
+  );
+  $content = preg_replace($patterns_to_replace, $replacements, $content);
+
   $remove_tags = array(
     "script"=>true,
     "object"=>false,
