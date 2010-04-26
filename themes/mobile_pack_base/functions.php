@@ -36,7 +36,8 @@ function wpmp_theme_group() {
   global $wpmp_theme_group;
   if(!isset($wpmp_theme_group)) {
     if (get_option('wpmp_theme_nokia_templates')=='true') {
-      include_once('group_detection.php');
+      $wp_mobile_pack_dir = WP_CONTENT_DIR . '/plugins/wordpress-mobile-pack';
+      include_once($wp_mobile_pack_dir . '/themes/mobile_pack_base/group_detection.php');
       $wpmp_theme_group = group_detection();
     } else {
       $wpmp_theme_group = '';

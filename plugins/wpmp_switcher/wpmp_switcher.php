@@ -56,6 +56,12 @@ add_filter('template', 'wpmp_switcher_template');
 add_filter('option_home', 'wpmp_switcher_option_home_siteurl');
 add_filter('option_siteurl', 'wpmp_switcher_option_home_siteurl');
 
+if (function_exists('add_cacheaction')) {
+  // WP Super Cache integration
+  if ( isset( $GLOBALS[ 'wp_super_cache_debug' ] ) && $GLOBALS[ 'wp_super_cache_debug' ] ) wp_cache_debug( "Adding hook for wpmp mobile detection", 5 );
+  add_cacheaction( 'wp_cache_get_cookies_values', 'wpmp_switcher_wp_cache_check_mobile' );
+}
+
 function wpmp_switcher_init() {
   wp_register_sidebar_widget('wpmp_switcher_widget_link', __('Mobile Switcher Link', 'wpmp'), 'wpmp_switcher_widget_link',
     array('classname' => 'wpmp_switcher_widget_link', 'description' => __( "A link that allows users to toggle between desktop and mobile sites (when a switcher mode is enabled)", 'wpmp'))
@@ -674,6 +680,25 @@ function wpmp_switcher_option_themes($option) {
 function wpmp_switcher_desktop_theme() {
   $info = current_theme_info();
   return $info->title;
+}
+
+function wpmp_switcher_wp_cache_check_mobile( $cache_key ) {
+  if (!isset($_SERVER["HTTP_USER_AGENT"])) {
+    return $cache_key;
+  }
+
+  $is_mobile = wpmp_switcher_is_mobile_browser();
+  $mobile_group = '';
+  $wp_mobile_pack_dir = WP_CONTENT_DIR . '/plugins/wordpress-mobile-pack';
+  if ( $is_mobile && is_file($wp_mobile_pack_dir . '/themes/mobile_pack_base/group_detection.php') ) {
+    include_once($wp_mobile_pack_dir . '/themes/mobile_pack_base/group_detection.php');
+    $mobile_group = group_detection();
+  }
+  if ( isset( $GLOBALS[ 'wp_super_cache_debug' ] ) && $GLOBALS[ 'wp_super_cache_debug' ] ) wp_cache_debug( "Lite detection says is_mobile: {$is_mobile} and group: {$mobile_group} for User-Agent: " . $_SERVER[ "HTTP_USER_AGENT" ], 5 );
+
+  $new_cache_key = $cache_key . $is_mobile . $mobile_group;
+  // In the worst case we return the cache_key as it came in
+  return $new_cache_key;
 }
 
 ?>
