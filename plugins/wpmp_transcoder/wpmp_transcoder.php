@@ -222,6 +222,7 @@ function wpmp_transcoder_replace_cgi($key, $new_value) {
 function wpmp_transcoder_weigh_paragraphs($content) {
   $contiguous_tags = array(
     "ul"=>false,
+    "ol"=>false,
     "div"=>false,
     "code"=>false,
   );
