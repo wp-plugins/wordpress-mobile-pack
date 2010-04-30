@@ -117,7 +117,7 @@ function wpmp_theme_the_content($content) {
     $suffix = true;
   }
   if ($suffix) {
-    $content .= '<br /><a href="'. get_permalink() . '#more-$id" class="more-link">' . __('Read more', 'wpmp') . "</a>";
+    $content .= '<br /><a href="'. get_permalink() . '#more-'.$id.'" class="more-link">' . __('Read more', 'wpmp') . "</a>";
   }
   return $content;
 }
