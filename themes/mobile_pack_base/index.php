@@ -159,9 +159,9 @@ function wpmp_theme_post($single = false) {
     print '<p class="metadata">'. get_the_time('F jS, Y') . ' by ' . get_the_author() . '</p>';
   }
   if ($single || ($summary!='none' && ($summary!='firstteaser' || $wpmp_summary_first))) {
-    print '<p class="entry">';
+    print '<div class="entry">';
     the_content(__('Read more', 'wpmp'));
-    print '</p>';
+    print '</div>';
     $wpmp_summary_first = false;
   }
   if ($single || $metadata) {
