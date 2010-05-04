@@ -168,11 +168,8 @@ function wpmp_theme_post($single = false) {
     print '<p class="metadata">' . __('Posted in ', 'wpmp');
     the_category(', ');
     edit_post_link('Edit', ' | ', '');
-    // Andrea: is $comments_link even used anymore?
-	 if (1 || $comments_link) {
-      print ' | ';
-      comments_popup_link('No comments', '1 comment', '% comments');
-    }
+    print ' | ';
+    comments_popup_link('No comments', '1 comment', '% comments');
     print '</p>';
   }
 }
