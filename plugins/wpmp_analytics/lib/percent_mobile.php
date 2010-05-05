@@ -9,7 +9,7 @@ define("PERCENT_MOBILE_VISIT_DURATION", 60*60);
 
 
 //COMMENT FOR USER:IMPORTANT: change none of code below
-define("PERCENT_MOBILE_VERSION", "php_102709");
+define("PERCENT_MOBILE_VERSION", "php_wp_102709");
 define("PERCENT_MOBILE_COOKIE_NAME", "_percent_mobile_c");
 
 
