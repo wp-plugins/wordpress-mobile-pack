@@ -2,7 +2,7 @@
 Contributors: jamesgpearce, andreatrasatti, edent
 Tags: mobile, mobile web, mobile internet, wireless, pda, iphone, android, webkit, wap, dotMobi, theme, blackberry, admob, mobile adsense, qr-code, device, switcher, cellular, palm, nokia
 Requires at least: 2.5
-Tested up to: 2.9.1
+Tested up to: 2.9.2
 Stable tag: 1.2.0
 
 The WordPress Mobile Pack is a complete toolkit to help mobilize your WordPress site. It has a mobile switcher, themes, widgets, and mobile admin panel.
@@ -40,7 +40,9 @@ Features include:
 *  **Automatic listing** on <a href='http://www.mpexo.com/blogs'>mpexo</a>, making it easier for users to discover that you have a mobile-friendly site. (NB: you can enable the mpexo listing in the 'Settings' dashboard menu.)
 
 
-**NEW in Version 1.20**: The Mobile Pack now displays advanced themes for Nokia and WebKit devices. There are three grades of theme designed for low-, mid-, and high-end Nokia devices, the latter of which also provides full support for WebKit browsers, including those on Android, iPhone and Palm devices. The development of this feature has been kindly sponsored by Forum Nokia.
+**NEW in Version 1.2.1**: Native integration with WP Super Cache. Read more at []()
+
+**NEW in Version 1.2.0**: The Mobile Pack now displays advanced themes for Nokia and WebKit devices. There are three grades of theme designed for low-, mid-, and high-end Nokia devices, the latter of which also provides full support for WebKit browsers, including those on Android, iPhone and Palm devices. The development of this feature has been kindly sponsored by Forum Nokia.
 
 
 We enjoy writing and maintaining this plugin. If you like it too, please rate us. But if you don't, let us know how we can improve it.
@@ -164,6 +166,12 @@ We run the development of the plugin over at [Assembla](http://www.assembla.com/
 
 
 == Changelog ==
+
+= 1.2.1 =
+* native WP Super Cache integration (read more: )
+* fixed minor XHTML issues
+* improved management of embedded YouTube and Vimeo videos
+* minor change to PercentMobile code
 
 = 1.2.0 =
 * Advanced themes for Nokia and WebKit devices enabled by default. (The development of this feature has been kindly sponsored by Forum Nokia.)
@@ -346,6 +354,6 @@ Site owners can also indicate whether they want the widget to show some instruct
 == Known issues ==
 
 * On a WordPress MU installation, it is not possible to configure the favicon for each site independently within the single mobile theme. You are advised to create multiple derived themes from the mobile base theme, and configure the favicons separately for each.
-* This plugin may be incompatible with caching plugins such as WP_SuperCache, depending on the switching mode used. This will soon be addressed.
 * Note that if you use a desktop theme that provides unusual, additional page templates, the default mobile theme will not have the corresponding logic. The mobile theme will fall back to showing a default posting list. However, you are able to create new mobile templates just as for the desktop theme. (Copy archives.php as a simple example of an auxiliary page template.)
 * If you are using a desktop domain and a mobile domain, it is not currently possible to host them on different sub-directory locations (eg `http://mysite.com/blog/` but `http://mysite.mobi/`). Both versions of the site must either be at the top-level of the domain or in the same sub-directory.
+* W3 Total Cache does not play well with mobile plugins, you can read how to make it work at [Getting W3 Total cache to work with WordPress Mobile Pack](http://blog.trasatti.it/2010/04/getting-w3-total-cache-to-work-with.html) until a new release comes (very soon!)

@@ -29,7 +29,7 @@ specific language governing permissions and limitations under the License.
 Plugin Name: Mobile Analytics
 Plugin URI: http://wordpress.org/extend/plugins/wordpress-mobile-pack/
 Description: Provides simple local mobile analytics and hooks to external providers
-Version: 1.2.0
+Version: 1.2.1
 Author: James Pearce & friends
 Author URI: http://www.assembla.com/spaces/wordpress-mobile-pack
 */
