@@ -3,7 +3,7 @@ Contributors: jamesgpearce, andreatrasatti, edent
 Tags: mobile, mobile web, mobile internet, wireless, pda, iphone, android, webkit, wap, dotMobi, theme, blackberry, admob, mobile adsense, qr-code, device, switcher, cellular, palm, nokia
 Requires at least: 2.5
 Tested up to: 2.9.2
-Stable tag: 1.2.0
+Stable tag: 1.2.1
 
 The WordPress Mobile Pack is a complete toolkit to help mobilize your WordPress site. It has a mobile switcher, themes, widgets, and mobile admin panel.
 
@@ -40,7 +40,7 @@ Features include:
 *  **Automatic listing** on <a href='http://www.mpexo.com/blogs'>mpexo</a>, making it easier for users to discover that you have a mobile-friendly site. (NB: you can enable the mpexo listing in the 'Settings' dashboard menu.)
 
 
-**NEW in Version 1.2.1**: Native integration with WP Super Cache. Read more at []()
+**NEW in Version 1.2.1**: Native integration with WP Super Cache. Read more at [Go mobile with WP Super Cache and the Mobile Pack](http://blog.trasatti.it/2010/05/go-mobile-with-wp-super-cache-and.html)
 
 **NEW in Version 1.2.0**: The Mobile Pack now displays advanced themes for Nokia and WebKit devices. There are three grades of theme designed for low-, mid-, and high-end Nokia devices, the latter of which also provides full support for WebKit browsers, including those on Android, iPhone and Palm devices. The development of this feature has been kindly sponsored by Forum Nokia.
 
@@ -168,7 +168,7 @@ We run the development of the plugin over at [Assembla](http://www.assembla.com/
 == Changelog ==
 
 = 1.2.1 =
-* native WP Super Cache integration (read more: )
+* native WP Super Cache integration - read more: [Go mobile with WP Super Cache and the Mobile Pack](http://blog.trasatti.it/2010/05/go-mobile-with-wp-super-cache-and.html)
 * fixed minor XHTML issues
 * improved management of embedded YouTube and Vimeo videos
 * minor change to PercentMobile code
