@@ -167,6 +167,7 @@ We run the development of the plugin over at [Assembla](http://www.assembla.com/
 = Is it compatible with WP Super Cache? =
 
 YES! You have to make sure your settings are correct though. Follow these simple steps:
+
 1. Install both plugins
 1. Activate WP Super Cache
 1. Go to the WP Super Cache settings page
