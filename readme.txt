@@ -164,6 +164,16 @@ You are welcome to comment about the pack, suggest new features and ask for help
 
 We run the development of the plugin over at [Assembla](http://www.assembla.com/spaces/wordpress-mobile-pack). You can track issues and development progress there. Feel free to volunteer too!
 
+= Is it compatible with WP Super Cache? =
+
+YES! You have to make sure your settings are correct though. Follow these simple steps:
+1. Install both plugins
+1. Activate WP Super Cache
+1. Go to the WP Super Cache settings page
+1. Check the radio button "ON" to activate the cache
+1. Click on "Update status"
+1. Scroll down and click on the "Update Mod_Rewrite Rules" button
+1. Go back to the plugins page, activate WPMP and configure it
 
 == Changelog ==
 
