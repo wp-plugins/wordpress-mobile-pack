@@ -59,6 +59,21 @@ function wpmp_theme_base_style() {
 }
 
 function wpmp_theme_init_in_use() {
+  global $wp_registered_sidebars;
+  if(sizeof($wp_registered_sidebars)==0) {
+    foreach(get_option('sidebars_widgets') as $index=>$widgets) {
+      if ($index!='wp_inactive_widgets') {
+        register_sidebar(array(
+          'id' => $index,
+          'before_widget' => '<li>',
+          'after_widget' => '</li>',
+          'before_title' => '<h2>',
+          'after_title' => '</h2>',
+        ));
+      }
+    }
+  }
+
   global $wp_registered_widgets;
   foreach ($wp_registered_widgets as $index=>$widget) {
     if(function_exists($function = 'wpmp_theme_widget_' . strtolower(str_replace(' ', '_', $widget['name'])))) {

@@ -36,7 +36,11 @@ if (file_exists($wpmp_include = wpmp_theme_group_file('sidebar.php'))) {
 print '<div id="sidebar">';
 ob_start();
 ob_start();
-dynamic_sidebar();
+foreach(get_option('sidebars_widgets') as $index=>$widgets) {
+  if ($index!='wp_inactive_widgets') {
+    dynamic_sidebar($index);
+  }
+}
 $list = ob_get_contents();
 ob_end_clean();
 $list = ob_get_contents() . $list; //ob stack funny stuff in old widgets

@@ -47,15 +47,6 @@ function wpmp_theme_init() {
   if(get_option('wpmp_theme_post_summary')=='whole') { //deprecated
     update_option('wpmp_theme_post_summary', 'teaser');
   }
-  global $wp_registered_sidebars;
-  if(sizeof($wp_registered_sidebars)==0) {
-    register_sidebar(array(
-      'before_widget' => '<li>',
-      'after_widget' => '</li>',
-      'before_title' => '<h2>',
-      'after_title' => '</h2>',
-    ));
-  }
 }
 
 
