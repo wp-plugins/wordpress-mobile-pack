@@ -13,7 +13,7 @@ The WordPress Mobile Pack is a complete toolkit to help mobilize your WordPress 
 
 It includes a mobile switcher to select themes based on the type of user that is visiting the site, a selection of mobile themes, extra widgets, device adaptation and a mobile administration panel to allow users to edit the site or write new posts when out and about.
 
-The pack has been tested on WordPress 2.5.1, 2.6.5, 2.7.1, 2.8.6, and 2.9.1. It has been tested on WordPress MU 2.6 in the 'plugins', rather than 'mu_plugins', mode. PHP 5.x is also highly recommended, although the plugin also works with PHP 4.3.
+The pack has been tested on WordPress 2.5.1, 2.6.5, 2.7.1, 2.8.6, 2.9.2, and 3.0RC2. It has been tested on WordPress MU 2.6 in the 'plugins', rather than 'mu_plugins', mode. PHP 5.x is also highly recommended, although the plugin also works with PHP 4.3.
 
 Features include:
 
@@ -39,6 +39,8 @@ Features include:
 
 *  **Automatic listing** on <a href='http://www.mpexo.com/blogs'>mpexo</a>, making it easier for users to discover that you have a mobile-friendly site. (NB: you can enable the mpexo listing in the 'Settings' dashboard menu.)
 
+
+**NEW in Version 1.2.2**: First support for WordPress v3.0 (RC2)
 
 **NEW in Version 1.2.1**: Native integration with WP Super Cache. Read more at [Go mobile with WP Super Cache and the Mobile Pack](http://blog.trasatti.it/2010/05/go-mobile-with-wp-super-cache-and.html)
 
@@ -178,11 +180,16 @@ YES! You have to make sure your settings are correct though. Follow these simple
 
 == Changelog ==
 
+= 1.2.2 =
+* Support for WordPress v3.0 RC2: custom menus and sidebars
+* Primary custom menu will appear on mobile theme if it is enabled for the desktop theme
+* Mobile widgets can be enabled from multiple sidebar locations (as in the default WP3.0 theme, twentyten)
+
 = 1.2.1 =
-* native WP Super Cache integration - read more: [Go mobile with WP Super Cache and the Mobile Pack](http://blog.trasatti.it/2010/05/go-mobile-with-wp-super-cache-and.html)
-* fixed minor XHTML issues
-* improved management of embedded YouTube and Vimeo videos
-* minor change to PercentMobile code
+* Native WP Super Cache integration - read more: [Go mobile with WP Super Cache and the Mobile Pack](http://blog.trasatti.it/2010/05/go-mobile-with-wp-super-cache-and.html)
+* Fixed minor XHTML issues
+* Improved management of embedded YouTube and Vimeo videos
+* Minor change to PercentMobile code
 
 = 1.2.0 =
 * Advanced themes for Nokia and WebKit devices enabled by default. (The development of this feature has been kindly sponsored by Forum Nokia.)
