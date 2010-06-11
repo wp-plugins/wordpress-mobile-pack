@@ -60,10 +60,22 @@ if (file_exists($wpmp_include = wpmp_theme_group_file('header.php'))) {
       <p><?php bloginfo('description'); ?></p>
     </div>
     <div id="menu">
-      <ul class="breadcrumbs">
-        <?php if (get_option('wpmp_theme_home_link_in_menu')=='true') {?>
-          <li class="<?php if (is_home()) { ?>current_page_item<?php } else { ?>page_item<?php } ?>"><a href="<?php bloginfo('url'); ?>/" title="<?php __('Home', 'wpmp'); ?>"><?php __('Home', 'wpmp'); ?></a></li>
-        <?php } ?>
-        <?php wp_list_pages('title_li=&depth=1'); ?>
-      </ul>
+      <?php
+        global $wpmp_theme_menu_location;
+        if (function_exists('wp_nav_menu') && $wpmp_theme_menu_location) {
+          wp_nav_menu(array(
+            'theme_location'=>$wpmp_theme_menu_location,
+            'menu_class'=>'breadcrumbs'
+          ));
+        } else {
+          ?>
+            <ul class="breadcrumbs">
+              <?php if (get_option('wpmp_theme_home_link_in_menu')=='true') {?>
+                <li class="<?php if (is_home()) { ?>current_page_item<?php } else { ?>page_item<?php } ?>"><a href="<?php bloginfo('url'); ?>/" title="<?php __('Home', 'wpmp'); ?>"><?php __('Home', 'wpmp'); ?></a></li>
+              <?php } ?>
+              <?php wp_list_pages('title_li=&depth=1'); ?>
+            </ul>
+          <?php
+        }
+      ?>
     </div>
