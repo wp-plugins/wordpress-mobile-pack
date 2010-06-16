@@ -102,7 +102,7 @@ function wpmp_barcode_widget($args) {
   print "<img width='$size' height='$size' src='$url' alt='QR Code - scan to visit our mobile site' />";
   if(get_option('wpmp_barcode_help')=='true') {
     print "<p>";
-    printf (__('This is a 2D-barcode containing the address of our <a%s>mobile site</a>.', 'wpmp'), "href='$link' target='_blank'");
+    printf (__('This is a 2D-barcode containing the address of our <a %s>mobile site</a>.', 'wpmp'), "href='$link'");
     print __('If your mobile has a barcode reader, simply snap this bar code with the camera and launch the site.', 'wpmp');
     print "</p>";
   }
