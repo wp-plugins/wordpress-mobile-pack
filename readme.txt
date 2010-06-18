@@ -2,7 +2,7 @@
 Contributors: jamesgpearce, andreatrasatti, edent
 Tags: mobile, mobile web, mobile internet, wireless, pda, iphone, android, webkit, wap, dotMobi, theme, blackberry, admob, mobile adsense, qr-code, device, switcher, cellular, palm, nokia
 Requires at least: 2.5
-Tested up to: 2.9.2
+Tested up to: 3.0
 Stable tag: 1.2.2
 
 The WordPress Mobile Pack is a complete toolkit to help mobilize your WordPress site. It has a mobile switcher, themes, widgets, and mobile admin panel.
@@ -13,7 +13,7 @@ The WordPress Mobile Pack is a complete toolkit to help mobilize your WordPress 
 
 It includes a mobile switcher to select themes based on the type of user that is visiting the site, a selection of mobile themes, extra widgets, device adaptation and a mobile administration panel to allow users to edit the site or write new posts when out and about.
 
-The pack has been tested on WordPress 2.5.1, 2.6.5, 2.7.1, 2.8.6, 2.9.2, and 3.0RC2. It has been tested on WordPress MU 2.6 in the 'plugins', rather than 'mu_plugins', mode. PHP 5.x is also highly recommended, although the plugin also works with PHP 4.3.
+The pack has been tested on WordPress 2.5.1, 2.6.5, 2.7.1, 2.8.6, 2.9.2, and 3.0. It has been tested on WordPress MU 2.6 in the 'plugins', rather than 'mu_plugins', mode. PHP 5.x is also highly recommended, although the plugin also works with PHP 4.3.
 
 Features include:
 
@@ -40,7 +40,7 @@ Features include:
 *  **Automatic listing** on <a href='http://www.mpexo.com/blogs'>mpexo</a>, making it easier for users to discover that you have a mobile-friendly site. (NB: you can enable the mpexo listing in the 'Settings' dashboard menu.)
 
 
-**NEW in Version 1.2.2**: First support for WordPress v3.0 (RC2)
+**NEW in Version 1.2.2**: First support for WordPress v3.0 (RC2 and later)
 
 **NEW in Version 1.2.1**: Native integration with WP Super Cache. Read more at [Go mobile with WP Super Cache and the Mobile Pack](http://blog.trasatti.it/2010/05/go-mobile-with-wp-super-cache-and.html)
 
