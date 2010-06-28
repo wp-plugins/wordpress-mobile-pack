@@ -9,7 +9,7 @@ define("PERCENT_MOBILE_VISIT_DURATION", 60*60);
 
 
 //COMMENT FOR USER:IMPORTANT: change none of code below
-define("PERCENT_MOBILE_VERSION", "php_wp_102709");
+define("PERCENT_MOBILE_VERSION", "php_wp_062710");
 define("PERCENT_MOBILE_COOKIE_NAME", "_percent_mobile_c");
 
 
@@ -43,26 +43,19 @@ function percent_mobile_track($site_id,$url="") {
 	
 	//if iphone submit the image via a dynamic image and determine if we got an 3gs with a fast performance test that consumes 20ms
 	if(isset($_SERVER['HTTP_USER_AGENT'])&&preg_match("/\(iPhone/",$_SERVER['HTTP_USER_AGENT'])) {
-		$image_url=((isset($_SERVER['HTTPS'])&&$_SERVER["HTTPS"]=="on")?"https":"http")."://tracking.percentmobile.com/pixel/".$site_id."/".rand(0, 0xffff).".gif?v=".PERCENT_MOBILE_VERSION."&us=".$percent_mobile_u."&vi=".$percent_mobile_v."&url=".urlencode($url)."&referer=".urlencode($_SERVER['HTTP_REFERER']);			
-		
+		$image_url=((isset($_SERVER['HTTPS'])&&$_SERVER["HTTPS"]=="on")?"https":"http")."://tracking.percentmobile.com/pixel/".$site_id."/".rand(0, 0xffff).".gif?v=".PERCENT_MOBILE_VERSION."&us=".$percent_mobile_u."&vi=".$percent_mobile_v."&url=".urlencode($url)."&referer=".urlencode($_SERVER['HTTP_REFERER']);
+
 echo<<<EOT
 	<script type="text/javascript">
-	<!--
-	//percentmobile tracking
-	{
-
-		var percentmobile_t=new Date().getTime();	
-		var percentmobile_s=0;
-		while(new Date().getTime()-percentmobile_t<20)
-		{
-			Math.random();
-			percentmobile_s++;
-		}
-	
-		var percentmobile_i=new Image();
-		percentmobile_i.src="$image_url&m="+((percentmobile_s>1000)?"3gs":"2g3g");
-	}
-	-->
+    {
+	var m="";var s=document.createElement('style');var d=document.createElement('div');d.id="pm_IS_$site_id";
+        s.innerText='@media (-webkit-min-device-pixel-ratio:2) {#'+d.id+'{display:none !important;}}';
+        document.documentElement.appendChild(s).appendChild(d);
+        var r=getComputedStyle(d,null).getPropertyValue('display')=='none';
+        s.parentNode.removeChild(s);d.parentNode.removeChild(d);
+		if(r){m="&m=4";}else{r=new Date().getTime();for(var s=0;new Date().getTime()-r<20;s++){Math.random();}m = "&m="+((s>1000)?"3":"2");}
+        new Image().src='$image_url'+m;
+    }	
 	</script>
 EOT;
 		

@@ -54,7 +54,7 @@ specific language governing permissions and limitations under the License.
         <td>
           <?php print wpmp_analytics_option('wpmp_analytics_provider', 'wpmpProvider();'); ?>
           <br />
-          <?php printf(__('Register with <a%s>PercentMobile</a> for more information, and to obtain a site tracking ID.', 'wpmp'), ' href="http://percentmobile.com" target="_blank"'); ?>
+          <?php printf(__('Register with <a%s>PercentMobile</a> for more information, and to obtain a site tracking ID.', 'wpmp'), ' href="http://percentmobile.com/wpmp" target="_blank"'); ?>
         </td>
       </tr>
       <tr class='wpmp_provider'>
