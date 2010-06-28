@@ -40,7 +40,7 @@ Features include:
 *  **Automatic listing** on <a href='http://www.mpexo.com/blogs'>mpexo</a>, making it easier for users to discover that you have a mobile-friendly site. (NB: you can enable the mpexo listing in the 'Settings' dashboard menu.)
 
 
-**NEW in Version 1.2.2**: First support for WordPress v3.0 (RC2 and later)
+**NEW in Version 1.2.2**: Support for WordPress v3.0
 
 **NEW in Version 1.2.1**: Native integration with WP Super Cache. Read more at [Go mobile with WP Super Cache and the Mobile Pack](http://blog.trasatti.it/2010/05/go-mobile-with-wp-super-cache-and.html)
 
@@ -179,6 +179,9 @@ YES! You have to make sure your settings are correct though. Follow these simple
 1. Go back to the plugins page, activate WPMP and configure it
 
 == Changelog ==
+
+= 1.2.3 =
+* Updated [PercentMobile](http://percentmobile.com) tracking code for mobile analytics
 
 = 1.2.2 =
 * Support for WordPress v3.0 RC2: custom menus and sidebars

@@ -29,7 +29,7 @@ specific language governing permissions and limitations under the License.
 Plugin Name: mpexo client
 Plugin URI: http://wordpress.org/extend/plugins/wordpress-mobile-pack/
 Description: Publishes information about this blog to the mpexo directory service. This plugin is tested with WordPress 2.5, 2.6, 2.7 and 2.8.
-Version: 1.2.2
+Version: 1.2.3
 Author: James Pearce & friends
 Author URI: http://www.assembla.com/spaces/wordpress-mobile-pack
 */
