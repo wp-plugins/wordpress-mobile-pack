@@ -64,13 +64,13 @@ function wpmp_analytics_wp_footer() {
   if(($provider_id=get_option('wpmp_analytics_provider_id'))=='') {
     return;
   }
-  print "<span id='wpmp_analytics'>";
+  print "<div id='wpmp_analytics'>";
   switch (get_option('wpmp_analytics_provider')) {
     case 'percent':
       percent_mobile_track($provider_id);
       break;
   }
-  print "</span>";
+  print "</div>";
 }
 
 function wpmp_analytics_admin_menu() {
