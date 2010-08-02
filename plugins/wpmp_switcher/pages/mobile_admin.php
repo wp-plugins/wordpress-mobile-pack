@@ -220,7 +220,7 @@ specific language governing permissions and limitations under the License.
       if(isset($_GET['action']) && $_GET['action']=="approvecomment" && wpmp_msma_check_referer()) {
         wp_set_comment_status($id, 'approve');
       } elseif (isset($_GET['action']) && $_GET['action']=="deletecomment" && wpmp_msma_check_referer()) {
-        wp_set_comment_status($id, 'delete');
+        wp_set_comment_status($id, 'trash');
       } elseif (isset($_GET['action']) && $_GET['action']=="spamcomment" && wpmp_msma_check_referer()) {
         wp_set_comment_status($id, 'spam');
       } else {
