@@ -373,7 +373,7 @@ function wpmp_transcoder_url_join($base, $url) {
     $segments[sizeof($segments) - 1] = '';
   }
 
-  $segments = array_filter($segments, array($this, 'wpmp_transcoder_url_is_dot'));
+  $segments = array_filter($segments, 'wpmp_transcoder_url_is_dot');
 
   while (true) {
     $i = 1;

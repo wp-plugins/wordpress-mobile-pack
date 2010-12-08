@@ -180,6 +180,9 @@ YES! You have to make sure your settings are correct though. Follow these simple
 
 == Changelog ==
 
+= 1.2.4 =
+* Fixed image transcoder callback bug
+
 = 1.2.3 =
 * Updated [PercentMobile](http://percentmobile.com) tracking code for mobile analytics
 
