@@ -29,7 +29,7 @@ specific language governing permissions and limitations under the License.
 Plugin Name: Mobile Barcode
 Plugin URI: http://wordpress.org/extend/plugins/wordpress-mobile-pack/
 Description: Provides a widget (intended to be used on a desktop theme) that displays a 2D-barcode for navigating to the mobile site. This plugin is tested with WordPress 2.5, 2.6, 2.7 and 2.8.
-Version: 1.2.3
+Version: 1.2.4
 Author: James Pearce & friends
 Author URI: http://www.assembla.com/spaces/wordpress-mobile-pack
 */
