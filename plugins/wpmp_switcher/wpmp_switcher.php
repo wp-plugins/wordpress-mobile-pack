@@ -472,7 +472,7 @@ function wpmp_switcher_is_cgi_parameter_present() {
 
 function wpmp_switcher_link($type, $label) {
   $cookie = WPMP_SWITCHER_COOKIE_VAR . "=$type;path=/;expires=Tue, 01-01-2030 00:00:00 GMT";
-  $target_url = "http://" . wpmp_switcher_domains($type, true) . wpmp_switcher_current_path_plus_cgi('', $type);
+  $target_url = esc_url("http://" . wpmp_switcher_domains($type, true) . wpmp_switcher_current_path_plus_cgi('', $type));
   if ($target_url) {
     return "<a onclick='document.cookie=\"$cookie\";' href='$target_url'>$label</a>";
   }
