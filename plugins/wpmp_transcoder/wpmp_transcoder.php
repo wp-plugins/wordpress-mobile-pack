@@ -29,7 +29,7 @@ specific language governing permissions and limitations under the License.
 Plugin Name: Mobile Transcoder
 Plugin URI: http://wordpress.org/extend/plugins/wordpress-mobile-pack/
 Description: Rewrites blog pages and posts for the mobile theme, to ensure compatibility with mobile devices
-Version: 1.2.4
+Version: 1.2.5
 Author: James Pearce & friends
 Author URI: http://www.assembla.com/spaces/wordpress-mobile-pack
 */

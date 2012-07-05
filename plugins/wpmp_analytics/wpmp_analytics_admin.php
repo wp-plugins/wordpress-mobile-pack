@@ -49,23 +49,10 @@ specific language governing permissions and limitations under the License.
           </td>
         </tr>
       <?php } ?>
-      <tr>
-        <th><?php _e('External analytics provider', 'wpmp'); ?></th>
-        <td>
-          <?php print wpmp_analytics_option('wpmp_analytics_provider', 'wpmpProvider();'); ?>
-          <br />
-          <?php printf(__('Register with <a%s>PercentMobile</a> for more information, and to obtain a site tracking ID.', 'wpmp'), ' href="http://percentmobile.com" target="_blank"'); ?>
-        </td>
-      </tr>
-      <tr class='wpmp_provider'>
-        <th><?php _e('Site tracking ID', 'wpmp'); ?></th>
-        <td>
-          <?php print wpmp_analytics_option('wpmp_analytics_provider_id', '', '', 'width:30em'); ?>
-          <br />
-          <?php _e("You receive this long numeric ID when you sign up to PercentMobile. e.g. '330497158886598752234180556567095576021'.", 'wpmp'); ?>
-        </td>
-      </tr>
     </table>
+    <p>
+      <?php _e('Note that Percent Mobile\'s external analytics service is no longer available.', 'wpmp'); ?>
+    </p>
     <p class="submit">
       <input type="submit" name="Submit" value="<?php _e('Save Changes', 'wpmp'); ?>" />
     </p>

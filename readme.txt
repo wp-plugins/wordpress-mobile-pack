@@ -33,7 +33,7 @@ Features include:
 
 *  **A mobile ad widget** to easily enable mobile ads with AdMob or Google's Mobile Adsense.
 
-*  **Mobile analytics**, allowing you to track your mobile traffic with [PercentMobile](http://percentmobile.com), and view simple local traffic tallies.
+*  **Mobile analytics**, allowing you to view simple local traffic tallies.
 
 *  **A barcode widget** which adds a barcode to your desktop site so that devices with a suitable reader can quickly bookmark your mobile site, or deep link within it.
 
@@ -179,6 +179,9 @@ YES! You have to make sure your settings are correct though. Follow these simple
 1. Go back to the plugins page, activate WPMP and configure it
 
 == Changelog ==
+
+= 1.2.5 =
+* Removed [PercentMobile](http://percentmobile.com) analytics and XSS issue.
 
 = 1.2.4 =
 * Fixed image transcoder callback bug
