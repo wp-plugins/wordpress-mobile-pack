@@ -209,6 +209,7 @@ Two major issues were introduced in beta 1, now solved:
 
 == Known issues and limitations for v2.0 ==
 
+* A new version will be released next week to solve the issue caused by the curl package being disabled on some servers.
 * V2.0 of the mobile web app doesn't display the Pages from your blog, only categories and posts.
 * The mobile web app doesn't include user authentication. If your blog settings enable comments only for logged in users, they will be disabled in the mobile web app.
 * For now, supported mobile browsers include Safari, Google Chrome, Android's native browser and Internet Explorer 10. Firefox support will be added in later versions.
