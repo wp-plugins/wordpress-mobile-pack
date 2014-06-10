@@ -10,7 +10,7 @@ The NEW WordPress Mobile Pack allows you to 'package' your existing content into
 
 == Description ==
 
-**The WordPress Mobile Pack 2.0 has been completely rebuilt from the ground up to empower bloggers to go beyond responsiveness and 'appify' the content of their blog.**
+**The WordPress Mobile Pack 2.0 has been completely rebuilt from the ground up and repurposed to empower bloggers, publishers and other content creators to go beyond responsiveness and 'appify' the content of their blog.**
 
 WordPress Mobile Pack 2.0 is **supported on**: iPhones, Android smartphones, Windows Phone 8. **Compatible browsers**: Safari, Google Chrome, Android - Native Browser and Internet Explorer 10.
 
