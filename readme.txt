@@ -222,3 +222,14 @@ Two major issues were introduced in beta 1, now solved:
 * The mobile web app doesn't include user authentication. If your blog settings enable comments only for logged in users, they will be disabled in the mobile web app.
 * For now, supported mobile browsers include Safari, Google Chrome, Android's native browser and Internet Explorer 10. Firefox support will be added in later versions.
 * Only featured images from your blog posts are used to generate the cover of the mobile web app and images for the list of posts. Images integrated in a post's content are displayed only on the details page for that post.
+
+== Development roadmap ==
+
+This is a list of features that will be included in future versions:
+
+* Support for pages (to be added in the next major release)
+* Integration with Ad Networks
+* Integration with JetPack
+* Social Media support
+* Add more content sources
+* Offline support
