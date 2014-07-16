@@ -1,31 +1,30 @@
 /*****************************************************************************************************/
 /*                                                                                                   */
-/*                                    	'EDIT APP ICON AND LOGO'		                             */
+/*                                    	'EDIT COVER'					                             */
 /*                                                                                                   */
 /*****************************************************************************************************/
 
-function WMP_EDIT_IMAGES(){
+function WMP_EDIT_COVER(){
 
     var JSObject = this;
 
-    this.type = "wmp_editimages";
+    this.type = "wmp_editcover";
 
     this.form;
     this.DOMDoc;
 
     this.send_btn;
-    this.deletingIcon = false;
-	this.deletingLogo = false;
+    this.deletingCover = false;
 	
 	
 	/*****************************************************************************************************/
     /*                                                                                                   */
-    /*                              FUNCTION INIT - called from WMPJSInterface                              */
+    /*                              FUNCTION INIT - called from WMPJSInterface                           */
     /*                                                                                                   */
     /*****************************************************************************************************/
     this.init = function(){
 
-        // save a reference to WMPJSInterface Object
+	   // save a reference to WMPJSInterface Object
         WMPJSInterface = window.parent.WMPJSInterface;
 
         // save a reference to "SEND" Button
@@ -63,20 +62,14 @@ function WMP_EDIT_IMAGES(){
 	    this.validator = jQuery("#"+this.form.id, this.DOMDoc).validate({
 	
             rules: {
-                wmp_editimages_icon : {
+                wmp_editcover_cover : {
     				accept		: "png|jpg|jpeg|gif"
-    			},
-            	wmp_editimages_logo : {
-    				accept		: "png"
     			}
             },
             
             messages: {
-                wmp_editimages_icon : {
+                wmp_editcover_cover : {
     				accept		: "Please a png, gif or jpeg image."
-    			},
-    			wmp_editimages_logo: {
-    				accept		: "Please a png image format with a transparent background.",
     			}
             },
             
@@ -93,62 +86,62 @@ function WMP_EDIT_IMAGES(){
 	    });
         
         /*******************************************************/
-		/*                     INPUT "ICON"                    */
+		/*                     INPUT "COVER"                   */
 		/*******************************************************/
         
 		// this is a hack for chrome and safari
-		var $Icon = jQuery('#'+this.type+'_icon',this.DOMDoc);
-        var $RemoveIconLink = jQuery('#'+this.type+'_icon_removenew',this.DOMDoc);
+		var $Cover = jQuery('#'+this.type+'_cover',this.DOMDoc);
+        var $RemoveCoverLink = jQuery('#'+this.type+'_cover_removenew',this.DOMDoc);
         
-		$Icon.bind("change",function(){ 
-			$Icon.focus();
-			$Icon.blur();		
+		$Cover.bind("change",function(){ 
+			$Cover.focus();
+			$Cover.blur();		
             if (this.files[0])
-                jQuery('#fakefileicon').val( this.files[0].name );
-            $RemoveIconLink.css("display", "block");
+                jQuery('#fakefilecover').val( this.files[0].name );
+            $RemoveCoverLink.css("display", "block");
 		});
         
-        $RemoveIconLink.bind("click",function(){ 
-			jQuery('#fakefileicon').val(""); 
+        $RemoveCoverLink.bind("click",function(){ 
+			jQuery('#fakefilecover').val(""); 
             
-            $Icon.val("");
-            jQuery(JSObject.form).validate().element( "#" + JSObject.type + "_icon" );
+            $Cover.val("");
+            jQuery(JSObject.form).validate().element( "#" + JSObject.type + "_cover" );
             
-            $RemoveIconLink.css("display", "none");
+            $RemoveCoverLink.css("display", "none");
 		});
         
 		/*******************************************************/
 		/*                     EDIT ICON LINK                  */
 		/*******************************************************/
 		
-		// attach click functions for the edit icon link
-		var $EditIconLink = jQuery('.'+this.type+'_changeicon',this.DOMDoc);
-		if ($EditIconLink.length > 0){
+		// attach click functions for the edit cover link
+		var $EditCoverLink = jQuery('.'+this.type+'_changecover',this.DOMDoc);
+		if ($EditCoverLink.length > 0){
 		
-			$EditIconLink.click(
+			$EditCoverLink.click(
 				function(){
 					
 					// if the file field is hidden
-					if (jQuery('.'+JSObject.type+'_uploadicon',JSObject.DOMDoc).css("display") == 'none') {
+					if (jQuery('.'+JSObject.type+'_uploadcover',JSObject.DOMDoc).css("display") == 'none') {
 						
 						// reset file field value
-                        $Icon.val("");
-                        jQuery(JSObject.form).validate().element( "#" + JSObject.type + "_icon" );
-						jQuery('#fakefileicon').val("")
+                        $Cover.val("");
+                        jQuery(JSObject.form).validate().element( "#" + JSObject.type + "_cover" );
+						jQuery('#fakefilecover').val("")
                         
-                        // hide the 'remove new icon' link
-                        $RemoveIconLink.css("display", "none");
+                        // hide the 'remove new cover' link
+                        $RemoveCoverLink.css("display", "none");
 						
-						// show upload icon field
-						jQuery('.'+JSObject.type+'_uploadicon',JSObject.DOMDoc).show();
+						// show upload cover field
+						jQuery('.'+JSObject.type+'_uploadcover',JSObject.DOMDoc).show();
 					
 						// show cancel button
-						if (jQuery('#'+JSObject.type+'_currenticon',JSObject.DOMDoc).attr("src") != "")
-							jQuery('.'+JSObject.type+'_changeicon_cancel',JSObject.DOMDoc).show();
+						if (jQuery('#'+JSObject.type+'_currentcover',JSObject.DOMDoc).css("background-image") != "none")
+							jQuery('.'+JSObject.type+'_changecover_cancel',JSObject.DOMDoc).show();
 						
-						// hide current icon
-						if (jQuery('.'+JSObject.type+'_iconcontainer',JSObject.DOMDoc).css("display") == 'block')
-							jQuery('.'+JSObject.type+'_iconcontainer',JSObject.DOMDoc).hide();
+						// hide current cover
+						if (jQuery('.'+JSObject.type+'_covercontainer',JSObject.DOMDoc).css("display") == 'block')
+							jQuery('.'+JSObject.type+'_covercontainer',JSObject.DOMDoc).hide();
 					}
 				}
 			);
@@ -158,32 +151,32 @@ function WMP_EDIT_IMAGES(){
 		/*                 CANCEL EDIT ICON LINK               */
 		/*******************************************************/
 		
-		// attach click functions for the cancel edit icon link
-		var $CancelEditIconLink = jQuery('.'+this.type+'_changeicon_cancel a',this.DOMDoc);
-		if ($CancelEditIconLink.length > 0){
+		// attach click functions for the cancel edit cover link
+		var $CancelEditCoverLink = jQuery('.'+this.type+'_changecover_cancel a',this.DOMDoc);
+		if ($CancelEditCoverLink.length > 0){
 		
-			$CancelEditIconLink.click(
+			$CancelEditCoverLink.click(
 				function(){
 					
 					// if the file field is visible
-					if (jQuery('.'+JSObject.type+'_uploadicon',JSObject.DOMDoc).css("display") == 'block') {
+					if (jQuery('.'+JSObject.type+'_uploadcover',JSObject.DOMDoc).css("display") == 'block') {
 						
 						// reset file field value
-						$Icon.val("");
-                        jQuery(JSObject.form).validate().element( "#" + JSObject.type + "_icon" );
-						jQuery('#fakefileicon').val("")
+						$Cover.val("");
+                        jQuery(JSObject.form).validate().element( "#" + JSObject.type + "_cover" );
+						jQuery('#fakefilecover').val("")
 						
-						// hide upload icon field
-						jQuery('.'+JSObject.type+'_uploadicon',JSObject.DOMDoc).hide();
+						// hide upload cover field
+						jQuery('.'+JSObject.type+'_uploadcover',JSObject.DOMDoc).hide();
 					
 						// hide cancel button
 						jQuery(this).parent().hide();
 						
-						// display current icon (if it exists)
-						if (jQuery('.'+JSObject.type+'_iconcontainer',JSObject.DOMDoc).css("display") == 'none' &&
-							jQuery('#'+JSObject.type+'_currenticon',JSObject.DOMDoc).attr("src") != "")
+						// display current logo (if it exists)
+						if (jQuery('.'+JSObject.type+'_covercontainer',JSObject.DOMDoc).css("display") == 'none' &&
+							jQuery('#'+JSObject.type+'_currentcover',JSObject.DOMDoc).css("background-image") != "none")
 							
-							jQuery('.'+JSObject.type+'_iconcontainer',JSObject.DOMDoc).show();
+							jQuery('.'+JSObject.type+'_covercontainer',JSObject.DOMDoc).show();
 					}
 				}
 			);
@@ -193,202 +186,45 @@ function WMP_EDIT_IMAGES(){
 		/*               DELETE ICON LINK               	   */
 		/*******************************************************/
 		
-		// attach click functions for the delete icon link
-		var $DeleteIconLink = jQuery('.'+this.type+'_deleteicon',this.DOMDoc);
+		// attach click functions for the delete cover link
+		var $DeleteCoverLink = jQuery('.'+this.type+'_deletecover',this.DOMDoc);
 		
-		if ($DeleteIconLink.length > 0){
+		if ($DeleteCoverLink.length > 0){
 		
-			var href = $DeleteIconLink.get(0).href;
-			$DeleteIconLink.get(0).href = "javascript:void(0);"
+			var href = $DeleteCoverLink.get(0).href;
+			$DeleteCoverLink.get(0).href = "javascript:void(0);"
 			
-			$DeleteIconLink.click(
+			$DeleteCoverLink.click(
 				function(){		
 				
-					var isConfirmed = confirm("This app icon is used when the app is added to the homescreen. Are you sure you want to remove it?");
+					var isConfirmed = confirm("Are you sure you want to remove the app cover?");
 	
 					if (isConfirmed) {
 						
                         jQuery.get(
                             ajaxurl, 
                             {
-                                'action': 'wmp_settings_editimages',
+                                'action': 'wmp_settings_editcover',
                                 'type':   'delete',
-                                'source': 'icon'
+                                'source': 'cover'
                             }, 
                             function(responseJSON){
  
                                 var JSON = eval ("("+responseJSON+")");
                                 var response = Boolean(Number(String(JSON.status)));
         
-								JSObject.deletingIcon = false;
+								JSObject.deletingCover = false;
 								
 								if (response == true) {
 								
 									// remove image url
-                                    jQuery('#'+JSObject.type+'_currenticon',JSObject.DOMDoc).attr("src", "");
+	  								jQuery('#'+JSObject.type+'_currentcover',JSObject.DOMDoc).css("background-image", "none");
 	  								
 	  								// trigger the display of the upload field
-	  								$EditIconLink.trigger("click");
+	  								$EditCoverLink.trigger("click");
 	  								
 									// success message								
-									var message = 'The app icon has been removed.';
-									WMPJSInterface.Loader.display({message: message});
-	
-								} else {
-								
-									// error message
-									var message = 'There was an error. Please try again in few seconds.';
-									WMPJSInterface.Loader.display({message: message});
-									
-								}
-							}
-						)
-					}
-				}
-			);
-		}
-		
-		/*******************************************************/
-		/*                     INPUT "LOGO"                    */
-		/*******************************************************/
-	 
-		// this is a hack for chrome and safari
-		var $Logo = jQuery('#'+this.type+'_logo',this.DOMDoc);
-        var $RemoveLogoLink = jQuery('#'+this.type+'_logo_removenew',this.DOMDoc);
-        
-		$Logo.bind("change",function(){ 
-			$Logo.focus();
-			$Logo.blur();		
-            if (this.files[0])	
-                jQuery('#fakefilelogo').val( this.files[0].name ); 
-            $RemoveLogoLink.css("display", "block");
-		});
-		
-        $RemoveLogoLink.bind("click",function(){ 
-			jQuery('#fakefilelogo').val(""); 
-            
-            $Logo.val("");
-            jQuery(JSObject.form).validate().element( "#" + JSObject.type + "_logo" );
-            
-            $RemoveLogoLink.css("display", "none");
-		});
-        
-
-		/*******************************************************/
-		/*                     EDIT LOGO LINK                  */
-		/*******************************************************/
-		
-		// attach click functions for the edit logo link
-		var $EditLogoLink = jQuery('.'+this.type+'_changelogo',this.DOMDoc);
-		if ($EditLogoLink.length > 0){
-		
-			$EditLogoLink.click(
-				function(){
-					
-					// if the file field is hidden
-					if (jQuery('.'+JSObject.type+'_uploadlogo',JSObject.DOMDoc).css("display") == 'none') {
-						
-						// reset file field value
-						$Logo.val("");
-                        jQuery(JSObject.form).validate().element( "#" + JSObject.type + "_logo" );
-						jQuery('#fakefilelogo').val("")
-                        
-                        // hide the 'remove new logo' link
-                        $RemoveLogoLink.css("display", "none");
-						
-						// show upload logo field
-						jQuery('.'+JSObject.type+'_uploadlogo',JSObject.DOMDoc).show();
-					
-						// show cancel button
-						if (jQuery('#'+JSObject.type+'_currentlogo',JSObject.DOMDoc).css("background-image") != "none")
-							jQuery('.'+JSObject.type+'_changelogo_cancel',JSObject.DOMDoc).show();
-						
-						// hide current logo
-						if (jQuery('.'+JSObject.type+'_logocontainer',JSObject.DOMDoc).css("display") == 'block')
-							jQuery('.'+JSObject.type+'_logocontainer',JSObject.DOMDoc).hide();
-					}
-				}
-			);
-		}
-		
-		/*******************************************************/
-		/*                 CANCEL EDIT LOGO LINK               */
-		/*******************************************************/
-		
-		// attach click functions for the cancel edit logo link
-		var $CancelEditLogoLink = jQuery('.'+this.type+'_changelogo_cancel a',this.DOMDoc);
-		if ($CancelEditLogoLink.length > 0){
-		
-			$CancelEditLogoLink.click(
-				function(){
-					
-					// if the file field is visible
-					if (jQuery('.'+JSObject.type+'_uploadlogo',JSObject.DOMDoc).css("display") == 'block') {
-						
-						// reset file field value
-						$Logo.val("");
-                        jQuery(JSObject.form).validate().element( "#" + JSObject.type + "_logo" );
-						jQuery('#fakefilelogo').val("")
-						
-						// hide upload logo field
-						jQuery('.'+JSObject.type+'_uploadlogo',JSObject.DOMDoc).hide();
-					
-						// hide cancel button
-						jQuery(this).parent().hide();
-						
-						// display current logo (if it exists)
-						if (jQuery('.'+JSObject.type+'_logocontainer',JSObject.DOMDoc).css("display") == 'none' &&
-							jQuery('#'+JSObject.type+'_currentlogo',JSObject.DOMDoc).css("background-image") != "none")
-							
-							jQuery('.'+JSObject.type+'_logocontainer',JSObject.DOMDoc).show();
-					}
-				}
-			);
-		}
-		
-		/*******************************************************/
-		/*               DELETE LOGO LINK               	   */
-		/*******************************************************/
-		
-		// attach click functions for the delete logo link
-		var $DeleteLogoLink = jQuery('.'+this.type+'_deletelogo',this.DOMDoc);
-		
-		if ($DeleteLogoLink.length > 0){
-		
-			var href = $DeleteLogoLink.get(0).href;
-			$DeleteLogoLink.get(0).href = "javascript:void(0);"
-			
-			$DeleteLogoLink.click(
-				function(){		
-				
-					var isConfirmed = confirm("This app logo is used on the cover of your app. Are you sure you want to remove it?");
-	
-					if (isConfirmed) {
-									
-                        jQuery.get(
-                            ajaxurl, 
-                            {
-                                'action': 'wmp_settings_editimages',
-                                'type':   'delete',
-                                'source': 'logo'
-                            }, 
-                            function(responseJSON){
- 
-                                var JSON = eval ("("+responseJSON+")");
-                                var response = Boolean(Number(String(JSON.status)));
-        
-								JSObject.deletingIcon = false;
-								
-								if (response == true) {
-								
-									// remove image url
-	  								jQuery('#'+JSObject.type+'_currentlogo',JSObject.DOMDoc).css("background-image", "none");
-	  								
-	  								// trigger the display of the upload field
-	  								$EditLogoLink.trigger("click");
-	  								
-									// success message								
-									var message = 'The app logo has been removed.';
+									var message = 'The app cover has been removed.';
 									WMPJSInterface.Loader.display({message: message});
 	
 								} else {
@@ -413,42 +249,23 @@ function WMP_EDIT_IMAGES(){
     /*****************************************************************************************************/
     this.displayImage = function(type, path){
 
-       if (type == 'icon') {
-       	
        		// reset file field value
-			jQuery('#'+JSObject.type+'_icon',JSObject.DOMDoc).val("");
-			jQuery('#fakefileicon').val("")
+			jQuery('#'+JSObject.type+'_cover',JSObject.DOMDoc).val("");
+			jQuery('#fakefilecover').val("")
             			
-			// hide upload icon field
-			jQuery('.'+JSObject.type+'_uploadicon',JSObject.DOMDoc).hide();
+			// hide upload cover field
+			jQuery('.'+JSObject.type+'_uploadcover',JSObject.DOMDoc).hide();
             
 			// hide cancel button
-			jQuery('.'+JSObject.type+'_changeicon_cancel',JSObject.DOMDoc).hide();
+			jQuery('.'+JSObject.type+'_changecover_cancel',JSObject.DOMDoc).hide();
             
-       		// add new path in the src attribute
-			jQuery('#'+JSObject.type+'_currenticon',JSObject.DOMDoc).attr("src", path);
+       		// add new path in the background attribute
+			jQuery('#'+JSObject.type+'_currentcover',JSObject.DOMDoc).css("background-image", "url("+path+")");
 
 			// display image container
-			jQuery('.'+JSObject.type+'_iconcontainer',JSObject.DOMDoc).css("display", "block");
+			jQuery('.'+JSObject.type+'_covercontainer',JSObject.DOMDoc).css("display", "block");
 			
-       } else if (type == 'logo') {
-       	
-       		// reset file field value
-			jQuery('#'+JSObject.type+'_logo',JSObject.DOMDoc).val("");
-			jQuery('#fakefilelogo').val("")
-						
-			// hide upload logo field
-			jQuery('.'+JSObject.type+'_uploadlogo',JSObject.DOMDoc).hide();
-			
-			// hide cancel button
-			jQuery('.'+JSObject.type+'_changelogo_cancel',JSObject.DOMDoc).hide();
-			
-       		// add new path in the src attribute
-			jQuery('#'+JSObject.type+'_currentlogo',JSObject.DOMDoc).css("background-image", "url("+path+")");
-			
-			// display image container
-			jQuery('.'+JSObject.type+'_logocontainer',JSObject.DOMDoc).css("display", "block");
-       }
+       
 
     }
 
@@ -613,12 +430,10 @@ function WMP_EDIT_IMAGES(){
 		JSON = eval ("("+responseJSON+")");
 		response = Boolean(Number(String(JSON.status)));
         
-        if (JSON.uploaded_icon != undefined) 
-            JSObject.displayImage("icon", JSON.uploaded_icon)
+        if (JSON.uploaded_cover != undefined) 
+            JSObject.displayImage("cover", JSON.uploaded_cover)
         
-        if (JSON.uploaded_logo != undefined) 
-            JSObject.displayImage("logo", JSON.uploaded_logo)
-		
+       
 		if (response == true && JSON.messages.length == 0){
 			
             // show message
