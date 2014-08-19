@@ -116,6 +116,7 @@ Support for various ad networks will be added in future releases. These will be 
 * Fixed bug - Filter content to remove default image links added by Wordpress. The links were opening an image in a new window and messing up the scrolling of the content.
 * Fixed bug - Using 'home_url' instead of 'site_url' for redirecting to the home page.
 * Fixed bug - Switching from portrait to landscape on the native Android browser was not working properly on some smartphones (HTC One).
+* Patch - Fixed vulnerability for password protected posts (2014/08/18)
 
 = 2.0.1 = 
 * Hide comments button if the comments are disabled for an article
