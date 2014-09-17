@@ -1,6 +1,6 @@
 <?php
 
-define("WMP_VERSION", '2.0');
+define("WMP_VERSION", '2.1');
 define('WMP_PLUGIN_NAME', 'WP Mobile Pack '.WMP_VERSION);
 define('WMP_DOMAIN', 'wordpress-mobile-pack');
 
@@ -12,10 +12,15 @@ if ( !defined( 'WMP_FILES_UPLOADS_DIR' ) && !defined( 'WMP_FILES_UPLOADS_URL' ) 
 }
 
 define('WMP_FEEDBACK_EMAIL','feedback@appticles.com');
-define('WMP_NEWS_UPDATES','https://s3-eu-west-1.amazonaws.com/appticles-wmpack/dashboard/news.json');
-define('WMP_WHATSNEW_UPDATES','https://s3-eu-west-1.amazonaws.com/appticles-wmpack/dashboard/whats_new/content.json');
-define('WMP_MORE_UPDATES','https://s3-eu-west-1.amazonaws.com/appticles-wmpack/dashboard/more/content.json');
+define('WMP_NEWS_UPDATES','http://cdn-wpmp.appticles.com/dashboard/news.json');
+define('WMP_WHATSNEW_UPDATES','http://cdn-wpmp.appticles.com/dashboard/whats_new/content1.json');
+define('WMP_MORE_UPDATES','http://cdn-wpmp.appticles.com/dashboard/more/more1.json');
+
 define('WMP_WAITLIST_PATH','http://gateway.appticles.com/waitlist/api/subscribe');
+
+// define connect with appticles path
+define('WMP_APPTICLES_CONNECT','http://api.webcrumbz.co/content1/wpconnect');
+define('WMP_APPTICLES_DISCONNECT','http://api.webcrumbz.co/content1/wpdisconnect');
 
 // define blog version
 define('WMP_BLOG_VERSION',get_bloginfo('version'));

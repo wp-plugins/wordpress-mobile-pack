@@ -1,6 +1,6 @@
 <?php
 if ( ! class_exists( 'WMobilePackAdmin' ) ) {
-    
+     //require_once '../libs/htmlpurifier-4.6.0/library/HTMLPurifier.safe-includes.php'; 
 	/**
 	 * WMobilePackAdmin class for creating the admin area for the Wordpress Mobile Pack plugin
 	 *
@@ -10,17 +10,31 @@ if ( ! class_exists( 'WMobilePackAdmin' ) ) {
 		
 		/**
          * 
-		 * Method used to render the main admin page
+		 * Method used to render the main admin page (free version)
 		 *
 		 */
 		public function wmp_options() {
-			
+			     
 			global $wmobile_pack;
 			
             WMobilePack::wmp_update_settings('whats_new_updated', 0);
             
 			// load view
-			include(WMP_PLUGIN_PATH.'admin/wmp-admin-main.php');
+			include(WMP_PLUGIN_PATH.'admin/wmp-admin-main.php');        
+		}
+		
+		
+		/**
+         * 
+		 * Method used to render the main admin page for the premium dashboard
+		 *
+		 */
+		public function wmp_premium_options() {
+			
+			global $wmobile_pack;
+			 
+			// load view
+			include(WMP_PLUGIN_PATH.'admin/wmp-admin-premium.php'); 
 		}
 		
          
@@ -29,7 +43,7 @@ if ( ! class_exists( 'WMobilePackAdmin' ) ) {
 		 * The method returns an array containing the latest content or an empty array by default.
 		 *
 		 */
-		public static function wmp_whatsnew_updates() {
+		public static function wmp_whatsnew_updates() { 
 			
 			$json_data = get_transient("wmp_whats_new_updates"); 
             
@@ -96,7 +110,7 @@ if ( ! class_exists( 'WMobilePackAdmin' ) ) {
 
 		/**
          * 
-		 * Method used to render the themes selection page from the admin area
+		 * Method used to render the themes selection page from the admin area (free version)
 		 *
 		 */
 		public function wmp_theme_options() {
@@ -110,7 +124,7 @@ if ( ! class_exists( 'WMobilePackAdmin' ) ) {
 		
 		/**
          * 
-		 * Method used to render the content selection page from the admin area
+		 * Method used to render the content selection page from the admin area (free version)
 		 *
 		 */
 		public function wmp_content_options() {
@@ -121,9 +135,60 @@ if ( ! class_exists( 'WMobilePackAdmin' ) ) {
 			include(WMP_PLUGIN_PATH.'admin/wmp-admin-content.php');
 		}
 		
+		
+		/**
+         * 
+		 * Method used to render a form with a page's details (free version)
+		 *
+		 */
+		public function wmp_page_content() {
+			
+			global $wmobile_pack;
+			
+			include(WMP_PLUGIN_PATH.'libs/htmlpurifier-4.6.0/library/HTMLPurifier.safe-includes.php');
+			if (isset($_GET) && is_array($_GET) && !empty($_GET)){
+				 
+				 if (isset($_GET['id'])) { 
+				 
+				 	if (is_numeric($_GET['id'])) {
+							
+						// get page
+						$page = get_page($_GET['id']); 
+										  
+						if($page != null) {
+							
+							$config = HTMLPurifier_Config::createDefault();
+							$config->set('Core.Encoding', 'UTF-8'); 									
+							$config->set('HTML.Allowed','a[href|target],p,ol,li,ul,img[src|class|width|height],blockquote,em,span,h1,h2,h3,h4,h5,h6,i,u,strong,b,sup,br,cite,iframe[frameborder|marginheight|marginwidth|scrolling|src|width|height]');
+							$config->set('Attr.AllowedFrameTargets', '_blank, _parent, _self, _top');
+							
+							$config->set('HTML.SafeIframe',1);
+							$config->set('Filter.Custom', array( new HTMLPurifier_Filter_Iframe()));
+							
+							// disable cache
+							$config->set('Cache.DefinitionImpl',null);
+							
+							$purifier  = new HTMLPurifier($config); 
+							
+							// first check if the admin edited the content for this page
+							if(get_option( 'wmpack_page_' .$page->ID  ) === false)
+								$content = apply_filters("the_content",$page->post_content);
+							else
+								$content = apply_filters("the_content",get_option( 'wmpack_page_' .$page->ID  ));
+							$content = $purifier->purify(stripslashes($content));
+							
+							// load view
+							include(WMP_PLUGIN_PATH.'admin/wmp-admin-page-details.php');	
+						}
+					}			
+				}
+			}		
+		}
+		
+		
         /**
          * 
-         * Method used to save the categories settings in the database
+         * Method used to save the categories settings in the database (free version)
          * 
          */
         public function wmp_content_save() {
@@ -166,6 +231,163 @@ if ( ! class_exists( 'WMobilePackAdmin' ) ) {
             
             exit();
         }
+		
+		
+		 /**
+         * 
+         * Method used to save the pages settings in the database (free version)
+         * 
+         */
+        public function wmp_content_pagestatus() {
+            
+            if (current_user_can( 'manage_options' )){
+                
+                global $wmobile_pack;
+            	
+                $status = 0;
+                
+                if (isset($_POST) && is_array($_POST) && !empty($_POST)){
+                    
+                    if (isset($_POST['id']) && isset($_POST['status'])){
+                        
+                        if (is_numeric($_POST['id']) && ($_POST['status'] == 'active' || $_POST['status'] == 'inactive')){
+                            
+                            $status = 1;
+                             
+                            $page_id = intval($_POST['id']);
+                            $page_status = strval($_POST['status']);
+                            
+                            // get inactive pages option
+                            $inactive_pages = unserialize(WMobilePack::wmp_get_setting('inactive_pages'));
+                            
+                            // add or remove the page from the option
+                            if (in_array($page_id, $inactive_pages) && $page_status == 'active')
+                                $inactive_pages = array_diff($inactive_pages, array($page_id));
+                            
+                            if (!in_array($page_id, $inactive_pages) && $page_status == 'inactive')
+                                $inactive_pages[] = $page_id;
+                                
+                            // save option
+                            WMobilePack::wmp_update_settings('inactive_pages', serialize($inactive_pages));
+                        }
+                    }    
+                }
+                
+                echo $status;
+            }
+            
+            exit();
+        }
+		
+		
+		
+		/**
+        * 
+        * Method used to save the order of pages and categories in the database (free version)
+        * 
+        */
+        public function wmp_content_order() {
+            
+            if (current_user_can( 'manage_options' )){
+                
+                global $wmobile_pack;
+            	
+                $status = 0;
+                
+                if (isset($_POST) && is_array($_POST) && !empty($_POST)){
+                    
+                    if (isset($_POST['ids']) && isset($_POST['type'])){
+                        
+                        if ($_POST['ids'] != '' && ($_POST['type'] == 'pages' || $_POST['type'] == 'categories')){
+                             
+							// check ids
+							$arrPagesIds = array_filter(explode(",", $_POST['ids']));
+							
+							if (count($arrPagesIds) > 0) {
+								
+								$valid_ids = true;
+							
+								foreach ($arrPagesIds as $page_id) {
+									
+									if (!is_numeric($page_id)) // 4page_is is not numeric
+										$valid_ids = false;
+								}
+		        	
+								if ($valid_ids) {
+									
+									 $status = 1;
+									
+									// save option
+                           			if ($_POST['type'] == 'pages')
+										WMobilePack::wmp_update_settings('ordered_pages', serialize($arrPagesIds));
+									elseif ($_POST['type'] == 'categories')
+										WMobilePack::wmp_update_settings('ordered_categories', serialize($arrPagesIds));
+								}
+							}
+                        }
+                    }    
+                }
+                
+                echo $status;
+            }
+            
+            exit();
+        }
+		
+		
+		/**
+         * 
+         * Method used to save the page details content in the database (free version)
+         * 
+         */
+        public function wmp_content_pagedetails() {
+            
+            if (current_user_can( 'manage_options' )){
+                
+                global $wmobile_pack;
+            	
+                $status = 0;
+               
+                if (isset($_POST) && is_array($_POST) && !empty($_POST)){
+                    
+                    if (isset($_POST['wmp_pageedit_id']) && isset($_POST['wmp_pageedit_content'])){
+                        
+                        if (is_numeric($_POST['wmp_pageedit_id']) && trim($_POST['wmp_pageedit_content']) != ''){
+                            
+							// set HTML Purifier
+							include(WMP_PLUGIN_PATH.'libs/htmlpurifier-4.6.0/library/HTMLPurifier.safe-includes.php');
+							$config = HTMLPurifier_Config::createDefault();
+							$config->set('Core.Encoding', 'UTF-8'); 									
+							$config->set('HTML.Allowed','a[href|target],p,ol,li,ul,img[src|class|width|height],blockquote,em,span,h1,h2,h3,h4,h5,h6,i,u,strong,b,sup,br,cite,iframe[frameborder|marginheight|marginwidth|scrolling|src|width|height]');
+							$config->set('Attr.AllowedFrameTargets', '_blank, _parent, _self, _top');
+							
+							$config->set('HTML.SafeIframe',1);
+							$config->set('Filter.Custom', array( new HTMLPurifier_Filter_Iframe()));
+							
+							// disable cache
+							$config->set('Cache.DefinitionImpl',null);
+							
+							$purifier  = new HTMLPurifier($config); 
+							
+                            $status = 1;
+                            
+                            $page_id = intval($_POST['wmp_pageedit_id']);
+                            $page_content = $purifier->purify(stripslashes($_POST['wmp_pageedit_content']));
+                            
+                            // save option in the db
+							update_option( 'wmpack_page_' . $page_id, $page_content );
+                            
+                        }
+                    }    
+                }
+                
+                echo $status;
+            }
+            
+            exit();
+        }
+		
+		
 		
 		/**
          * 
@@ -274,7 +496,7 @@ if ( ! class_exists( 'WMobilePackAdmin' ) ) {
 		
 		/**
          * 
-		 * Method used to render the settings selection page from the admin area
+		 * Method used to render the settings selection page from the admin area (free version)
 		 *
 		 */
 		public function wmp_settings_options() {
@@ -288,7 +510,7 @@ if ( ! class_exists( 'WMobilePackAdmin' ) ) {
   
         /**
          * 
-         * Method used to save the settings display mode, color schemes and fonts or joined waitlists.
+         * Method used to save the settings display mode, color schemes and fonts or joined waitlists. (free version)
          * 
          */
         public function wmp_settings_save() {
@@ -345,7 +567,7 @@ if ( ! class_exists( 'WMobilePackAdmin' ) ) {
                     // handle joined waitlists
                     if (isset($_POST['joined_waitlist']) && $_POST['joined_waitlist'] != ''){
                         
-                        if (in_array($_POST['joined_waitlist'], array('content', 'settings', 'lifestyletheme',  'businesstheme'))){
+                        if (in_array($_POST['joined_waitlist'], array('content', 'settings', 'lifestyletheme',  'businesstheme','themes_features'))){
                             
                             $option_waitlists = WMobilePack::wmp_get_setting('joined_waitlists');
                             
@@ -371,8 +593,135 @@ if ( ! class_exists( 'WMobilePackAdmin' ) ) {
                 echo $status;
             }
             
+            exit(); 
+        }
+		
+		/**
+         * 
+         * Method used to save the api key (connect to premium)
+         * 
+         */
+        public function wmp_premium_save() {
+            
+            if (current_user_can( 'manage_options' )){
+                
+                global $wmobile_pack;
+            	
+                $status = 0;
+                
+                if (isset($_POST) && is_array($_POST) && !empty($_POST)){
+                    
+                    if (isset($_POST['api_key'])){
+                        
+                        if (preg_match('/^[a-zA-Z0-9]+$/', $_POST['api_key']) ){
+                        
+                            // save options
+                            if(WMobilePack::wmp_update_settings('premium_api_key',$_POST['api_key']))
+								$status = 1;
+                        }
+                    }    
+                }
+                
+                echo $status;
+            }
+            
             exit();
         }
+		
+		
+		
+		/**
+         * 
+         * Method used to save the premium settings 
+         * 
+         */
+        public function wmp_premium_connect() {
+            
+            if (current_user_can('manage_options')){
+                
+                global $wmobile_pack;
+            	
+                $status = 0;
+                
+                if (isset($_POST) && is_array($_POST) && !empty($_POST)){
+                    
+                    if (isset($_POST['api_key']) && isset($_POST['valid']) && isset($_POST['config_path'])){
+                        
+                        if (
+								preg_match('/^[a-zA-Z0-9]+$/', $_POST['api_key']) && 
+								($_POST['valid'] == '0' || $_POST['valid'] == '1') && 
+								$_POST['config_path'] != '' && filter_var($_POST['config_path'], FILTER_VALIDATE_URL)
+							){
+                            
+                            if ($_POST['api_key'] == WMobilePack::wmp_get_setting('premium_api_key')) {
+						 
+                                $arrData = array(
+                                    'premium_api_key' => $_POST['api_key'],
+                                    'premium_active'  => $_POST['valid'],
+                                    'premium_config_path' => $_POST['config_path']
+                                );
+                                    
+                                if (WMobilePack::wmp_update_settings($arrData)) {
+                                    
+                                    // attempt to load the settings json
+                                    $json_config_premium = WMobilePack::wmp_set_premium_config();
+                                    
+                                    if ($json_config_premium !== false){
+                                        $status = 1;
+                                    } else {       
+                                        WMobilePack::wmp_update_settings('premium_active', 0);
+                                    }
+                                }
+							}  
+                        }
+                    }    
+                }
+                
+                echo $status;
+            }
+            
+            exit();
+        }
+		
+		/**
+         * 
+         * Method used to disconnect the dashboard from Appticles and rever to basic theme
+         * 
+         */
+        public function wmp_premium_disconnect() {
+            
+            if (current_user_can( 'manage_options' )){
+                
+                global $wmobile_pack;
+            	
+                $status = 0;
+                
+                if (isset($_POST) && is_array($_POST) && !empty($_POST)){
+                    
+                    if (isset($_POST['api_key']) && isset($_POST['active'])){
+                        
+                        if (preg_match('/^[a-zA-Z0-9]+$/', $_POST['api_key']) && $_POST['active'] == 0){
+                                
+							$arrData = array(
+											 	'premium_api_key' => '',
+												'premium_active'  => 0,
+												'premium_config_path' => ''
+											 );	
+								
+                            // save options
+                           if( WMobilePack::wmp_update_settings($arrData))	
+						   	$status = 1;
+							
+                        }
+                    }    
+                }
+                
+                echo $status;
+            }
+            
+            exit();
+        }
+		
         
         /**
          * 

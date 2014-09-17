@@ -131,6 +131,10 @@ function WMP_WAITLIST(){
             jQuery(JSObject.actionBox).hide();
         })
         JSObject.enableButton(this.display_btn);
+		
+		jQuery("#"+JSObject.form.id,JSObject.DOMDoc).bind("keypress", function (e) {
+			if (e.keyCode == 13) return false;
+		});
         
     }
 	
@@ -241,14 +245,7 @@ function WMP_WAITLIST(){
             
                     jQuery(JSObject.form).hide();
                     jQuery("#"+JSObject.type + "_added", JSObject.container).show();
-                            
-                    // display check sign (only for themes)
-                    if (JSObject.listType == 'businesstheme' || JSObject.listType == 'lifestyletheme'){
-                        
-                        jQuery(JSObject.form).closest('div.theme.waitlist', JSObject.DOMDoc).addClass("added");
-                        
-                    }
-                    
+                      
                     // make request to settings endpoint to mark the wailist as joined
                     if (response == 1) {
                         

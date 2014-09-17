@@ -60,85 +60,69 @@
                         <div class="field-message error" id="error_ganalyticsid_container"></div>
                         <div class="spacer-20"></div>
                         <a href="javascript:void(0)" id="wmp_editsettings_send_btn" class="btn green smaller">Save</a>
-                     
-                       
-                    </form>
+                     </form>
                      <div class="notice notice-left right" style="width: 465px; margin: 95px 0 15px 0;">
                         <span>
                             By adding your Google Analytics ID, you will be able to track the mobile web application's visitors directly in your Google Analytics account.
                         </span>
-                    </div>
-                    
-                    
+                     </div>
                 </div>
                 <div class="spacer-0"></div>
             </div>
             <div class="spacer-15"></div>
-            
-            <div class="details offline">
-                <h2 class="title">Coming Soon</h2>
-           		<div class="spacer-15"></div>
-                <div class="grey-line"></div>
-                <div class="spacer-15"></div>
-                
-            	<div class="offline-mode"> 
-                 	<p>Have your mobile web application available in offline mode?</p>
+            <div class="details">
+            	<div class="display-mode">
+                 	<h2 class="title">Connect with Appticles</h2>
                     <div class="spacer-20"></div>
-                 	<!-- add radio buttons -->
-                    <input type="radio" name="offline" id="on" disabled="disabled" /><label for="on">ON</label>
-                    <div class="spacer-10"></div>
-                    <input type="radio" name="offline" id="off" disabled="disabled" checked="checked" /><label for="off">OFF</label>
+                    <?php
+                        $premium_link = ''; 
+                        
+                        // Get premium link from the more json
+                        $page_content = WMobilePackAdmin::wmp_more_updates();
+                        
+                        if  (is_array($page_content) && !empty($page_content)){
+                            
+                            if (array_key_exists('premium', $page_content)){
+                                
+                                if (array_key_exists('button_text', $page_content['premium']) && array_key_exists('button_link', $page_content['premium'])){
+                                    
+                                    $feed_url = '';
+							
+        							if (get_bloginfo('atom_url') != null && get_bloginfo('atom_url') != '')
+        								$feed_url = '&feedurl='.urlencode(get_bloginfo('atom_url'));
+        							elseif (get_bloginfo('rss2_url') != null && get_bloginfo('rss2_url') != '')
+        								$feed_url = '&feedurl='.urlencode(get_bloginfo('rss2_url'));
+                                    
+                                    $premium_link = $page_content['premium']['button_link'].$feed_url.'&wmp_v=21';
+                                }
+                            }
+                        } 
+                    ?>
+                    
+                    <p>Extend your WP Mobile Pack with the <?php if ($premium_link):?><a href="<?php echo $premium_link;?>" target="_blank"><?php endif;?>Premium version<?php if ($premium_link):?></a><?php endif;?> by connecting with Appticles.com. Fill in the provided API Key to enable your Premium account.</p>
+                    <div class="spacer-20"></div>
+                    <form name="wmp_connect_form" id="wmp_connect_form" class="left" action="<?php echo admin_url('admin-ajax.php'); ?>?action=wmp_premium_save" method="post">
+                        <input type="hidden" name="wmp_connect_settings" id="wmp_connect_settings"  value="<?php echo plugins_url()."/".WMP_DOMAIN.'/export/content.php?content=exportsettings';?>" />
+                        <p>API Key:</p>
+                        <div class="spacer-10"></div>
+                        <input type="text" name="wmp_connect_apikey" id="wmp_connect_apikey" class="small indent" value="" />
+                        <div class="field-message error" id="error_apikey_container"></div>
+                        <div class="spacer-20"></div>
+                        <a href="javascript:void(0)" id="wmp_connect_send_btn" class="btn green smaller">Save</a>
+                     </form>
+                     <div class="notice notice-left right" style="width: 465px; margin: 0px 0 15px 0; top:-10px;">
+                        <span>
+                            Once your API key is validated, your WP Mobile Pack admin area will be transformed and you will be able to change your mobile web application settings from the Appticles.com dashboard.
+                        </span>
+                    </div>
                 </div>
-                
-                <?php
-                    $joined_settings_waitlist = false;
-                     
-                    $joined_waitlists = unserialize(WMobilePack::wmp_get_setting('joined_waitlists'));
-                    
-                    if ($joined_waitlists != '' && in_array('settings', $joined_waitlists))
-                        $joined_settings_waitlist = true;
-                ?>
-                
-                <div class="waitlist" id="wmp_waitlist_container">
-                
-                    <div class="spacer-20"></div>
-                    <div class="spacer-20"></div>
-                    
-                    <?php if ($joined_settings_waitlist == false):?>
-                        <div id="wmp_waitlist_action">
-                            <a href="javascript:void(0);" id="wmp_waitlist_display_btn" class="btn blue smaller">Join Waitlist</a>
-                            <div class="spacer-0"></div>
-                            <p>and get notified when available</p>
-                        </div>
-                    
-                        <form name="wmp_waitlist_form" id="wmp_waitlist_form" action="" method="post" style="display: none;">    
-                            <div class="info">
-                        	   <input name="wmp_waitlist_emailaddress" id="wmp_waitlist_emailaddress" type="text" placeholder="your email" class="small" value="<?php echo get_option( 'admin_email' );?>" />
-                               <a href="javascript: void(0);" id="wmp_waitlist_send_btn" class="btn blue smallest">Ok</a>
-                               <div class="spacer-5"></div>
-                               <div class="field-message error" id="error_emailaddress_container"></div>
-                        	   <div class="spacer-15"></div>
-                    	   </div>
-                        </form>
-                    <?php endif;?>
-                    
-                    <div id="wmp_waitlist_added" class="added" style="display: <?php echo $joined_settings_waitlist ? 'block' : 'none'?>;">
-                        <div class="switcher blue">
-                        	<div class="msg">ADDED TO WAITLIST</div>
-                            <div class="check"></div>
-                        </div>
-                        <div class="spacer-15"></div>
-                	</div>
-                </div>
-                <div class="spacer-5"></div>
-                <div class="grey-line"></div>
-                <div class="spacer-20"></div> 
+                <div class="spacer-0"></div>
             </div>
-            
         </div>
     
         <div class="right-side">
-        
+        	<!-- add waitlist form -->
+            <?php include_once('sections/wmp-waitlist.php'); ?>
             <!-- add feedback form -->
             <?php include_once('sections/wmp-feedback.php'); ?>
         </div>
@@ -149,21 +133,15 @@
     if (window.WMPJSInterface && window.WMPJSInterface != null){
         jQuery(document).ready(function(){
             window.WMPJSInterface.add("UI_editdisplay","WMP_EDIT_DISPLAY",{'DOMDoc':window.document}, window);
-            
-            <?php if ($joined_settings_waitlist == false):?>
-            
-                window.WMPJSInterface.add("UI_joinwaitlist",
-                    "WMP_WAITLIST",
+			window.WMPJSInterface.add("UI_connect",
+                    "WMP_CONNECT",
                     {
                         'DOMDoc':       window.document,
-                        'container' :   window.document.getElementById('wmp_waitlist_container'),
-                        'submitURL' :   '<?php echo WMP_WAITLIST_PATH;?>',
-                        'listType' :    'settings'
+                        'submitURL' :   '<?php echo WMP_APPTICLES_CONNECT;?>',
+						'redirectTo' :  '<?php echo admin_url('admin.php?page=wmp-options-premium');?>'
                     }, 
                     window
                 );
-            <?php endif;?>
         });
     }
 </script>
-

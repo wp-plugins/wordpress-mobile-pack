@@ -1,13 +1,11 @@
 <?php 
 
+header("Content-Type: application/json; charset=UTF-8");
 require_once("export-class.php");
-
 // Disable error reporting because these methods are used as callbacks by the mobile web app
 error_reporting(0);
 
-header("Content-Type: application/json; charset=UTF-8");
-
-if(isset($_GET["content"])) {
+if (isset($_GET["content"]) && isset($_GET['callback'])) {
     
 	// export categories
 	if($_GET["content"] == 'exportcategories') { // export categories, optional param:  limit
@@ -38,8 +36,32 @@ if(isset($_GET["content"])) {
 		$export = new Export();
 		echo $_GET['callback'] . '('.$export->saveComment().')';
 	
+	}	elseif($_GET["content"] == 'exportpages') {
+	
+		// export pages
+		$export = new Export();		
+		echo $_GET['callback'] . '('.$export->exportPages().')';
+	
+	}   elseif($_GET["content"] == 'exportpage' && isset($_GET["pageId"]) && is_numeric($_GET["pageId"])) {
+	
+		// save export page, manadatory param is pageId
+		$export = new Export();
+		echo $_GET['callback'] . '('.$export->exportPage().')';
+	
 	} else
 		echo $_GET['callback'] . '({"error":"No export requested"})';
-}
-
+        
+} elseif (isset($_GET['content']) && $_GET["content"] == 'exportsettings') { // the endpoint for api settings
+	
+	if (isset($_POST['apiKey']) && $_POST['apiKey'] != '') { // export settings, optional param:  limit
+		
+		$export = new Export();
+		echo $export->exportSettings();
+	
+	} else
+		echo '{"error":"No export requested","status" : 0}';
+        
+} else
+    echo '({"error":"No export requested"})';
+    
 ?>
