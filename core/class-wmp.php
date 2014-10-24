@@ -520,7 +520,7 @@ if ( ! class_exists( 'WMobilePack' ) ) {
 				
 					// for premium, check if the web app is still visible
 					$json_config_premium = self::wmp_set_premium_config();
-                   
+                    
 					if ($json_config_premium !== false) {
 						
 						$arrConfig = json_decode($json_config_premium);
@@ -691,7 +691,7 @@ if ( ! class_exists( 'WMobilePack' ) ) {
          *  'shorten_url' : 'xxxxxx',
          *  
          *  'status' => 'visible' / 'hidden',
-         *  'theme' : 1,
+         *  'theme' : 1,                      // will be removed in future versions
          *  
          *  'has_phone_ads' : 0/1,
          *  'has_tablet_ads' : 0/1,
@@ -699,12 +699,13 @@ if ( ! class_exists( 'WMobilePack' ) ) {
          *  // OPTIONAL fields
          *  'domain_name' : 'myapp.domain.com',
          *  
-         *  'color_scheme'      : 1,
-		 *  'font_headlines'    : 1,
-		 *  'font_subtitles'    : 1,
-		 *  'font_paragraphs'   : 1,
-         *  'cover_smartphones_path' : '',
-         *  'cover_tablets_path' : '',
+         *  'color_scheme'      : 1,          // will be removed in future versions
+		 *  'font_headlines'    : 1,          // will be removed in future versions
+		 *  'font_subtitles'    : 1,          // will be removed in future versions
+		 *  'font_paragraphs'   : 1,          // will be removed in future versions
+         *  'cover_smartphones_path' : '',    // will be removed in future versions
+         *  'cover_tablets_path' : '',        // will be removed in future versions
+         * 
          *  'logo_path' : '',
          *  'icon_path' : '',
          *  
@@ -719,6 +720,29 @@ if ( ! class_exists( 'WMobilePack' ) ) {
          *  'google_analytics_id' : 'UA-XXXXXX-1',
          *  'google_internal_id' : 'xxxxx'
          * 
+         *  // VERSION 2.6.0 (Separate phone and tablet theme settings)
+         * 'phone' : {
+         *  'theme'             : 1, // 0 means a custom theme
+         *  'color_scheme'      : 1,
+		 *  'font_headlines'    : 1,
+		 *  'font_subtitles'    : 1,
+		 *  'font_paragraphs'   : 1,
+         *  'cover'             : '',
+         *  'theme_timestamp'   : '',
+         *  'custom_fonts''     : ''
+         * }
+         * 
+         * 'tablet' : {
+         *  'theme'             : 1, // 0 means a custom theme
+         *  'color_scheme'      : 1,
+		 *  'font_headlines'    : 1,
+		 *  'font_subtitles'    : 1,
+		 *  'font_paragraphs'   : 1,
+         *  'cover'             : '',
+         *  'theme_timestamp'   : '',
+         *  'custom_fonts''     : ''
+         * }
+         *  
          * }
 		 */
 		public static function wmp_set_premium_config() {
@@ -788,9 +812,45 @@ if ( ! class_exists( 'WMobilePack' ) ) {
                                      (!isset($arrAppSettings['tablet_ad_sizes']) || $arrAppSettings['tablet_ad_sizes'] == '' || is_array($arrAppSettings['tablet_ad_sizes']))
                                      
                                 ) {
+                                
+                                    $valid_phone = false;
+                                    $valid_tablet = false;
                                     
-                                    set_transient( 'wmp_premium_config_path', $json_response, 600 ); // transient expires every 10 minutes
-                                    return $json_response;  
+                                    // validate new theme settings format
+                                    if (isset($arrAppSettings['phone']) && is_array($arrAppSettings['phone']) && 
+                                        isset($arrAppSettings['tablet']) && is_array($arrAppSettings['tablet'])) {
+                                        
+                                        foreach (array('phone', 'tablet') as $device){
+                                                
+                                            // validate theme settings per device
+                                            if ( isset($arrAppSettings[$device]['theme']) && is_numeric($arrAppSettings[$device]['theme']) &&
+                                                (!isset($arrAppSettings[$device]['color_scheme']) || $arrAppSettings[$device]['color_scheme'] == '' || is_numeric($arrAppSettings[$device]['color_scheme'])) &&
+                                                (!isset($arrAppSettings[$device]['font_headlines']) || $arrAppSettings[$device]['font_headlines'] == '' || is_numeric($arrAppSettings[$device]['font_headlines'])) &&
+                                                (!isset($arrAppSettings[$device]['font_subtitles']) || $arrAppSettings[$device]['font_subtitles'] == '' || is_numeric($arrAppSettings[$device]['font_subtitles'])) &&
+                                                (!isset($arrAppSettings[$device]['font_paragraphs']) || $arrAppSettings[$device]['font_paragraphs'] == '' || is_numeric($arrAppSettings[$device]['font_paragraphs'])) &&
+                                                (!isset($arrAppSettings[$device]['custom_fonts']) || $arrAppSettings[$device]['custom_fonts'] == '' || $arrAppSettings[$device]['custom_fonts'] == strip_tags($arrAppSettings[$device]['custom_fonts'])) &&
+                                                (!isset($arrAppSettings[$device]['cover']) || $arrAppSettings[$device]['cover'] == '' || $arrAppSettings[$device]['cover'] == strip_tags($arrAppSettings[$device]['cover']))) {
+                                                
+                                                if ($device == 'phone')
+                                                    $valid_phone = true;
+                                                else
+                                                    $valid_tablet = true;
+                                            }  
+                                        }
+                                        
+                                    } else { 
+                                        
+                                        // these will be valid if we have an old config format
+                                        if ($arrAppSettings['kit_version'] == 'v2.5.0') {
+                                            $valid_phone = true;
+                                            $valid_tablet = true;
+                                        }
+                                    }
+                                    
+                                    if ($valid_phone && $valid_tablet) {
+                                        set_transient( 'wmp_premium_config_path', $json_response, 600 ); // transient expires every 10 minutes
+                                        return $json_response;
+                                    }
                                 }
                                     
 							} else
@@ -951,7 +1011,7 @@ if ( ! class_exists( 'WMobilePack' ) ) {
 			$WMobileDetect = new WPMobileDetect;
 			
 			return $WMobileDetect->wmp_is_tablet();
-			
+		  
 			
 		}
 		
