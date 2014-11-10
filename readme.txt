@@ -254,9 +254,11 @@ Two major issues were introduced in beta 1, now solved:
 11. "More" page from the admin panel. Other capabilities offered in the premium hosted platform.
 
 
-== Known issues and limitations for v2.0 ==
+== Known issues and limitations for v2.1 ==
 
-* V2.0 of the mobile web app doesn't display the *Pages* from your blog, only categories and posts. Support for Pages will be added in the next major release.
+* Integrating with cache plugins and RTL support are the next features to be released.
+* V2.1 of the mobile web app doesn't include support for forms. We are looking for a way to recreate forms inside the mobile web application and integrate with various plugins.
+* Iframes are not currently supported because of scrolling issues on iPhone.
 * The mobile web app doesn't include user authentication. If your blog settings enable comments only for logged in users, they will be disabled in the mobile web app.
 * For now, supported mobile browsers include Safari, Google Chrome, Android's native browser, Internet Explorer 10 and Firefox (as of 2.0.2). Support for other mobile browsers such as Opera will be added in the following versions.
 * Only featured images from your blog posts are displayed as thumbnails in the list of posts. Images integrated in a post's content are displayed only on the details page for that post.
