@@ -2,6 +2,7 @@
 
 require_once("../../../../wp-config.php");
 require_once '../libs/htmlpurifier-4.6.0/library/HTMLPurifier.safe-includes.php';
+require_once '../libs/htmlpurifier-html5/htmlpurifier_html5.php';
 
 /* -------------------------------------------------------------------------*/
 /* Export class with different export 										*/
@@ -25,10 +26,11 @@ require_once '../libs/htmlpurifier-4.6.0/library/HTMLPurifier.safe-includes.php'
 		
 		// set HTML Purifier
 		$config = HTMLPurifier_Config::createDefault();
-		$config = HTMLPurifier_Config::createDefault();
 		$config->set('Core.Encoding', 'UTF-8'); 									
-		$config->set('HTML.Allowed','a[href|target],p,ol,li,ul,img[src|class|width|height],blockquote,em,span,h1,h2,h3,h4,h5,h6,i,u,strong,b,sup,br,cite,iframe[frameborder|marginheight|marginwidth|scrolling|src|width|height]');
-		$config->set('Attr.AllowedFrameTargets', '_blank, _parent, _self, _top');
+		$config->set('HTML.AllowedElements','div,a,p,ol,li,ul,img,blockquote,em,span,h1,h2,h3,h4,h5,h6,i,u,strong,b,sup,br,cite,iframe,small,video,audio,source');
+		$config->set('HTML.AllowedAttributes', 'src, width, height, target, href, name,frameborder,marginheight,marginwidth,scrolling,poster,preload,controls,type,data-type');
+						    
+        $config->set('Attr.AllowedFrameTargets', '_blank, _parent, _self, _top');
 		
 		$config->set('HTML.SafeIframe',1);
 		$config->set('Filter.Custom', array( new HTMLPurifier_Filter_Iframe()));
@@ -36,8 +38,10 @@ require_once '../libs/htmlpurifier-4.6.0/library/HTMLPurifier.safe-includes.php'
 		// disable cache
 		$config->set('Cache.DefinitionImpl',null);
 		
-		$this->purifier  = new HTMLPurifier($config); 
-	
+	   // extend purifier
+        $Html5Purifier = new WMPHtmlPurifier();
+        $this->purifier = $Html5Purifier->wmp_extended_purifier($config);
+        
         $this->inactive_categories = unserialize(WMobilePack::wmp_get_setting('inactive_categories'));
 		$this->inactive_pages = unserialize(WMobilePack::wmp_get_setting('inactive_pages'));
 	}
@@ -136,7 +140,7 @@ require_once '../libs/htmlpurifier-4.6.0/library/HTMLPurifier.safe-includes.php'
     							'post_password'       => ''
     						)
                         );
-    			    
+  			     
                     	if ($cat_posts_query->have_posts()) {
 							
     						foreach($cat_posts_query->posts as $post) {
@@ -543,11 +547,14 @@ require_once '../libs/htmlpurifier-4.6.0/library/HTMLPurifier.safe-includes.php'
 	*		"image": "",
 	*		"description":"<p><b>Sport</b> (or <b>sports</b>) is all forms of usually <a href=\"http://en.wikipedia.org/wiki/Competition\">competitive</a> <a href=\"http://en.wikipedia.org/wiki/Physical_activity\">physical activity</a> which,<sup><a href=\"http://en.wikipedia.org/wiki/Sport#cite_note-sportaccord-1\">[1]</a></sup> through casual or organised participation, aim to use, maintain or improve physical ability and skills while...</p>",				  
 	*	    "content": "<p>On the second day of the International Journalism Festival in Perugia, delegates were treated to a round up of data journalism trends and developments from around the world.</p>",
-	*		"comment_status": "open",	** the values can be opened or closed	
+	*		"comment_status": "open",	** the values can be opened or closed
+    *       "no_comments": 2,	
 	*       "show_avatars" : true,
 	*		"require_name_email" : true,	
 	*		"category_id": 5,
-	*		"category_name": "News"
+	*		"category_name": "News".
+    *       "related_posts" :"",
+    *       "related_web_posts":""
 	*	  }
 	*	}
     *  
@@ -556,6 +563,8 @@ require_once '../libs/htmlpurifier-4.6.0/library/HTMLPurifier.safe-includes.php'
     */
 	public function exportArticle() {
 		
+        global $post;
+        
 		// check if the export call is correct
 		if(isset($_GET["content"]) && $_GET["content"] == 'exportarticle' ) {
 		
@@ -612,29 +621,100 @@ require_once '../libs/htmlpurifier-4.6.0/library/HTMLPurifier.safe-includes.php'
     					}
     				} 
     				
-    				// filter the content
+                    // filter the content
     				$content = apply_filters( 'the_content', $post->post_content );
+                    
+                    
+                                        
+                    $related_posts = '';
+                    $related_web_posts = '';
+                    $zemanta = false;                    
+                    /* ZEMANTA RELATED POSTS AND POSTS FROM AROUND THE WEB */
+                    if(WMobilePack::wmp_active_plugin('Related Posts by Zemanta')) {
+                    
+                        // check if class exists and specific function that are used
+                         if(class_exists('WPRPZemanta')) {
+                            
+                            // set zemanta purifier
+                            $zemanta_purifier = $this->wmp_zemanta_purifier();
+                            
+                            // check if related posts should be displayed
+                            if(function_exists('zem_rp_get_options')) {
+                                // get options 
+                                $options = zem_rp_get_options();
+                    
+                                if($options['display_zemanta_linky'])
+                                    $zemanta = true;      
+                                
+                                if($post->post_content != "" && $post->post_type === 'post' && $options["on_single_post"]){
+                                  
+                                  if(function_exists('zem_rp_get_related_posts')) {
+                                
+                                        $related_posts = zem_rp_get_related_posts() != null ? zem_rp_get_related_posts() : '';
+                                        
+                                        // there are related posts set
+                                        if($related_posts != ''){
+                                            
+                                            // parse the urls in order to obtain the correct path
+                                            $related_posts = $this->wmp_replace_internal_links($related_posts);
+                                            
+                                            // remove inline styling
+                                            $related_posts = $zemanta_purifier->purify($related_posts);
+                                        }
+                                    }
+                                }
+                            }
+                            
+                            // get related posts from around the web
+                            $related_web_posts = $this->wmp_related_web_posts($content);
+                            $related_web_posts =$zemanta_purifier->purify($related_web_posts);
+                            
+                        }
+                        
+                    }  
+                    
+                    if($related_web_posts == '') {
+                        
+                        // set zemanta purifier
+                        $zemanta_purifier = $this->wmp_zemanta_purifier();
+                        
+                        /* ZEMANTA EDITORIAL ASISTANT AND POSTS FROM AROUND THE WEB */                  
+                        if(WMobilePack::wmp_active_plugin('Editorial Assistant by Zemanta')) {
+                             // get related posts from around the web
+                             $related_web_posts = $this->wmp_related_web_posts($content);
+                            
+                             // parse the urls in order to obtain the correct path
+                             $related_web_posts = $this->wmp_replace_internal_links($related_web_posts);
+                             $related_web_posts = $zemanta_purifier->purify($related_web_posts);
+                            
+                        }
+                    }
+    				
 					// remove script tags
 					$content = self::removeScriptTags($content);
 					
     				$content = $this->purifier->purify($content);
-    				
+    			 
 					// remove all url's from attachment images
 					$content = preg_replace( array('{<a(.*?)(wp-att|wp-content\/uploads|attachment)[^>]*><img}', '{ wp-image-[0-9]*" /></a>}'), array('<img','" />'), $content);
-					
 					
     				// get the description
     				$description = Export::truncateHtml($content,$descriptionLength);
     				// get comments status
                     $comment_status = $this->comment_closed($post);
                     
+                    
+                    $no_comments = 0;
+                    // check if there is at least a  comment
+					$comment_count = wp_count_comments( $articleId );	
+                    $no_comments = $comment_count->approved;
+                    
 					if($comment_status == 'closed') {
-						
-						// check if there is at least a  comment
-						$comment_count = wp_count_comments( $articleId );					
-						if($comment_count)
-							if($comment_count->approved == 0)
+										
+						if($comment_count) 
+							if($comment_count->approved == 0) 
 								$comment_status = 'disabled';
+                        
 					}
 					
 					
@@ -649,10 +729,14 @@ require_once '../libs/htmlpurifier-4.6.0/library/HTMLPurifier.safe-includes.php'
                         "description"	    	=> $description,
                         "content" 				=> $content,
                         "comment_status"    	=> $comment_status,
+                        "no_comments"           => $no_comments,
                         "show_avatars"			=> get_option("show_avatars") == 1 ? true : false,// false
 						"require_name_email"	=> get_option("require_name_email") == 1 ? true : false,
 						"category_id" 			=> $visible_category->term_id,
-                        "category_name" 		=> $visible_category->name
+                        "category_name" 		=> $visible_category->name,
+                        "related_posts"         => trim($related_posts),
+                        "related_web_posts"     => trim($related_web_posts),
+                        "zemanta"               => $zemanta
 					 );
 				}
 			}
@@ -665,7 +749,7 @@ require_once '../libs/htmlpurifier-4.6.0/library/HTMLPurifier.safe-includes.php'
 			return '{"error":""}';
 	}
 	
-	
+    
 	
 	/**
     * 
@@ -939,7 +1023,7 @@ require_once '../libs/htmlpurifier-4.6.0/library/HTMLPurifier.safe-includes.php'
 			}
 			
 			
-		   // get pages order
+		    // get pages order
 			$order_pages = unserialize(WMobilePack::wmp_get_setting('ordered_pages'));
 		   
 			// remove inline style for the photos types of posts
@@ -1024,7 +1108,8 @@ require_once '../libs/htmlpurifier-4.6.0/library/HTMLPurifier.safe-includes.php'
 	*		"image": "",
 	*		"description":"<p><b>Sport</b> (or <b>sports</b>) is all forms of usually <a href=\"http://en.wikipedia.org/wiki/Competition\">competitive</a> <a href=\"http://en.wikipedia.org/wiki/Physical_activity\">physical activity</a> which,<sup><a href=\"http://en.wikipedia.org/wiki/Sport#cite_note-sportaccord-1\">[1]</a></sup> through casual or organised participation, aim to use, maintain or improve physical ability and skills while...</p>",				  
 	*	    "content": "<p>On the second day of the International Journalism Festival in Perugia, delegates were treated to a round up of data journalism trends and developments from around the world.</p>",
-	*	  }
+    *       "related_web_posts":"" 
+    *       }
 	*	}
     *  
 	*   @params $pageId - the id of the page
@@ -1087,6 +1172,37 @@ require_once '../libs/htmlpurifier-4.6.0/library/HTMLPurifier.safe-includes.php'
 					else
 						$content = apply_filters("the_content",get_option( 'wmpack_page_' .$page->ID  ));
     				
+                    
+                    $related_web_posts = '';                    
+                    /* ZEMANTA RELATED POSTS AND POSTS FROM AROUND THE WEB */
+                    if(WMobilePack::wmp_active_plugin('Related Posts by Zemanta')) {
+                    
+                        // check if class exists and specific function that are used
+                         if(class_exists('WPRPZemanta')) {
+                            // set zemanta purifier
+                            $zemanta_purifier = $this->wmp_zemanta_purifier();
+                            // get related posts from around the web
+                            $related_web_posts = $this->wmp_related_web_posts($content);
+                            $related_web_posts = $zemanta_purifier->purify($related_web_posts);
+                         }
+                    }    
+                    if($related_web_posts == '') {
+                        
+                        /* ZEMANTA EDITORIAL ASISTANT AND POSTS FROM AROUND THE WEB */                  
+                        if(WMobilePack::wmp_active_plugin('Editorial Assistant by Zemanta')) {
+                             // set zemanta purifier
+                             $zemanta_purifier = $this->wmp_zemanta_purifier();
+                            
+                             // get related posts from around the web
+                             $related_web_posts = $this->wmp_related_web_posts($content);
+                            
+                             // parse the urls in order to obtain the correct path
+                             $related_web_posts = $this->wmp_replace_internal_links($related_web_posts);
+                             $related_web_posts = $zemanta_purifier->purify($related_web_posts);
+                            
+                        }
+                    }
+                    
 					// remove script tags
 					$content = self::removeScriptTags($content);
 					
@@ -1094,7 +1210,6 @@ require_once '../libs/htmlpurifier-4.6.0/library/HTMLPurifier.safe-includes.php'
     				
 					// remove all url's from attachment images
 					$content = preg_replace( array('{<a(.*?)(wp-att|wp-content\/uploads|attachment)[^>]*><img}', '{ wp-image-[0-9]*" /></a>}'), array('<img','" />'), $content);
-					
 					
     				// get the description
     				$description = Export::truncateHtml($content,$descriptionLength);
@@ -1104,7 +1219,8 @@ require_once '../libs/htmlpurifier-4.6.0/library/HTMLPurifier.safe-includes.php'
                         "title" 				=> $page->post_title,
                         "link" 			    	=> $page->guid,
                         "image" 				=> !empty($image_details) ? $image_details : "",
-                        "content" 				=> $content
+                        "content" 				=> $content,
+                        "related_web_posts"     => trim($related_web_posts),
 					 );
 				}
 			}
@@ -1152,6 +1268,7 @@ require_once '../libs/htmlpurifier-4.6.0/library/HTMLPurifier.safe-includes.php'
 			$total_length = strlen($ending);
 			$open_tags = array();
 			$truncate = '';
+            
 			foreach ($lines as $line_matchings) {
 				// if there is any html-tag in this line, handle it and add it (uncounted) to the output
 				if (!empty($line_matchings[1])) {
@@ -1300,6 +1417,115 @@ require_once '../libs/htmlpurifier-4.6.0/library/HTMLPurifier.safe-includes.php'
     }
 		
 	
+    /**
+     * 
+     * Export manifest files for Android or Mozilla
+     * 
+     * These manifest files will be used only if the index file is loaded from the plugin (free or premium).
+     * 
+     */
+    public function exportManifest(){
+        
+        if (isset($_GET["content"]) && ($_GET["content"] == 'androidmanifest' || $_GET["content"] == 'mozillamanifest')) {
+            
+            // Check if the premium version is enabled
+            $is_premium = false;
+            $arrPremiumConfig = null;
+            
+            // Check premium configuration
+            if (WMobilePack::wmp_get_setting('premium_active') == 1 && WMobilePack::wmp_get_setting('premium_api_key') != '') {
+		 
+				$is_premium = true; 
+                
+                $json_config_premium = WMobilePack::wmp_set_premium_config(); 
+                
+            	if ($json_config_premium !== false) {
+            		$arrPremiumConfig = json_decode($json_config_premium, true);
+            	}
+            }
+            
+            // set blog name
+            $blog_name = get_bloginfo("name");
+            
+            if ($is_premium && $arrPremiumConfig != null && isset($arrPremiumConfig['title']))
+                $blog_name = $arrPremiumConfig['title'];
+                
+            // init response depending on the manifest type
+            if ($_GET['content'] == 'androidmanifest') {
+                
+                $arrManifest = array(
+                	'name' 			=> $blog_name,
+                	'start_url' 	=> home_url(), 
+                	'display' 		=> 'standalone'
+                );
+                
+            } else {
+                
+                // remove domain name from the launch path
+                $launch_path = home_url();
+                $launch_path = str_replace('http://'.$_SERVER['HTTP_HOST'],'',$launch_path);
+                $launch_path = str_replace('https://'.$_SERVER['HTTP_HOST'],'',$launch_path);
+                
+                $arrManifest = array(
+                	'name' 			=> $blog_name, 
+                	'launch_path' 	=> $launch_path, 
+                	'developer'		=> array(
+	  					"name"		=> $blog_name
+     				)
+                );
+            }
+            
+            // check if icon exists
+            $icon_path = false;
+            
+            if ($is_premium) {
+                
+                // load icon from the premium config json
+                if ($arrPremiumConfig != null && isset($arrPremiumConfig['icon_path']) && $arrPremiumConfig['icon_path'] != ''){
+                    
+                    // compose icon path
+                    $is_secure = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443;
+                    $cdn_apps = ($is_secure ? $arrPremiumConfig['cdn_apps_https'] : $arrPremiumConfig['cdn_apps']);
+                    
+                    $icon_path = $cdn_apps."/".$arrPremiumConfig['shorten_url'].'/'.$arrPremiumConfig['icon_path'];
+                }
+
+            } else {
+                
+                // load icon from the local settings and folder
+                $icon_path = WMobilePack::wmp_get_setting('icon');
+            
+                if ($icon_path == '' || !file_exists(WMP_FILES_UPLOADS_DIR.$icon_path)) {
+                    $icon_path = false;
+                } else {
+                    $icon_path = WMP_FILES_UPLOADS_URL.$icon_path;
+                }
+            }
+            
+            // set icon depending on the manifest file type
+            if ($icon_path != false) {
+                
+                if ($_GET['content'] == 'androidmanifest') {
+                    
+                    $arrManifest['icons'] = array(
+        				array(
+        					"src"		=> $icon_path,
+        					"sizes"		=> "192x192"
+        				)
+                    );
+                    
+                } else {
+                    $arrManifest['icons'] = array(
+        				'152' => $icon_path,
+                    );
+                }
+            }
+    
+            echo json_encode($arrManifest);
+        }
+    }
+    
+    
 	/**
     * 
     *  - exportSettings method used for the export of the main settings
@@ -1320,7 +1546,7 @@ require_once '../libs/htmlpurifier-4.6.0/library/HTMLPurifier.safe-includes.php'
 			
 			$arrSettings = array();
 			
-			if(isset($_POST["apiKey"]) && $_POST["apiKey"] == WMobilePack::wmp_get_setting('premium_api_key')) {
+			if (isset($_POST["apiKey"]) && $_POST["apiKey"] == WMobilePack::wmp_get_setting('premium_api_key')) {
 				
 				if (WMobilePack::wmp_get_setting('premium_active') == 0) {
 					
@@ -1360,17 +1586,143 @@ require_once '../libs/htmlpurifier-4.6.0/library/HTMLPurifier.safe-includes.php'
 					// return json
 					return json_encode($arrSettings);
 				
-				}
-			} 
-			 
-			// by default assume the api key is not valid	
-			return '{"error":"The api key provided is not valid.","status" : 0}';
+				} else 
+                    return '{"error":"Premium plugin is not active.","status" : 0}';
+                
+			} else 
+                return '{"error":"Missing post data (API Key) or mismatch.","status" : 0}';
 			
 		} else
 			return '{"error":"","status" : 0}';
 	}
-		 
-	 
+    
+    
+    /**
+     * 
+     * Method wmp_replace_internal_links called when related posts are found for an article
+     *
+     * The method is used to replace the standard urls of the related posts with internal urls
+     * 
+     * @param $content - the content to be parsed
+     * @param $type - can be post or page, in order to rebuild the correct url
+     * 
+     * 
+     */
+    public function wmp_replace_internal_links($content,$type='post'){
+		
+        if ($content != '' && in_array($type,array('post','page'))) { 
+            
+            // check if url exist
+            $Match = preg_match_all('%href=\"(https?:)?(http?:)?//'.$_SERVER['HTTP_HOST'].'.*\"%siU',$content,$matches);
+        
+            // if there was at least a match fount
+            if ($Match) {
+            
+                if (!empty($matches) && is_array($matches)) {
+                
+                    if (!empty($matches[0]) && is_array($matches[0])) {
+                    
+                        // replace links
+                        foreach ($matches[0] as $match) {
+                        
+                            if ($match != '') {
+                        
+                                // get url
+                                $post_url = substr($match,6,-1);
+                            
+                                // get post id using the url
+                                $post_id = url_to_postid($post_url);
+                            
+                                if(is_numeric($post_id) && $post_id > 0) {
+                                    
+                                    // recreate new url                                   
+                                    $new_url = 'href="#'.$post_id.'"';
+                                    
+                                    // update content and add new url
+                                    $content = str_replace($match,$new_url,$content);
+                                }
+                            }                    
+                        }                
+                    }            
+                }
+            }
+        }
+        
+        return $content;
+	}
+    
+    
+    
+    /**
+     * 
+     * Method wmp_related_web_posts called when we want to fetch zemanta's related posts around the web
+     *
+     * The method is used to remove the related posts around the web from the content
+     * 
+     * @param $content - the content to be parsed, the related posts will be removed
+     * 
+     * The method return the html with the related posts around the web, or empty if there are none
+     * 
+     */
+    public function wmp_related_web_posts(&$content){
+		
+        // by default, related posts are emtpy
+        $related_posts = '';
+        
+        if ($content != '') {
+            
+            // remove the title    
+            $content = preg_replace('/<h.* class="zemanta-related-title".*>(.*?)<\/(.*)>/i', '', $content);
+           
+            // remove and get the content
+            $content_match = preg_match('%<ul class=\"zemanta-article-ul zemanta-article-ul-image\".*>(.*?)<\/ul>%siU',$content,$matches);
+            
+            if($content_match) {
+                
+                if(is_array($matches) && !empty($matches)){
+                    
+                    $related_posts = $matches[0];
+                    
+                    // remove zemnata list from content
+                    $content = preg_replace('%<ul class=\"zemanta-article-ul zemanta-article-ul-image\".*>(.*?)<\/ul>%siU', '', $content);
+           
+                }
+            }
+        }
+        
+        
+        return $related_posts;
+	}
+    
+    
+    /**
+     * 
+     * Method wmp_zemanta_purifier called when he want to keep the class attribute for the content, for zemanta tags
+     * 
+     */
+    public function wmp_zemanta_purifier(){
+        
+        // set HTML Purifier
+		$config = HTMLPurifier_Config::createDefault();
+		$config->set('Core.Encoding', 'UTF-8'); 									
+		$config->set('HTML.AllowedElements','div,a,p,ol,li,ul,img,blockquote,em,span,h1,h2,h3,h4,h5,h6,i,u,strong,b,sup,br,cite,iframe,small,video,audio,source');
+		$config->set('HTML.AllowedAttributes', 'class, src, width, height, target, href, name,frameborder,marginheight,marginwidth,scrolling,poster,preload,controls,type');
+						    
+        $config->set('Attr.AllowedFrameTargets', '_blank, _parent, _self, _top');
+		
+		$config->set('HTML.SafeIframe',1);
+		$config->set('Filter.Custom', array( new HTMLPurifier_Filter_Iframe()));
+		
+		// disable cache
+		$config->set('Cache.DefinitionImpl',null);
+		
+	   // extend purifier
+        $Html5Purifier = new WMPHtmlPurifier();
+        $purifier = $Html5Purifier->wmp_extended_purifier($config);
+        
+        return $purifier;
+    }
+
   } // Export
   
 ?>

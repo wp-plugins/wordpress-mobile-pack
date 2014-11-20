@@ -1,6 +1,7 @@
 <?php
+
 if ( ! class_exists( 'WMobilePackAdmin' ) ) {
-     //require_once '../libs/htmlpurifier-4.6.0/library/HTMLPurifier.safe-includes.php'; 
+     
 	/**
 	 * WMobilePackAdmin class for creating the admin area for the Wordpress Mobile Pack plugin
 	 *
@@ -50,11 +51,14 @@ if ( ! class_exists( 'WMobilePackAdmin' ) ) {
 			// the transient is not set or expired
 			if (!$json_data) {
 			
+                // check if we have a https connection
+                $is_secure = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443;
+                
     			// jSON URL which should be requested
-    			$json_url = WMP_WHATSNEW_UPDATES;
+    			$json_url = ($is_secure ? WMP_WHATSNEW_UPDATES_HTTPS : WMP_WHATSNEW_UPDATES);
     			
 				// get response
-				$json_response = self::wmp_read_data(WMP_WHATSNEW_UPDATES);
+				$json_response = self::wmp_read_data($json_url);
 				
 				if ($json_response !== false && $json_response != '') {
 					
@@ -82,7 +86,7 @@ if ( ! class_exists( 'WMobilePackAdmin' ) ) {
 						return $response["content"];
                     }
 					
-				} elseif($json_response == false) {
+				} elseif ($json_response == false) {
 					
 					// Store this data in a transient
 					set_transient('wmp_whats_new_updates', 'warning', 3600*24*2 );
@@ -146,7 +150,9 @@ if ( ! class_exists( 'WMobilePackAdmin' ) ) {
 			global $wmobile_pack;
 			
 			include(WMP_PLUGIN_PATH.'libs/htmlpurifier-4.6.0/library/HTMLPurifier.safe-includes.php');
-			if (isset($_GET) && is_array($_GET) && !empty($_GET)){
+			include(WMP_PLUGIN_PATH.'libs/htmlpurifier-html5/htmlpurifier_html5.php');
+            
+            if (isset($_GET) && is_array($_GET) && !empty($_GET)){
 				 
 				 if (isset($_GET['id'])) { 
 				 
@@ -159,8 +165,11 @@ if ( ! class_exists( 'WMobilePackAdmin' ) ) {
 							
 							$config = HTMLPurifier_Config::createDefault();
 							$config->set('Core.Encoding', 'UTF-8'); 									
-							$config->set('HTML.Allowed','a[href|target],p,ol,li,ul,img[src|class|width|height],blockquote,em,span,h1,h2,h3,h4,h5,h6,i,u,strong,b,sup,br,cite,iframe[frameborder|marginheight|marginwidth|scrolling|src|width|height]');
-							$config->set('Attr.AllowedFrameTargets', '_blank, _parent, _self, _top');
+							
+                            $config->set('HTML.AllowedElements','div,a,p,ol,li,ul,img,blockquote,em,span,h1,h2,h3,h4,h5,h6,i,u,strong,b,sup,br,cite,iframe,small,video,audio,source');
+						  	$config->set('HTML.AllowedAttributes', 'class,src, width, height, target, href, name,frameborder,marginheight,marginwidth,scrolling,poster,preload,controls,type');
+						    
+                            $config->set('Attr.AllowedFrameTargets', '_blank, _parent, _self, _top');
 							
 							$config->set('HTML.SafeIframe',1);
 							$config->set('Filter.Custom', array( new HTMLPurifier_Filter_Iframe()));
@@ -168,7 +177,8 @@ if ( ! class_exists( 'WMobilePackAdmin' ) ) {
 							// disable cache
 							$config->set('Cache.DefinitionImpl',null);
 							
-							$purifier  = new HTMLPurifier($config); 
+							$Html5Purifier = new WMPHtmlPurifier();
+                            $purifier = $Html5Purifier->wmp_extended_purifier($config);
 							
 							// first check if the admin edited the content for this page
 							if(get_option( 'wmpack_page_' .$page->ID  ) === false)
@@ -202,7 +212,7 @@ if ( ! class_exists( 'WMobilePackAdmin' ) ) {
                 if (isset($_POST) && is_array($_POST) && !empty($_POST)){
                     
                     if (isset($_POST['id']) && isset($_POST['status'])){
-                        
+                                    
                         if (is_numeric($_POST['id']) && ($_POST['status'] == 'active' || $_POST['status'] == 'inactive')){
                             
                             $status = 1;
@@ -222,9 +232,10 @@ if ( ! class_exists( 'WMobilePackAdmin' ) ) {
                                 
                             // save option
                             WMobilePack::wmp_update_settings('inactive_categories', serialize($inactive_categories));
-                        }
+                        
+                        } 
                     }    
-                }
+                }    
                 
                 echo $status;
             }
@@ -246,10 +257,10 @@ if ( ! class_exists( 'WMobilePackAdmin' ) ) {
             	
                 $status = 0;
                 
-                if (isset($_POST) && is_array($_POST) && !empty($_POST)){
+                if (isset($_POST) && is_array($_POST) && !empty($_POST)) {
                     
                     if (isset($_POST['id']) && isset($_POST['status'])){
-                        
+                    
                         if (is_numeric($_POST['id']) && ($_POST['status'] == 'active' || $_POST['status'] == 'inactive')){
                             
                             $status = 1;
@@ -269,9 +280,10 @@ if ( ! class_exists( 'WMobilePackAdmin' ) ) {
                                 
                             // save option
                             WMobilePack::wmp_update_settings('inactive_pages', serialize($inactive_pages));
-                        }
-                    }    
-                }
+                        
+                        }      
+                    } 
+                } 
                 
                 echo $status;
             }
@@ -297,7 +309,7 @@ if ( ! class_exists( 'WMobilePackAdmin' ) ) {
                 if (isset($_POST) && is_array($_POST) && !empty($_POST)){
                     
                     if (isset($_POST['ids']) && isset($_POST['type'])){
-                        
+                      
                         if ($_POST['ids'] != '' && ($_POST['type'] == 'pages' || $_POST['type'] == 'categories')){
                              
 							// check ids
@@ -322,10 +334,11 @@ if ( ! class_exists( 'WMobilePackAdmin' ) ) {
 										WMobilePack::wmp_update_settings('ordered_pages', serialize($arrPagesIds));
 									elseif ($_POST['type'] == 'categories')
 										WMobilePack::wmp_update_settings('ordered_categories', serialize($arrPagesIds));
-								}
-							}
-                        }
-                    }    
+								
+                                } 
+							}            
+                        } 
+                    }       
                 }
                 
                 echo $status;
@@ -356,9 +369,14 @@ if ( ! class_exists( 'WMobilePackAdmin' ) ) {
                             
 							// set HTML Purifier
 							include(WMP_PLUGIN_PATH.'libs/htmlpurifier-4.6.0/library/HTMLPurifier.safe-includes.php');
-							$config = HTMLPurifier_Config::createDefault();
+							include(WMP_PLUGIN_PATH.'libs/htmlpurifier-html5/htmlpurifier_html5.php');
+                            
+                            $config = HTMLPurifier_Config::createDefault();
 							$config->set('Core.Encoding', 'UTF-8'); 									
-							$config->set('HTML.Allowed','a[href|target],p,ol,li,ul,img[src|class|width|height],blockquote,em,span,h1,h2,h3,h4,h5,h6,i,u,strong,b,sup,br,cite,iframe[frameborder|marginheight|marginwidth|scrolling|src|width|height]');
+							
+                            $config->set('HTML.AllowedElements','div,a,p,ol,li,ul,img,blockquote,em,span,h1,h2,h3,h4,h5,h6,i,u,strong,b,sup,br,cite,iframe,small,video,audio,source');
+						  	$config->set('HTML.AllowedAttributes', 'class, src, width, height, target, href, name,frameborder,marginheight,marginwidth,scrolling,poster,preload,controls,type');
+						    
 							$config->set('Attr.AllowedFrameTargets', '_blank, _parent, _self, _top');
 							
 							$config->set('HTML.SafeIframe',1);
@@ -367,7 +385,8 @@ if ( ! class_exists( 'WMobilePackAdmin' ) ) {
 							// disable cache
 							$config->set('Cache.DefinitionImpl',null);
 							
-							$purifier  = new HTMLPurifier($config); 
+							$Html5Purifier = new WMPHtmlPurifier();
+                            $purifier = $Html5Purifier->wmp_extended_purifier($config);
 							
                             $status = 1;
                             
@@ -377,9 +396,9 @@ if ( ! class_exists( 'WMobilePackAdmin' ) ) {
                             // save option in the db
 							update_option( 'wmpack_page_' . $page_id, $page_content );
                             
-                        }
-                    }    
-                }
+                        } 
+                    }     
+                } 
                 
                 echo $status;
             }
@@ -432,10 +451,10 @@ if ( ! class_exists( 'WMobilePackAdmin' ) ) {
     								if (mail($to, $subject, $message, $headers)) 
                                         $status = 1;
     							}
-    						}
-                        }
+    						} 
+                        } 
                     }    
-                }
+                } 
                 
                 echo $status;
             }
@@ -456,12 +475,15 @@ if ( ! class_exists( 'WMobilePackAdmin' ) ) {
             
             if (!$json_data) {
 			
-				// jSON URL which should be requested
-				$json_url = WMP_NEWS_UPDATES;
-				
+                // check if we have a https connection
+                $is_secure = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443;
+                
+    			// JSON URL that should be requested
+    			$json_url = ($is_secure ? WMP_NEWS_UPDATES_HTTPS : WMP_NEWS_UPDATES);
+                
 				// get response
-				$json_response = self::wmp_read_data(WMP_NEWS_UPDATES);
-				
+				$json_response = self::wmp_read_data($json_url);
+
 				if($json_response !== false && $json_response != '') {
 					
 					// Store this data in a transient
@@ -481,7 +503,7 @@ if ( ! class_exists( 'WMobilePackAdmin' ) ) {
 					
 				// get response
 				$response = json_decode($json_data, true);
-				
+                
                 if ( (isset($response["news"]) && is_array($response["news"]) && !empty($response["news"])) || 
                     (isset($response["whitepaper"]) && is_array($response["whitepaper"]) && !empty($response["whitepaper"])) ) {
                     
@@ -522,12 +544,13 @@ if ( ! class_exists( 'WMobilePackAdmin' ) ) {
                 $status = 0;
                 
                 if (isset($_POST) && is_array($_POST) && !empty($_POST)){
-                    
+
                     // handle display mode (settings page)
                     if (isset($_POST['wmp_editsettings_displaymode']) && $_POST['wmp_editsettings_displaymode'] != ''){
                         if (in_array($_POST['wmp_editsettings_displaymode'], array('normal', 'preview', 'disabled'))){
                             
                             $status = 1;
+                            
                             // save google analytics id
     						if (isset($_POST["wmp_editsettings_ganalyticsid"])) {
     							
@@ -587,7 +610,24 @@ if ( ! class_exists( 'WMobilePackAdmin' ) ) {
                                 WMobilePack::wmp_update_settings('joined_waitlists', serialize($joined_waitlists));
                             }
                         }
-                    }        
+                    }
+                    
+                    // handle allow tracking (settings page)
+                    if (isset($_POST['wmp_allowtracking_box']) && $_POST['wmp_allowtracking_box'] != '' && is_numeric($_POST['wmp_allowtracking_box'])){
+                        
+                        $allowTracking = intval($_POST['wmp_allowtracking_box']);
+                        
+                        if ($allowTracking == 0 || $allowTracking == 1){
+                            
+                            $status = 1;
+                            
+                            // save option
+                            WMobilePack::wmp_update_settings('allow_tracking', $allowTracking);
+                            
+                            // update cron schedule
+                            WMobilePack::wmp_schedule_tracking($allowTracking);
+                        }
+                    }
                 }
                 
                 echo $status;
@@ -616,13 +656,13 @@ if ( ! class_exists( 'WMobilePackAdmin' ) ) {
                         if (preg_match('/^[a-zA-Z0-9]+$/', $_POST['api_key']) ){
                         
                             // save options
-                            if(WMobilePack::wmp_update_settings('premium_api_key',$_POST['api_key']))
+                            if (WMobilePack::wmp_update_settings('premium_api_key',$_POST['api_key']))
 								$status = 1;
-                        }
-                    }    
-                }
+                        } 
+                    }   
+                } 
                 
-                echo $status;
+                echo $status;  
             }
             
             exit();
@@ -636,7 +676,7 @@ if ( ! class_exists( 'WMobilePackAdmin' ) ) {
          * 
          */
         public function wmp_premium_connect() {
-            
+
             if (current_user_can('manage_options')){
                 
                 global $wmobile_pack;
@@ -644,8 +684,9 @@ if ( ! class_exists( 'WMobilePackAdmin' ) ) {
                 $status = 0;
                 
                 if (isset($_POST) && is_array($_POST) && !empty($_POST)){
-                    
+                                        
                     if (isset($_POST['api_key']) && isset($_POST['valid']) && isset($_POST['config_path'])){
+                        
                         
                         if (
 								preg_match('/^[a-zA-Z0-9]+$/', $_POST['api_key']) && 
@@ -672,12 +713,13 @@ if ( ! class_exists( 'WMobilePackAdmin' ) ) {
                                         WMobilePack::wmp_update_settings('premium_active', 0);
                                     }
                                 }
-							}  
-                        }
-                    }    
+							} 
+                        } 
+                    } 
                 }
-                
+                 
                 echo $status;
+                
             }
             
             exit();
@@ -697,7 +739,7 @@ if ( ! class_exists( 'WMobilePackAdmin' ) ) {
                 $status = 0;
                 
                 if (isset($_POST) && is_array($_POST) && !empty($_POST)){
-                    
+                                        
                     if (isset($_POST['api_key']) && isset($_POST['active'])){
                         
                         if (preg_match('/^[a-zA-Z0-9]+$/', $_POST['api_key']) && $_POST['active'] == 0){
@@ -712,9 +754,9 @@ if ( ! class_exists( 'WMobilePackAdmin' ) ) {
                            if( WMobilePack::wmp_update_settings($arrData))	
 						   	$status = 1;
 							
-                        }
-                    }    
-                }
+                        } 
+                    }        
+                } 
                 
                 echo $status;
             }
@@ -737,7 +779,7 @@ if ( ! class_exists( 'WMobilePackAdmin' ) ) {
                 if (!empty($_GET) && isset($_GET['type']))
                     if ($_GET['type'] == 'upload' || $_GET['type'] == 'delete')
                         $action = $_GET['type'];
-                        
+                         
                 $arrResponse = array(
                     'status' => 0,
                     'messages' => array()
@@ -923,6 +965,7 @@ if ( ! class_exists( 'WMobilePackAdmin' ) ) {
                     }
                 }
                 
+                // echo json with response
                 echo json_encode($arrResponse);
             }
             
@@ -936,7 +979,7 @@ if ( ! class_exists( 'WMobilePackAdmin' ) ) {
          * 
          */
          public function wmp_settings_editcover() {
-		
+
             if (current_user_can( 'manage_options' )){
                 
                 $action = null;
@@ -1158,11 +1201,14 @@ if ( ! class_exists( 'WMobilePackAdmin' ) ) {
 			// the transient is not set or expired
 			if (!$json_data) {
 			
-    			// jSON URL which should be requested
-    			$json_url = WMP_MORE_UPDATES;
-    		
+                // check if we have a https connection
+                $is_secure = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443;
+                
+    			// JSON URL that should be requested
+    			$json_url = ($is_secure ? WMP_MORE_UPDATES_HTTPS : WMP_MORE_UPDATES);
+                
 				// get response
-				$json_response = self::wmp_read_data(WMP_MORE_UPDATES);
+				$json_response = self::wmp_read_data($json_url);
 				
 				if($json_response !== false && $json_response != '') {
 					
@@ -1203,8 +1249,7 @@ if ( ! class_exists( 'WMobilePackAdmin' ) ) {
 			return array();
 		}
 	
-	
-	
+        
 		/**
 		 * Static method used to request the content of different pages using curl or fopen
 		 * This method returns false if both curl and fopen are dissabled and an empty string ig the json could not be read

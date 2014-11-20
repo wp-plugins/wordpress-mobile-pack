@@ -27,7 +27,7 @@ if ( ! class_exists( 'WMobilePack' ) ) {
         
         // the oldest version that will enable the custom select
         public static $wmp_customselect_enable = 3.6;
-    	 
+        
     	/* ----------------------------------*/
     	/* Methods							 */
     	/* ----------------------------------*/
@@ -61,7 +61,8 @@ if ( ! class_exists( 'WMobilePack' ) ) {
                     'whats_new_last_updated' => 0,
 					'premium_api_key'		 => '',
 					'premium_config_path'	 => '',
-					'premium_active'		 => 0
+					'premium_active'		 => 0,
+                    'allow_tracking'         => 0
                 );
             }
     	}
@@ -74,10 +75,13 @@ if ( ! class_exists( 'WMobilePack' ) ) {
     	 *
     	 */
     	public function wmp_install(){
-    		
-    		// add settings to database
+    	
+        	// add settings to database
     		$this->wmp_save_settings(self::$wmp_options);
-    	}
+            
+            // reset tracking schedule using the current option value
+            self::wmp_schedule_tracking(self::wmp_get_setting('allow_tracking'));
+		}
     		
     	/**
          * 
@@ -91,8 +95,16 @@ if ( ! class_exists( 'WMobilePack' ) ) {
             $apiKey = self::wmp_get_setting('premium_api_key');
             $isPremiumActive =  self::wmp_get_setting('premium_active');
             
-            if ($apiKey != '' && $isPremiumActive == 1)
-                WMobilePackAdmin::wmp_read_data(WMP_APPTICLES_DISCONNECT.'?apiKey='.$apiKey);
+            if ($apiKey != '' && $isPremiumActive == 1) {
+                
+                // check if we have a https connection
+                $is_secure = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443;
+                
+                WMobilePackAdmin::wmp_read_data( ($is_secure ? WMP_APPTICLES_DISCONNECT_SSL : WMP_APPTICLES_DISCONNECT).'?apiKey='.$apiKey);
+            }
+            
+            // clear scheduled tracking cron 
+            self::wmp_schedule_tracking( self::wmp_get_setting('allow_tracking'),  true);
             
             // remove uploaded images and uploads folder
             $logo_path = WMobilePack::wmp_get_setting('logo');
@@ -161,7 +173,7 @@ if ( ! class_exists( 'WMobilePack' ) ) {
     	 */	
     	public function wmp_admin_enqueue_scripts() {
     		
-    		// enqueue styles
+            // enqueue styles
 			wp_enqueue_style('css_general', plugins_url(WMP_DOMAIN.'/admin/css/general-min.css'), array(), WMP_VERSION);
         
             // enqueue scripts
@@ -221,6 +233,8 @@ if ( ! class_exists( 'WMobilePack' ) ) {
         public function wmp_admin_load_settings_js(){
             wp_enqueue_script('js_settings_editdisplay', plugins_url(WMP_DOMAIN.'/admin/js/UI.Modules/Settings/WMP_EDIT_DISPLAY.min.js'), array(), WMP_VERSION);
 			wp_enqueue_script('js_settings_connect', plugins_url(WMP_DOMAIN.'/admin/js/UI.Modules/Settings/WMP_CONNECT.min.js'), array(), WMP_VERSION);
+            wp_enqueue_script('js_settings_allowtracking', plugins_url(WMP_DOMAIN.'/admin/js/UI.Modules/Settings/WMP_ALLOW_TRACKING.min.js'), array(), WMP_VERSION);
+        	
         }
         
         
@@ -259,7 +273,7 @@ if ( ! class_exists( 'WMobilePack' ) ) {
         public function wmp_admin_load_premium_js(){
 
 			wp_enqueue_script('js_content_premium', plugins_url(WMP_DOMAIN.'/admin/js/UI.Modules/Settings/WMP_DISCONNECT.min.js'), array(), WMP_VERSION);
-			
+			wp_enqueue_script('js_settings_allowtracking', plugins_url(WMP_DOMAIN.'/admin/js/UI.Modules/Settings/WMP_ALLOW_TRACKING.min.js'), array(), WMP_VERSION);
 		}
 		
         
@@ -273,8 +287,7 @@ if ( ! class_exists( 'WMobilePack' ) ) {
     		// load admin class
     		require_once(WMP_PLUGIN_PATH.'core/class-admin.php');
     		$WMobilePackAdmin = new WMobilePackAdmin;
-
-			
+           	
 			// check menu 
 			if(self::wmp_get_setting('premium_active') == 1 && self::wmp_get_setting('premium_api_key') != '') {
 					
@@ -375,11 +388,11 @@ if ( ! class_exists( 'WMobilePack' ) ) {
     	 *
     	 */
     	public static function wmp_save_settings( $option, $option_value = '' ) {
-    		
+    	 
             if (current_user_can( 'manage_options' )){
                 
         		if (is_array($option) && !empty($option)) {
-        		
+        		    
         			// set option not saved variable
         			$option_not_saved = false;
         		
@@ -403,7 +416,7 @@ if ( ! class_exists( 'WMobilePack' ) ) {
         			
         		}
       		
-            }
+            } 
             
     		return false;
     		
@@ -515,7 +528,7 @@ if ( ! class_exists( 'WMobilePack' ) ) {
 				
 					// for premium, check if the web app is still visible
 					$json_config_premium = self::wmp_set_premium_config();
-                   
+                    
 					if ($json_config_premium !== false) {
 						
 						$arrConfig = json_decode($json_config_premium);
@@ -644,8 +657,8 @@ if ( ! class_exists( 'WMobilePack' ) ) {
     		add_filter("stylesheet", array(&$this, "wmp_app_theme"));
             add_filter("template", array(&$this, "wmp_app_theme"));
         
-    		add_filter( 'theme_root', array( &$this, 'wmp_app_theme_root' ) );
-    		add_filter( 'theme_root_uri', array( &$this, 'wmp_app_theme_root' ) );			
+    		add_filter('theme_root', array( &$this, 'wmp_app_theme_root' ) );
+    		add_filter('theme_root_uri', array( &$this, 'wmp_app_theme_root' ) );			
     	}
         
         /**
@@ -678,15 +691,15 @@ if ( ! class_exists( 'WMobilePack' ) ) {
          *  'cdn_kits' : 'http://cdn-kits.appticles.com',
          *  'cdn_apps': 'http://cdn.appticles.com',
          *  
-         *  'api_content': 'http://api.webcrumbz.co/content1/',
-         *  'api_social' : 'http://api.webcrumbz.co/social',
+         *  'api_content': 'http://api.appticles.com/content1/',
+         *  'api_social' : 'http://api.appticles.com/social',
          *  
          *  'webapp' : 'xxxxxxxxxxxxxxxxxxxxxxx',
          *  'title' : 'My app',
          *  'shorten_url' : 'xxxxxx',
          *  
          *  'status' => 'visible' / 'hidden',
-         *  'theme' : 1,
+         *  'theme' : 1,                      // will be removed in future versions
          *  
          *  'has_phone_ads' : 0/1,
          *  'has_tablet_ads' : 0/1,
@@ -694,12 +707,13 @@ if ( ! class_exists( 'WMobilePack' ) ) {
          *  // OPTIONAL fields
          *  'domain_name' : 'myapp.domain.com',
          *  
-         *  'color_scheme'      : 1,
-		 *  'font_headlines'    : 1,
-		 *  'font_subtitles'    : 1,
-		 *  'font_paragraphs'   : 1,
-         *  'cover_smartphones_path' : '',
-         *  'cover_tablets_path' : '',
+         *  'color_scheme'      : 1,          // will be removed in future versions
+		 *  'font_headlines'    : 1,          // will be removed in future versions
+		 *  'font_subtitles'    : 1,          // will be removed in future versions
+		 *  'font_paragraphs'   : 1,          // will be removed in future versions
+         *  'cover_smartphones_path' : '',    // will be removed in future versions
+         *  'cover_tablets_path' : '',        // will be removed in future versions
+         * 
          *  'logo_path' : '',
          *  'icon_path' : '',
          *  
@@ -711,9 +725,33 @@ if ( ! class_exists( 'WMobilePack' ) ) {
          *  'tablet_unit_name' : '',
          *  'tablet_ad_sizes' : [[250,250],[300,300],...],
          *                      
+         *  'language': 'en',
          *  'google_analytics_id' : 'UA-XXXXXX-1',
          *  'google_internal_id' : 'xxxxx'
          * 
+         *  // VERSION 2.6.0 (Separate phone and tablet theme settings)
+         * 'phone' : {
+         *  'theme'             : 1, // 0 means a custom theme
+         *  'color_scheme'      : 1,
+		 *  'font_headlines'    : 1,
+		 *  'font_subtitles'    : 1,
+		 *  'font_paragraphs'   : 1,
+         *  'cover'             : '',
+         *  'theme_timestamp'   : '',
+         *  'custom_fonts''     : ''
+         * }
+         * 
+         * 'tablet' : {
+         *  'theme'             : 1, // 0 means a custom theme
+         *  'color_scheme'      : 1,
+		 *  'font_headlines'    : 1,
+		 *  'font_subtitles'    : 1,
+		 *  'font_paragraphs'   : 1,
+         *  'cover'             : '',
+         *  'theme_timestamp'   : '',
+         *  'custom_fonts''     : ''
+         * }
+         *  
          * }
 		 */
 		public static function wmp_set_premium_config() {
@@ -743,9 +781,13 @@ if ( ! class_exists( 'WMobilePack' ) ) {
                                 
                                 if (isset($arrAppSettings['kit_version']) && ctype_alnum(str_replace('.', '', $arrAppSettings['kit_version'])) && 
                                     isset($arrAppSettings['cdn_kits']) && filter_var($arrAppSettings['cdn_kits'], FILTER_VALIDATE_URL) && 
+                                    isset($arrAppSettings['cdn_kits_https']) && filter_var($arrAppSettings['cdn_kits_https'], FILTER_VALIDATE_URL) &&
                                     isset($arrAppSettings['cdn_apps']) && filter_var($arrAppSettings['cdn_apps'], FILTER_VALIDATE_URL) &&
+                                    isset($arrAppSettings['cdn_apps_https']) && filter_var($arrAppSettings['cdn_apps_https'], FILTER_VALIDATE_URL) &&
                                     isset($arrAppSettings['api_content']) && filter_var($arrAppSettings['api_content'], FILTER_VALIDATE_URL) &&
+                                    isset($arrAppSettings['api_content_https']) && filter_var($arrAppSettings['api_content_https'], FILTER_VALIDATE_URL) &&
                                     isset($arrAppSettings['api_social']) && filter_var($arrAppSettings['api_social'], FILTER_VALIDATE_URL) &&
+                                    isset($arrAppSettings['api_social_https']) && filter_var($arrAppSettings['api_social_https'], FILTER_VALIDATE_URL) &&
                                     isset($arrAppSettings['webapp']) && ctype_alnum($arrAppSettings['webapp']) &&
                                     isset($arrAppSettings['shorten_url']) && ctype_alnum($arrAppSettings['shorten_url']) &&
                                     isset($arrAppSettings['title']) && $arrAppSettings['title'] == strip_tags($arrAppSettings['title']) &&
@@ -767,21 +809,58 @@ if ( ! class_exists( 'WMobilePack' ) ) {
                                     (!isset($arrAppSettings['logo_path']) || $arrAppSettings['logo_path'] == '' || $arrAppSettings['logo_path'] == strip_tags($arrAppSettings['logo_path'])) &&
                                     (!isset($arrAppSettings['icon_path']) || $arrAppSettings['icon_path'] == '' || $arrAppSettings['icon_path'] == strip_tags($arrAppSettings['icon_path'])) &&  
                                     
-                                     (!isset($arrAppSettings['google_analytics_id']) || $arrAppSettings['google_analytics_id'] == '' || ctype_alnum(str_replace('-','', $arrAppSettings['google_analytics_id']))) &&
-                                     (!isset($arrAppSettings['google_internal_id']) || $arrAppSettings['google_internal_id'] == '' || is_numeric($arrAppSettings['google_internal_id'])) &&  
+                                    (!isset($arrAppSettings['language']) || $arrAppSettings['language'] == '' || ctype_alpha($arrAppSettings['language'])) &&
+                                    (!isset($arrAppSettings['google_analytics_id']) || $arrAppSettings['google_analytics_id'] == '' || ctype_alnum(str_replace('-','', $arrAppSettings['google_analytics_id']))) &&
+                                    (!isset($arrAppSettings['google_internal_id']) || $arrAppSettings['google_internal_id'] == '' || is_numeric($arrAppSettings['google_internal_id'])) &&  
                                      
-                                     (!isset($arrAppSettings['phone_network_code']) || $arrAppSettings['phone_network_code'] == '' || is_numeric($arrAppSettings['phone_network_code'])) &&
-                                     (!isset($arrAppSettings['phone_unit_name']) || $arrAppSettings['phone_unit_name'] == '' || $arrAppSettings['phone_unit_name'] == strip_tags($arrAppSettings['phone_unit_name'])) &&
-                                     (!isset($arrAppSettings['phone_ad_sizes']) || $arrAppSettings['phone_ad_sizes'] == '' || is_array($arrAppSettings['phone_ad_sizes'])) &&
+                                    (!isset($arrAppSettings['phone_network_code']) || $arrAppSettings['phone_network_code'] == '' || is_numeric($arrAppSettings['phone_network_code'])) &&
+                                    (!isset($arrAppSettings['phone_unit_name']) || $arrAppSettings['phone_unit_name'] == '' || $arrAppSettings['phone_unit_name'] == strip_tags($arrAppSettings['phone_unit_name'])) &&
+                                    (!isset($arrAppSettings['phone_ad_sizes']) || $arrAppSettings['phone_ad_sizes'] == '' || is_array($arrAppSettings['phone_ad_sizes'])) &&
                                      
-                                     (!isset($arrAppSettings['tablet_network_code']) || $arrAppSettings['tablet_network_code'] == '' || is_numeric($arrAppSettings['tablet_network_code'])) &&
-                                     (!isset($arrAppSettings['tablet_unit_name']) || $arrAppSettings['tablet_unit_name'] == '' || $arrAppSettings['tablet_unit_name'] == strip_tags($arrAppSettings['tablet_unit_name'])) &&
-                                     (!isset($arrAppSettings['tablet_ad_sizes']) || $arrAppSettings['tablet_ad_sizes'] == '' || is_array($arrAppSettings['tablet_ad_sizes']))
+                                    (!isset($arrAppSettings['tablet_network_code']) || $arrAppSettings['tablet_network_code'] == '' || is_numeric($arrAppSettings['tablet_network_code'])) &&
+                                    (!isset($arrAppSettings['tablet_unit_name']) || $arrAppSettings['tablet_unit_name'] == '' || $arrAppSettings['tablet_unit_name'] == strip_tags($arrAppSettings['tablet_unit_name'])) &&
+                                    (!isset($arrAppSettings['tablet_ad_sizes']) || $arrAppSettings['tablet_ad_sizes'] == '' || is_array($arrAppSettings['tablet_ad_sizes']))
                                      
                                 ) {
+                                
+                                    $valid_phone = false;
+                                    $valid_tablet = false;
                                     
-                                    set_transient( 'wmp_premium_config_path', $json_response, 600 ); // transient expires every 10 minutes
-                                    return $json_response;  
+                                    // validate new theme settings format
+                                    if (isset($arrAppSettings['phone']) && is_array($arrAppSettings['phone']) && 
+                                        isset($arrAppSettings['tablet']) && is_array($arrAppSettings['tablet'])) {
+                                        
+                                        foreach (array('phone', 'tablet') as $device){
+                                                
+                                            // validate theme settings per device
+                                            if ( isset($arrAppSettings[$device]['theme']) && is_numeric($arrAppSettings[$device]['theme']) &&
+                                                (!isset($arrAppSettings[$device]['color_scheme']) || $arrAppSettings[$device]['color_scheme'] == '' || is_numeric($arrAppSettings[$device]['color_scheme'])) &&
+                                                (!isset($arrAppSettings[$device]['font_headlines']) || $arrAppSettings[$device]['font_headlines'] == '' || is_numeric($arrAppSettings[$device]['font_headlines'])) &&
+                                                (!isset($arrAppSettings[$device]['font_subtitles']) || $arrAppSettings[$device]['font_subtitles'] == '' || is_numeric($arrAppSettings[$device]['font_subtitles'])) &&
+                                                (!isset($arrAppSettings[$device]['font_paragraphs']) || $arrAppSettings[$device]['font_paragraphs'] == '' || is_numeric($arrAppSettings[$device]['font_paragraphs'])) &&
+                                                (!isset($arrAppSettings[$device]['custom_fonts']) || $arrAppSettings[$device]['custom_fonts'] == '' || $arrAppSettings[$device]['custom_fonts'] == strip_tags($arrAppSettings[$device]['custom_fonts'])) &&
+                                                (!isset($arrAppSettings[$device]['cover']) || $arrAppSettings[$device]['cover'] == '' || $arrAppSettings[$device]['cover'] == strip_tags($arrAppSettings[$device]['cover']))) {
+                                                
+                                                if ($device == 'phone')
+                                                    $valid_phone = true;
+                                                else
+                                                    $valid_tablet = true;
+                                            }  
+                                        }
+                                        
+                                    } else { 
+                                        
+                                        // these will be valid if we have an old config format
+                                        if ($arrAppSettings['kit_version'] == 'v2.5.0') {
+                                            $valid_phone = true;
+                                            $valid_tablet = true;
+                                        }
+                                    }
+                                    
+                                    if ($valid_phone && $valid_tablet) {
+                                        set_transient( 'wmp_premium_config_path', $json_response, 600 ); // transient expires every 10 minutes
+                                        return $json_response;
+                                    }
                                 }
                                     
 							} else
@@ -942,9 +1021,95 @@ if ( ! class_exists( 'WMobilePack' ) ) {
 			$WMobileDetect = new WPMobileDetect;
 			
 			return $WMobileDetect->wmp_is_tablet();
-			
-			
+		  	
 		}
 		
+		
+		
+		 /**
+          * 
+          * Method used to check if a specific plugin is installed and active
+		  * 
+		  * @param $plugin_name - the name of the plugin
+		  * 
+          *		 
+		  * Method returns true if the plugin is installed and false otherwise
+          */
+		public static function wmp_active_plugin($plugin_name){
+			
+			$active_plugin = false; // by default, the search plugin does not exist
+			
+			// if the plugin name is empty return false 
+			if ($plugin_name != '') {
+			 
+				// if function doesn't exist, load plugin.php	
+				if (!function_exists('get_plugins')) {
+					require_once ABSPATH . 'wp-admin/includes/plugin.php';
+				}
+                
+				// get active plugins from the DB
+				$apl = get_option('active_plugins');
+				
+				// get list withh all the installed plugins
+				$plugins = get_plugins(); 
+				
+				foreach ($apl as $p){
+					if (isset($plugins[$p])){
+						// check if the active plugin is the searched plugin	
+						if ($plugins[$p]['Name'] == $plugin_name)
+							$active_plugin = true;
+					}           
+				}
+			}
+			
+			return $active_plugin; //return the active plugin variable
+		}
+        
+        /**
+		 * (Un-)schedule the wmp tracking cronjob if the tracking option has changed
+		 *
+		 * @internal Better to be done here, rather than in the WMP_Tracking class as
+		 * class-tracking.php may not be loaded and might not need to be (lean loading).
+		 *
+		 * @static
+		 *
+		 * @param  array $value            The (new/current) value of the wmp_allow_tracking option
+		 * @param  bool  $force_unschedule Whether to force an unschedule (i.e. on deactivate)
+		 *
+		 * @return  void
+		 */
+		public static function wmp_schedule_tracking( $value, $force_unschedule = false ) {
+		  
+            $current_schedule = wp_next_scheduled( 'wmp_tracking' );
+            
+			if ( $force_unschedule !== true && ( $value === 1 && $current_schedule === false ) ) {
+			 
+				// The tracking checks daily, but only sends new data every 7 days.
+                wp_schedule_event( time(), 'daily', 'wmp_tracking' );
+                
+			} elseif ( $force_unschedule === true || ( $value === 0 && $current_schedule !== false ) ) {
+                wp_clear_scheduled_hook( 'wmp_tracking' );
+			}
+		}
    }
+}
+
+/**
+ * 
+ * Action hook and method for creating tracking (executed only if option was enabled)
+ * 
+ */
+add_action( 'wmp_tracking', 'wmp_create_tracking');
+ 
+function wmp_create_tracking(){
+    
+    if (WMobilePack::wmp_get_setting('allow_tracking') == 1) {
+    
+        require_once('class-tracking.php');
+                    
+    	if ( class_exists( 'WMP_Tracking') ) {
+    		$WMP_Tracking = new WMP_Tracking();
+            $WMP_Tracking->tracking();
+    	}
+    }
 }
