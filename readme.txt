@@ -138,6 +138,7 @@ Google Ad Sense / Google Double Click for Publishers is supported on the Premium
 * Added opt-in for tracking for anonymous data (disabled by default)
 * Fixed bug - Blank page when accessing a category with a single post from the menu, if the post is displayed on the cover.
 * Premium version connect - Added support for custom color schemes and fonts
+* Patch 11/02/2015 - Added support for tel: and callto: link attributes
 
 = 2.1 =
 * Added support for pages with basic HTML content (forms, tables and iframe tags are not supported)

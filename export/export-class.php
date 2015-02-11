@@ -29,7 +29,9 @@ require_once '../libs/htmlpurifier-html5/htmlpurifier_html5.php';
 		$config->set('Core.Encoding', 'UTF-8'); 									
 		$config->set('HTML.AllowedElements','div,a,p,ol,li,ul,img,blockquote,em,span,h1,h2,h3,h4,h5,h6,i,u,strong,b,sup,br,cite,iframe,small,video,audio,source');
 		$config->set('HTML.AllowedAttributes', 'src, width, height, target, href, name,frameborder,marginheight,marginwidth,scrolling,poster,preload,controls,type,data-type');
-						    
+		
+		$config->set('URI.AllowedSchemes', array ('http' => true, 'https' => true, 'mailto' => true, 'news' => true, 'tel' => true, 'callto' => true));
+		
         $config->set('Attr.AllowedFrameTargets', '_blank, _parent, _self, _top');
 		
 		$config->set('HTML.SafeIframe',1);
@@ -185,7 +187,7 @@ require_once '../libs/htmlpurifier-html5/htmlpurifier_html5.php';
     									 'id' 				=> $post->ID,
     									 "title" 			=> $post->post_title,
     									 "timestamp" 		=> strtotime($post->post_date),
-    									 "author" 			=> get_the_author_meta('user_nicename', $post->post_author ),
+    									 "author" 			=> get_the_author_meta('display_name', $post->post_author ),
     									 "date" 			=> date("D, M d, Y, H:i", strtotime($post->post_date)),
     									 "link" 			=> $post->guid,
     									 "image" 			=> !empty($image_details) ? $image_details : "",
@@ -201,8 +203,6 @@ require_once '../libs/htmlpurifier-html5/htmlpurifier_html5.php';
 						// check if the category has at least one post
 						if (!isset($arrCategories[$current_key]["articles"]) || empty($arrCategories[$current_key]["articles"]))
 							unset($arrCategories[$current_key]);
-						
-                        // $current_key++;
                     }
 				}
                 
@@ -275,7 +275,7 @@ require_once '../libs/htmlpurifier-html5/htmlpurifier_html5.php';
     								 'id' 				=> $post->ID,
     								 "title" 			=> $post->post_title,
     								 "timestamp" 		=> strtotime($post->post_date),
-    								 "author" 			=>  get_the_author_meta( 'user_nicename' , $post->post_author ),
+    								 "author" 			=>  get_the_author_meta( 'display_name' , $post->post_author ),
     								 "date" 			=>  date("D, M d, Y, H:i", strtotime($post->post_date)),
     								 "link" 			=> $post->guid,
     								 "image" 			=> !empty($image_details) ? $image_details : "",
@@ -510,7 +510,7 @@ require_once '../libs/htmlpurifier-html5/htmlpurifier_html5.php';
 								'id' 				=> $post->ID,
 								"title" 			=> $post->post_title,
 								"timestamp" 		=> strtotime($post->post_date),
-								"author" 			=> get_the_author_meta( 'user_nicename' , $post->post_author ),
+								"author" 			=> get_the_author_meta( 'display_name' , $post->post_author ),
 								"date" 				=> date("D, M d, Y, H:i", strtotime($post->post_date)),
 								"link" 				=> $post->guid,
 								"image" 			=> !empty($image_details) ? $image_details : "",
@@ -624,8 +624,6 @@ require_once '../libs/htmlpurifier-html5/htmlpurifier_html5.php';
                     // filter the content
     				$content = apply_filters( 'the_content', $post->post_content );
                     
-                    
-                                        
                     $related_posts = '';
                     $related_web_posts = '';
                     $zemanta = false;                    
@@ -722,7 +720,7 @@ require_once '../libs/htmlpurifier-html5/htmlpurifier_html5.php';
                         'id' 					=> $post->ID,
                         "title" 				=> $post->post_title,
                         "timestamp" 			=> strtotime($post->post_date),
-                        "author" 				=> get_the_author_meta( 'user_nicename' , $post->post_author ),
+                        "author" 				=> get_the_author_meta( 'display_name' , $post->post_author ),
                         "date" 			    	=> date("D, M d, Y, H:i", strtotime($post->post_date)),
                         "link" 			    	=> $post->guid,
                         "image" 				=> !empty($image_details) ? $image_details : "",
