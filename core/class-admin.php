@@ -169,6 +169,8 @@ if ( ! class_exists( 'WMobilePackAdmin' ) ) {
                             $config->set('HTML.AllowedElements','div,a,p,ol,li,ul,img,blockquote,em,span,h1,h2,h3,h4,h5,h6,i,u,strong,b,sup,br,cite,iframe,small,video,audio,source');
 						  	$config->set('HTML.AllowedAttributes', 'class,src, width, height, target, href, name,frameborder,marginheight,marginwidth,scrolling,poster,preload,controls,type');
 						    
+							$config->set('URI.AllowedSchemes', array ('http' => true, 'https' => true, 'mailto' => true, 'news' => true, 'tel' => true, 'callto' => true));
+							
                             $config->set('Attr.AllowedFrameTargets', '_blank, _parent, _self, _top');
 							
 							$config->set('HTML.SafeIframe',1);
@@ -377,6 +379,8 @@ if ( ! class_exists( 'WMobilePackAdmin' ) ) {
                             $config->set('HTML.AllowedElements','div,a,p,ol,li,ul,img,blockquote,em,span,h1,h2,h3,h4,h5,h6,i,u,strong,b,sup,br,cite,iframe,small,video,audio,source');
 						  	$config->set('HTML.AllowedAttributes', 'class, src, width, height, target, href, name,frameborder,marginheight,marginwidth,scrolling,poster,preload,controls,type');
 						    
+							$config->set('URI.AllowedSchemes', array ('http' => true, 'https' => true, 'mailto' => true, 'news' => true, 'tel' => true, 'callto' => true));
+							
 							$config->set('Attr.AllowedFrameTargets', '_blank, _parent, _self, _top');
 							
 							$config->set('HTML.SafeIframe',1);

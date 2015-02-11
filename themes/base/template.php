@@ -150,7 +150,7 @@
         }
     </style>
            
-    <script type="text/javascript">
+    <script type="text/javascript" pagespeed_no_defer="">
 		var appticles = {
 			exportPath: "<?php echo plugins_url()."/".WMP_DOMAIN."/export/";?>",
 			creditsPath: "<?php echo $theme_path."includes/";?>",
@@ -187,7 +187,7 @@
         if ($google_analytics_id != ''):
     ?>
     
-        <script type="text/javascript">
+        <script type="text/javascript" pagespeed_no_defer="">
     
           var _gaq = _gaq || [];
           _gaq.push(['_setAccount', '<?php echo $google_analytics_id;?>']);
