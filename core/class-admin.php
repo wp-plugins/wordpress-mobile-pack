@@ -15,7 +15,7 @@ if ( ! class_exists( 'WMobilePackAdmin' ) ) {
 		 *
 		 */
 		public function wmp_options() {
-			     
+			
 			global $wmobile_pack;
 			
             WMobilePack::wmp_update_settings('whats_new_updated', 0);
@@ -187,14 +187,15 @@ if ( ! class_exists( 'WMobilePackAdmin' ) ) {
 								$content = apply_filters("the_content",$page->post_content);
 							else
 								$content = apply_filters("the_content",get_option( 'wmpack_page_' .$page->ID  ));
+								
 							$content = $purifier->purify(stripslashes($content));
 							
 							// load view
 							include(WMP_PLUGIN_PATH.'admin/wmp-admin-page-details.php');	
 						}
-					}			
+					}
 				}
-			}		
+			}
 		}
 		
 		
@@ -441,9 +442,12 @@ if ( ! class_exists( 'WMobilePackAdmin' ) ) {
     								 
     								// set e-mail variables
                                     $message = "Name: ".strip_tags($_POST["wmp_feedback_name"])."\r\n \r\n";
-                                    $message .= "E-mail: ".$_POST["wmp_feedback_email"]."\r\n \r\n";
+                                    $message .= "E-mail: ".$admin_email."\r\n \r\n";
     								$message .= "Message: ".strip_tags($_POST["wmp_feedback_message"])."\r\n \r\n";
-                                    $message .= "Page: ".stripslashes(strip_tags($_POST['wmp_feedback_page']));
+                                    $message .= "Page: ".stripslashes(strip_tags($_POST['wmp_feedback_page']))."\r\n \r\n";
+									
+									if (isset($_SERVER['HTTP_HOST']))
+										$message .= "Host: ".$_SERVER['HTTP_HOST'];
                                     
     								$subject = 'WP Mobile Pack Feeback';
     								$to = WMP_FEEDBACK_EMAIL;
@@ -463,7 +467,7 @@ if ( ! class_exists( 'WMobilePackAdmin' ) ) {
                 echo $status;
             }
             
-            exit();
+			exit();
         }
 		
 		
@@ -484,10 +488,10 @@ if ( ! class_exists( 'WMobilePackAdmin' ) ) {
                 
     			// JSON URL that should be requested
     			$json_url = ($is_secure ? WMP_NEWS_UPDATES_HTTPS : WMP_NEWS_UPDATES);
-                
+				
 				// get response
 				$json_response = self::wmp_read_data($json_url);
-
+				
 				if($json_response !== false && $json_response != '') {
 					
 					// Store this data in a transient
@@ -688,9 +692,8 @@ if ( ! class_exists( 'WMobilePackAdmin' ) ) {
                 $status = 0;
                 
                 if (isset($_POST) && is_array($_POST) && !empty($_POST)){
-                                        
+                    
                     if (isset($_POST['api_key']) && isset($_POST['valid']) && isset($_POST['config_path'])){
-                        
                         
                         if (
 								preg_match('/^[a-zA-Z0-9]+$/', $_POST['api_key']) && 
@@ -749,14 +752,18 @@ if ( ! class_exists( 'WMobilePackAdmin' ) ) {
                         if (preg_match('/^[a-zA-Z0-9]+$/', $_POST['api_key']) && $_POST['active'] == 0){
                                 
 							$arrData = array(
-											 	'premium_api_key' => '',
-												'premium_active'  => 0,
-												'premium_config_path' => ''
-											 );	
+								'premium_api_key' => '',
+								'premium_active'  => 0,
+								'premium_config_path' => ''
+							);	
 								
+							// delete transient with the json config
+							if (get_transient("wmp_premium_config_path") !== false)
+								delete_transient('wmp_premium_config_path');
+							
                             // save options
-                           if( WMobilePack::wmp_update_settings($arrData))	
-						   	$status = 1;
+							if (WMobilePack::wmp_update_settings($arrData))
+								$status = 1;
 							
                         } 
                     }        

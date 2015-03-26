@@ -3,7 +3,7 @@ Contributors: jamesgpearce, andreatrasatti, edent, cborodescu
 Tags: mobile, mobile web, mobile internet, smartphone, iphone, android, windows 8, webkit, chrome, safari, mobile web app, html5, sencha touch, responsive ui
 Requires at least: 3.5
 Tested up to: 4.0
-Stable tag: 2.1.1
+Stable tag: 2.1.2
 License: GPLv2 or later
 
 The NEW WordPress Mobile Pack allows you to 'package' your existing content into a cross-platform mobile web application.
@@ -129,6 +129,12 @@ Google Ad Sense / Google Double Click for Publishers is supported on the Premium
 
 == Changelog ==
 
+= 2.1.2 =
+* Added [rel="canonical" and rel="alternate" elements](https://developers.google.com/webmasters/mobile-sites/mobile-seo/configurations/separate-urls?hl=en) for SEO
+* Fixed bug - category redirect for Premium themes
+* Fixed bug - cleaning up transient when disconnecting the API key
+* Fixed bug - navigating between categories with special chars (ex. French accents)
+
 = 2.1.1 =
 * Integrated with [Related Posts by Zemanta](https://wordpress.org/plugins/related-posts-by-zemanta/) and [Editorial Assistant by Zemanta](https://wordpress.org/plugins/zemanta/)
 * Wrote docs about [how to set up the main cache plugins for WPMP](http://support.appticles.com/hc/en-us/articles/201795202-Optimizing-Cache-Plugins-for-Wordpress-Mobile-Pack)
@@ -248,8 +254,8 @@ Two major issues were introduced in beta 1, now solved:
 
 == Upgrade Notice ==
 
-= 2.1.1 =
-* WP Mobile Pack allows you to 'package' your existing content into a cross-platform mobile web application. The latest version includes support for Related Posts and Editorial Assistant by Zemanta, 'Add to homescreen' for iOS, Android and FirefoxOS, SSL support and other features.
+= 2.1.2 =
+* WP Mobile Pack allows you to 'package' your existing content into a cross-platform mobile web application. The latest version includes support for rel="canonical" and rel="alternate" tags for better SEO and other bug fixes.
 
 
 == Screenshots ==
@@ -298,5 +304,5 @@ Our roadmap currently includes:
 
 We currently have two Github development repositories:
 
-* [https://github.com/appticles/wordpress-mobile-pack-backend](https://github.com/appticles/wordpress-mobile-pack-backend) - The plugin files, same as you will find for download on Wordpress.org.
+* [https://github.com/appticles/wordpress-mobile-pack-backend](https://github.com/appticles/wordpress-mobile-pack-backend) - The plugin files, same as you will find for download on Wordpress.org, plus unit tests.
 * [https://github.com/appticles/wordpress-mobile-pack-app](https://github.com/appticles/wordpress-mobile-pack-app) - The mobile web application's development files (Javascript & CSS).

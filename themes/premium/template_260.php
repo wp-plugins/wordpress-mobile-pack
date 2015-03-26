@@ -125,9 +125,14 @@ if ($is_tablet == 1 && isset($arrConfig['tablet']['cover']) && $arrConfig['table
             title: "<?php echo addslashes($arrConfig['title']);?>", // to update the title tag with the same constant
 
             exportPath: '<?php echo $is_secure ? $arrConfig['api_content_https'] : $arrConfig['api_content'];?>',
+			socialApiPath: '<?php echo $is_secure ? $arrConfig['api_social_https'] : $arrConfig['api_social'];?>',
+			
+			<?php if (isset($arrConfig['api_content_external'])):?>
+				exportPathExternal: '<?php echo $arrConfig['api_content_external'];?>',
+			<?php endif;?>
+			
 			defaultPath: '<?php echo $kits_path;?>',
             appPath: '<?php echo $cdn_apps."/".$arrConfig['shorten_url'];?>',
-			socialApiPath: '<?php echo $is_secure ? $arrConfig['api_social_https'] : $arrConfig['api_social'];?>',
             
             logo: '<?php echo isset($arrConfig['logo_path']) && $arrConfig['logo_path'] != '' ? $cdn_apps."/".$arrConfig['shorten_url'].'/'.$arrConfig['logo_path'] : $cdn_kits."/app1/".$arrConfig['kit_version']."/resources/images/logo.png";?>',
             hasIcons: <?php echo intval(isset($arrConfig['icon_path']) && $arrConfig['icon_path'] != "");?>,
@@ -140,6 +145,8 @@ if ($is_tablet == 1 && isset($arrConfig['tablet']['cover']) && $arrConfig['table
             
             appUrl: '<?php echo home_url();?>',
             websiteUrl: '<?php echo home_url();?>?wmp_theme_mode=desktop',
+			canonicalUrl: '<?php echo home_url();?>',
+			
             preview: 0,
             language: '<?php echo isset($arrConfig['language']) && $arrConfig['language'] != '' ? $arrConfig['language'] : 'en';?>',
             
@@ -177,7 +184,14 @@ if ($is_tablet == 1 && isset($arrConfig['tablet']['cover']) && $arrConfig['table
             <?php endif;?>
         };
     </script>
-    
+	
+	<?php if (isset($arrConfig['load_canonical_script']) && $arrConfig['load_canonical_script'] == 1):?>
+	
+		<script src="<?php echo $is_secure ? 'https' : 'http' ?>://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+		<script src="<?php echo $cdn_kits;?>/others/landing-page-v2/scripts/<?php echo $supported_gzip ? 'canonical-urls-js.gz' : 'canonical-urls.js' ;?>" type="text/javascript"></script>
+		
+	<?php endif;?>
+	
     <?php if (($arrConfig['has_phone_ads'] == 1 && $is_tablet == 0) || ($arrConfig['has_tablet_ads'] == 1 && $is_tablet == 1)):?>
     
         <!-- start Google Doubleclick for publishers -->

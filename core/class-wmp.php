@@ -289,13 +289,13 @@ if ( ! class_exists( 'WMobilePack' ) ) {
     		$WMobilePackAdmin = new WMobilePackAdmin;
            	
 			// check menu 
-			if(self::wmp_get_setting('premium_active') == 1 && self::wmp_get_setting('premium_api_key') != '') {
+			if (self::wmp_get_setting('premium_active') == 1 && self::wmp_get_setting('premium_api_key') != '') {
 					
 				// add menu and submenu hooks
 				$menu_premium = add_menu_page( 'WP Mobile Pack', 'WP Mobile Pack', 'manage_options', 'wmp-options-premium', '', WP_PLUGIN_URL . '/wordpress-mobile-pack/admin/images/appticles-logo.png' );
 				add_submenu_page( 'wmp-options', "What's New", "What's New", 'manage_options', 'wmp-options-premium', array( &$WMobilePackAdmin, 'wmp_premium_options' ) );
 				add_action( 'load-' . $menu_premium, array( &$this, 'wmp_admin_load_premium_js' ) );   
-																					 
+				
 			} else {
 
 				// check if we need to request updates for the what's new section
@@ -577,9 +577,12 @@ if ( ! class_exists( 'WMobilePack' ) ) {
 				if ($load_app) {
 					
 					// add hook in footer
-					add_action('wp_footer', array(&$this,'wmp_show_footer_box'));	
+					add_action('wp_footer', array(&$this,'wmp_show_footer_box'));
 				}
             }
+			
+			// add hook in header (for rel=alternate)
+			add_action('wp_head', array(&$this, 'wmp_show_rel'));
     	}
         
         
@@ -665,7 +668,7 @@ if ( ! class_exists( 'WMobilePack' ) ) {
          * Return the theme name
          */
         public static function wmp_app_theme() {
-    		if(self::wmp_get_setting('premium_active') == 1 && self::wmp_get_setting('premium_api_key') != '')
+    		if (self::wmp_get_setting('premium_active') == 1 && self::wmp_get_setting('premium_api_key') != '')
 				return self::$wmp_premium_theme;
 			else
 				return self::$wmp_basic_theme;
@@ -706,6 +709,7 @@ if ( ! class_exists( 'WMobilePack' ) ) {
          *  
          *  // OPTIONAL fields
          *  'domain_name' : 'myapp.domain.com',
+         *  'api_content_external': 'http://yourcustomapi.com',
          *  
          *  'color_scheme'      : 1,          // will be removed in future versions
 		 *  'font_headlines'    : 1,          // will be removed in future versions
@@ -727,7 +731,10 @@ if ( ! class_exists( 'WMobilePack' ) ) {
          *                      
          *  'language': 'en',
          *  'google_analytics_id' : 'UA-XXXXXX-1',
-         *  'google_internal_id' : 'xxxxx'
+         *  'google_internal_id' : 'xxxxx',
+         *
+         *  // This variable should be removed after the rel=canonical script is integrated into the premium apps
+         *  'load_canonical_script' : 1,
          * 
          *  // VERSION 2.6.0 (Separate phone and tablet theme settings)
          * 'phone' : {
@@ -798,7 +805,8 @@ if ( ! class_exists( 'WMobilePack' ) ) {
                                     isset($arrAppSettings['has_tablet_ads']) && is_numeric($arrAppSettings['has_tablet_ads']) &&
                                     
                                     // validate optional fields
-                                    (!isset($arrAppSettings['domain_name']) || $arrAppSettings['domain_name'] == '' || filter_var('http://'.$arrAppSettings['domain_name'], FILTER_VALIDATE_URL)) && 
+                                    (!isset($arrAppSettings['domain_name']) || $arrAppSettings['domain_name'] == '' || filter_var('http://'.$arrAppSettings['domain_name'], FILTER_VALIDATE_URL)) &&
+									(!isset($arrAppSettings['api_content_external']) || $arrAppSettings['api_content_external'] == '' || filter_var('http://'.$arrAppSettings['api_content_external'], FILTER_VALIDATE_URL)) && 
                                     (!isset($arrAppSettings['color_scheme']) || $arrAppSettings['color_scheme'] == '' || is_numeric($arrAppSettings['color_scheme'])) &&
                                     (!isset($arrAppSettings['font_headlines']) || $arrAppSettings['font_headlines'] == '' || is_numeric($arrAppSettings['font_headlines'])) &&
                                     (!isset($arrAppSettings['font_subtitles']) || $arrAppSettings['font_subtitles'] == '' || is_numeric($arrAppSettings['font_subtitles'])) &&
@@ -819,8 +827,9 @@ if ( ! class_exists( 'WMobilePack' ) ) {
                                      
                                     (!isset($arrAppSettings['tablet_network_code']) || $arrAppSettings['tablet_network_code'] == '' || is_numeric($arrAppSettings['tablet_network_code'])) &&
                                     (!isset($arrAppSettings['tablet_unit_name']) || $arrAppSettings['tablet_unit_name'] == '' || $arrAppSettings['tablet_unit_name'] == strip_tags($arrAppSettings['tablet_unit_name'])) &&
-                                    (!isset($arrAppSettings['tablet_ad_sizes']) || $arrAppSettings['tablet_ad_sizes'] == '' || is_array($arrAppSettings['tablet_ad_sizes']))
-                                     
+                                    (!isset($arrAppSettings['tablet_ad_sizes']) || $arrAppSettings['tablet_ad_sizes'] == '' || is_array($arrAppSettings['tablet_ad_sizes'])) &&
+									
+                                    (!isset($arrAppSettings['load_canonical_script']) || $arrAppSettings['load_canonical_script'] == '' || is_numeric($arrAppSettings['load_canonical_script']))
                                 ) {
                                 
                                     $valid_phone = false;
@@ -954,6 +963,21 @@ if ( ! class_exists( 'WMobilePack' ) ) {
     	}
 		
 		
+		/**
+          * 
+          * Method used to display a rel=alternate link in the header of the desktop theme
+		  * 
+		  * This method is called from wmp_check_load()
+          *		  
+          */
+		public function wmp_show_rel(){
+			if (WMobilePack::wmp_get_setting('premium_active') == 1 && WMobilePack::wmp_get_setting('premium_api_key') != '')
+				include(WMP_PLUGIN_PATH.'sections/wmp-show-rel-premium.php'); 
+			else
+				include(WMP_PLUGIN_PATH.'sections/wmp-show-rel.php'); 
+		}
+		
+		
 		
 		 /**
           * 
@@ -966,7 +990,7 @@ if ( ! class_exists( 'WMobilePack' ) ) {
 		public function wmp_show_footer_box(){
 			
 			// load view
-			include(WMP_PLUGIN_PATH.'admin/sections/wmp-show-mobile.php'); 
+			include(WMP_PLUGIN_PATH.'sections/wmp-show-mobile.php'); 
 			
 			
 		}
@@ -1023,7 +1047,6 @@ if ( ! class_exists( 'WMobilePack' ) ) {
 			return $WMobileDetect->wmp_is_tablet();
 		  	
 		}
-		
 		
 		
 		 /**
