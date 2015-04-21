@@ -6,7 +6,7 @@
  * Author: Appticles.com
  * Author URI: http://www.appticles.com/
  * Version: 2.1.2
- * Copyright (c) 2009 – 2014 James Pearce, mTLD Top Level Domain Limited, ribot, Forum Nokia, Appticles.com
+ * Copyright (c) 2009 – 2015 James Pearce, mTLD Top Level Domain Limited, ribot, Forum Nokia, Appticles.com
  * License: The WordPress Mobile Pack is Licensed under the Apache License, Version 2.0
  */
  
