@@ -533,7 +533,8 @@ if ( ! class_exists( 'WMobilePack' ) ) {
 						
 						$arrConfig = json_decode($json_config_premium);
                         
-						if (isset($arrConfig->status) && $arrConfig->status == 'hidden') {
+						if ((isset($arrConfig->status) && $arrConfig->status == 'hidden') ||
+							(isset($arrConfig->deactivated) && $arrConfig->deactivated == 1)) {
 							
 							$load_app = false; // the app will not be loaded since the status is hidden
 							$visible_app = false; // setting it to false will skip the detection
@@ -709,6 +710,7 @@ if ( ! class_exists( 'WMobilePack' ) ) {
          *  
          *  // OPTIONAL fields
          *  'domain_name' : 'myapp.domain.com',
+         *  'deactivated' : 1,
          *  'api_content_external': 'http://yourcustomapi.com',
          *  
          *  'color_scheme'      : 1,          // will be removed in future versions
@@ -732,9 +734,13 @@ if ( ! class_exists( 'WMobilePack' ) ) {
          *  'language': 'en',
          *  'google_analytics_id' : 'UA-XXXXXX-1',
          *  'google_internal_id' : 'xxxxx',
+         *  'google_webmasters_code' : 'xxxxxx',
          *
          *  // This variable should be removed after the rel=canonical script is integrated into the premium apps
          *  'load_canonical_script' : 1,
+         *
+         *  // This variable should be removed after the Chrome 43 fix is integrated into the premium apps
+		 * 'load_chrome43_patch' : 1
          * 
          *  // VERSION 2.6.0 (Separate phone and tablet theme settings)
          * 'phone' : {
@@ -782,7 +788,7 @@ if ( ! class_exists( 'WMobilePack' ) ) {
 							$json_response = WMobilePackAdmin::wmp_read_data($config_path);
                             
 							if ($json_response !== false && $json_response != '') {
-	      
+								
                                 // is valid json
                                 $arrAppSettings = json_decode($json_response, true);
                                 
@@ -806,6 +812,7 @@ if ( ! class_exists( 'WMobilePack' ) ) {
                                     
                                     // validate optional fields
                                     (!isset($arrAppSettings['domain_name']) || $arrAppSettings['domain_name'] == '' || filter_var('http://'.$arrAppSettings['domain_name'], FILTER_VALIDATE_URL)) &&
+									(!isset($arrAppSettings['deactivated']) || $arrAppSettings['deactivated'] == 0 || $arrAppSettings['deactivated'] == 1) && 
 									(!isset($arrAppSettings['api_content_external']) || $arrAppSettings['api_content_external'] == '' || filter_var('http://'.$arrAppSettings['api_content_external'], FILTER_VALIDATE_URL)) && 
                                     (!isset($arrAppSettings['color_scheme']) || $arrAppSettings['color_scheme'] == '' || is_numeric($arrAppSettings['color_scheme'])) &&
                                     (!isset($arrAppSettings['font_headlines']) || $arrAppSettings['font_headlines'] == '' || is_numeric($arrAppSettings['font_headlines'])) &&
@@ -819,7 +826,8 @@ if ( ! class_exists( 'WMobilePack' ) ) {
                                     
                                     (!isset($arrAppSettings['language']) || $arrAppSettings['language'] == '' || ctype_alpha($arrAppSettings['language'])) &&
                                     (!isset($arrAppSettings['google_analytics_id']) || $arrAppSettings['google_analytics_id'] == '' || ctype_alnum(str_replace('-','', $arrAppSettings['google_analytics_id']))) &&
-                                    (!isset($arrAppSettings['google_internal_id']) || $arrAppSettings['google_internal_id'] == '' || is_numeric($arrAppSettings['google_internal_id'])) &&  
+                                    (!isset($arrAppSettings['google_internal_id']) || $arrAppSettings['google_internal_id'] == '' || is_numeric($arrAppSettings['google_internal_id'])) &&
+									(!isset($arrAppSettings['google_webmasters_code']) || $arrAppSettings['google_webmasters_code'] == '' || $arrAppSettings['google_webmasters_code'] == strip_tags($arrAppSettings['google_webmasters_code'])) &&
                                      
                                     (!isset($arrAppSettings['phone_network_code']) || $arrAppSettings['phone_network_code'] == '' || is_numeric($arrAppSettings['phone_network_code'])) &&
                                     (!isset($arrAppSettings['phone_unit_name']) || $arrAppSettings['phone_unit_name'] == '' || $arrAppSettings['phone_unit_name'] == strip_tags($arrAppSettings['phone_unit_name'])) &&
@@ -829,7 +837,8 @@ if ( ! class_exists( 'WMobilePack' ) ) {
                                     (!isset($arrAppSettings['tablet_unit_name']) || $arrAppSettings['tablet_unit_name'] == '' || $arrAppSettings['tablet_unit_name'] == strip_tags($arrAppSettings['tablet_unit_name'])) &&
                                     (!isset($arrAppSettings['tablet_ad_sizes']) || $arrAppSettings['tablet_ad_sizes'] == '' || is_array($arrAppSettings['tablet_ad_sizes'])) &&
 									
-                                    (!isset($arrAppSettings['load_canonical_script']) || $arrAppSettings['load_canonical_script'] == '' || is_numeric($arrAppSettings['load_canonical_script']))
+                                    (!isset($arrAppSettings['load_canonical_script']) || $arrAppSettings['load_canonical_script'] == '' || is_numeric($arrAppSettings['load_canonical_script'])) &&
+									(!isset($arrAppSettings['load_chrome43_patch']) || $arrAppSettings['load_chrome43_patch'] == '' || is_numeric($arrAppSettings['load_chrome43_patch']))
                                 ) {
                                 
                                     $valid_phone = false;
