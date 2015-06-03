@@ -3,7 +3,7 @@ Contributors: jamesgpearce, andreatrasatti, edent, cborodescu
 Tags: mobile, mobile web, mobile internet, smartphone, iphone, android, windows 8, webkit, chrome, safari, mobile web app, html5, sencha touch, responsive ui
 Requires at least: 3.5
 Tested up to: 4.2
-Stable tag: 2.1.2
+Stable tag: 2.1.3
 License: GPLv2 or later
 
 The NEW WordPress Mobile Pack allows you to 'package' your existing content into a cross-platform mobile web application.
@@ -143,6 +143,7 @@ Google Ad Sense / Google Double Click for Publishers is supported on the Premium
 * Added patch for swipe events on Chrome 43
 * Added Google Webmaster Tools ID & deactivated status for Premium apps
 * Fixed inactive categories and pages warning for sites that use multilanguage plugins
+* Patch 03/06/2015 - Security bug fix for exporting a single post with a 'Private' status
 
 = 2.1.2 =
 * Added [rel="canonical" and rel="alternate" elements](https://developers.google.com/webmasters/mobile-sites/mobile-seo/configurations/separate-urls?hl=en) for SEO
@@ -179,6 +180,7 @@ Google Ad Sense / Google Double Click for Publishers is supported on the Premium
 * Fixed bug - Filter content to remove default image links added by Wordpress. The links were opening an image in a new window and messing up the scrolling of the content.
 * Fixed bug - Using 'home_url' instead of 'site_url' for redirecting to the home page.
 * Fixed bug - Switching from portrait to landscape on the native Android browser was not working properly on some smartphones (HTC One).
+* Security bug fix for exporting password-protected posts, CVE-2014-5337
 
 = 2.0.1 = 
 * Hide comments button if the comments are disabled for an article
